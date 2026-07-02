@@ -2,7 +2,6 @@
 
 <div align="center">
 
-![Portfolio Preview](https://harekrishnashah.vercel.app/og-image.png)
 
 [![Live Site](https://img.shields.io/badge/Live%20Site-harekrishnashah.vercel.app-00CC88?style=for-the-badge&logo=vercel&logoColor=white)](https://harekrishnashah.vercel.app/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-hshah13-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/hshah13)
