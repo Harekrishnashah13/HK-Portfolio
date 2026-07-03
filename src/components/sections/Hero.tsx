@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, Sparkles, CheckCircle2, FileText, Briefcase, Linkedin, Github, Mail, MapPin, Award, BarChart3, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
@@ -9,6 +9,117 @@ interface HeroProps {
 
 export default function Hero({ onOpenResume }: HeroProps) {
   const [imageError, setImageError] = useState(false);
+
+  const highlightBio = (text: string) => {
+    const keywords = [
+      "Databricks Certified Data Engineer & Analyst",
+      "MSc in Data Science",
+      "First Class Distinction",
+      "4+ years of professional experience",
+      "financial services and enterprise analytics",
+      "pipelines, dashboards, and governance frameworks",
+      "Dublin",
+      "senior Data Analytics and Data Engineering roles"
+    ];
+    
+    const parts: (string | React.ReactNode)[] = [];
+    let currentText = text;
+    const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
+    let indexKey = 0;
+
+    while (currentText.length > 0) {
+      let foundIndex = -1;
+      let matchedKeyword = "";
+      
+      for (const keyword of sortedKeywords) {
+        const index = currentText.indexOf(keyword);
+        if (index !== -1 && (foundIndex === -1 || index < foundIndex)) {
+          foundIndex = index;
+          matchedKeyword = keyword;
+        }
+      }
+      
+      if (foundIndex !== -1) {
+        if (foundIndex > 0) {
+          parts.push(currentText.substring(0, foundIndex));
+        }
+        parts.push(
+          <span key={`kw-${indexKey++}`} className="text-white font-medium border-b border-emerald-400/30 pb-[1px] hover:text-emerald-300 transition-colors">
+            {matchedKeyword}
+          </span>
+        );
+        currentText = currentText.substring(foundIndex + matchedKeyword.length);
+      } else {
+        parts.push(currentText);
+        break;
+      }
+    }
+    
+    return parts;
+  };
+
+  const roles = [
+    "Business Decisions.",
+    "Trusted Pipelines.",
+    "Analytics Intelligence.",
+    "Executive Insights."
+  ];
+
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    const currentFullText = roles[roleIndex];
+    
+    const handleTyping = () => {
+      if (!isDeleting) {
+        setDisplayText(currentFullText.substring(0, displayText.length + 1));
+        if (displayText === currentFullText) {
+          timer = setTimeout(() => setIsDeleting(true), 1800);
+          return;
+        }
+      } else {
+        setDisplayText(currentFullText.substring(0, displayText.length - 1));
+        if (displayText === "") {
+          setIsDeleting(false);
+          setRoleIndex((prev) => (prev + 1) % roles.length);
+          return;
+        }
+      }
+      
+      const speed = isDeleting ? 40 : 80;
+      timer = setTimeout(handleTyping, speed);
+    };
+
+    timer = setTimeout(handleTyping, isDeleting ? 40 : 80);
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, roleIndex]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.1,
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1],
+      }
+    }
+  };
+
   const scrollToProjects = () => {
     const element = document.getElementById('projects');
     if (element) {
@@ -40,10 +151,19 @@ export default function Hero({ onOpenResume }: HeroProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Main Storytelling Copy (Left Side) */}
-          <div className="lg:col-span-7 flex flex-col items-start" id="hero-story">
+          <motion.div
+            className="lg:col-span-7 flex flex-col items-start"
+            id="hero-story"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             
             {/* Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/25 rounded-full mb-6">
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/25 rounded-full mb-6"
+            >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -51,25 +171,45 @@ export default function Hero({ onOpenResume }: HeroProps) {
               <span className="text-emerald-400 text-[11px] font-mono tracking-wider uppercase font-medium">
                 Stamp 1G &middot; Dublin, Ireland &middot; Open to Opportunities
               </span>
-            </div>
+            </motion.div>
+
+            {/* Blinking cursor style definition */}
+            <style>{`
+              @keyframes blink {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0; }
+              }
+              .animate-blink {
+                animation: blink 1s infinite;
+              }
+            `}</style>
 
             {/* Main Display Headlines */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-sans font-extrabold tracking-tight text-white leading-[1.1] mb-6">
-              Hey, I'm <span className="text-emerald-400 font-medium">{PERSONAL_INFO.name}</span>.<br />
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight text-white leading-[1.1] mb-6"
+            >
+              Hey, I'm <span className="text-emerald-400 font-semibold">Harekrishna</span>.<br />
               <span className="text-slate-300">I transform data into </span>
-              <span className="relative inline-block text-white">
-                business decisions.
-                <span className="absolute left-0 bottom-1 w-full h-[3px] bg-emerald-500/40 rounded-full" />
+              <span className="relative inline-block text-emerald-400 font-mono font-bold text-[0.85em] tracking-tight whitespace-nowrap min-w-[200px]">
+                {displayText}
+                <span className="inline-block text-emerald-400 font-light ml-1 animate-blink">|</span>
+                <span className="absolute left-0 bottom-1 w-full h-[2px] bg-emerald-500/20 rounded-full" />
               </span>
-            </h1>
+            </motion.h1>
 
             {/* Human-First Mission Summary */}
-            <p className="text-slate-400 text-base md:text-lg font-sans font-light leading-relaxed mb-8 max-w-xl">
-              I am a <strong className="text-slate-200 font-medium">Databricks Certified Data Engineer &amp; Analyst</strong> with an MSc in Data Science (First Class Distinction) and 3+ years of professional experience in financial services, fintech, and enterprise analytics. I bridge the gap between cloud data pipelines and executive dashboards — building clean, governed, and scalable data systems that drive real business decisions.
-            </p>
+            <div className="space-y-4 mb-8 max-w-xl text-slate-400 text-base md:text-lg font-sans font-light leading-relaxed">
+              <motion.p variants={itemVariants}>
+                {highlightBio(PERSONAL_INFO.about.summary)}
+              </motion.p>
+            </div>
 
             {/* Repeated Recruiter-Optimized Key Ingestion Actions */}
-            <div className="space-y-4 mb-10 w-full">
+            <motion.div
+              variants={itemVariants}
+              className="space-y-4 mb-10 w-full"
+            >
               <div className="flex flex-wrap items-center gap-3 w-full">
                 {/* 1. Download Resume */}
                 <button
@@ -123,25 +263,10 @@ export default function Hero({ onOpenResume }: HeroProps) {
                   </a>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Quick Strategic Pillars */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-900/80 pt-8 w-full">
-              <div className="flex flex-col">
-                <span className="text-emerald-400 font-mono text-xs font-semibold uppercase tracking-wider mb-1">01. Pipeline Scale</span>
-                <span className="text-slate-400 text-xs font-sans font-light">Robust cloud warehouses engineered with Databricks, PySpark, and Azure ADF.</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-emerald-400 font-mono text-xs font-semibold uppercase tracking-wider mb-1">02. BI Adoption</span>
-                <span className="text-slate-400 text-xs font-sans font-light">Audit-ready Power BI dashboard suites built for corporate SLA tracking.</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-emerald-400 font-mono text-xs font-semibold uppercase tracking-wider mb-1">03. Real Outcomes</span>
-                <span className="text-slate-400 text-xs font-sans font-light">Direct business impact verified across massive cloud migrations and AML compliance.</span>
-              </div>
-            </div>
-
-          </div>
+            {/* Quick Strategic Pillars - Removed to make portfolio shorter and crisper */}
+          </motion.div>
 
           {/* Recruiter Cheat-Sheet / Executive Overview (Right Side) */}
           <div className="lg:col-span-5 flex flex-col gap-6" id="hero-overview-card">

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Calendar, MapPin, Briefcase, Award } from 'lucide-react';
+import { Calendar, MapPin, Briefcase, Award, Check } from 'lucide-react';
+import { motion } from 'motion/react';
 import { EXPERIENCE_DATA } from '../../data';
 
 export default function Experience() {
@@ -17,10 +18,11 @@ export default function Experience() {
         {/* Section Header */}
         <div className="max-w-3xl mb-16 md:mb-20">
           <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
-            [03] Employment History
+            [05] Experience Timeline
           </span>
-          <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-white mb-4">
-            Production Experience &amp; Professional Milestones
+          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-white mb-4 flex items-center gap-3.5">
+            <Briefcase className="h-7 w-7 text-emerald-400/70 shrink-0" />
+            <span>Production Experience &amp; Professional Milestones</span>
           </h2>
           <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-light">
             An overview of structural contributions across enterprise SaaS and digital platform environments, combining server-side data systems with board-level business intelligence.
@@ -31,35 +33,59 @@ export default function Experience() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start" id="experience-timeline">
           
           {/* Navigation Sidebar/Timeline nodes (Left) */}
-          <div className="lg:col-span-4 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-4 lg:pb-0 scrollbar-none sticky top-24 z-10 bg-[#080B11]/80 backdrop-blur-sm lg:bg-transparent">
-            {EXPERIENCE_DATA.map((role, idx) => (
-              <button
-                key={role.id}
-                onClick={() => setActiveRoleIndex(idx)}
-                className={`flex flex-col items-start p-4 rounded-2xl border transition-all cursor-pointer min-w-[220px] lg:min-w-0 text-left w-full ${
-                  activeRoleIndex === idx
-                    ? 'bg-slate-950 border-emerald-500/20 shadow-lg'
-                    : 'bg-transparent border-transparent hover:border-slate-900 text-slate-400'
-                }`}
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`h-1.5 w-1.5 rounded-full transition-colors ${
-                    activeRoleIndex === idx ? 'bg-emerald-400' : 'bg-slate-700'
-                  }`} />
-                  <span className={`text-xs font-mono font-medium ${
-                    activeRoleIndex === idx ? 'text-emerald-400' : 'text-slate-500'
+          <div className="lg:col-span-4 flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible pb-4 lg:pb-0 scrollbar-none sticky top-24 z-10 bg-[#080B11]/80 backdrop-blur-sm lg:bg-transparent lg:border-l lg:border-slate-900/60 lg:pl-6">
+            {EXPERIENCE_DATA.map((role, idx) => {
+              const isActive = activeRoleIndex === idx;
+              return (
+                <motion.button
+                  key={role.id}
+                  onClick={() => setActiveRoleIndex(idx)}
+                  whileHover={{ x: isActive ? 0 : 4 }}
+                  className="relative flex flex-col items-start p-4 rounded-2xl transition-all cursor-pointer min-w-[220px] lg:min-w-0 text-left w-full focus:outline-none select-none group"
+                >
+                  {/* Sliding Background Active Highlight */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeExperienceHighlight"
+                      className="absolute inset-0 bg-slate-950/80 border border-emerald-500/15 rounded-2xl shadow-xl shadow-black/30 -z-10"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+
+                  {/* Left Accent Bar on Active */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeExperienceBar"
+                      className="absolute left-[-26px] top-1/2 -translate-y-1/2 w-1 h-12 bg-emerald-400 rounded-r-full hidden lg:block"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+
+                  <div className="flex items-center gap-2.5 mb-1.5 z-10">
+                    <span className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
+                      isActive ? 'bg-emerald-400 scale-125 shadow-sm shadow-emerald-400' : 'bg-slate-700 group-hover:bg-slate-500'
+                    }`} />
+                    <span className={`text-xs font-mono font-medium tracking-wide transition-colors duration-300 ${
+                      isActive ? 'text-emerald-400' : 'text-slate-500 group-hover:text-slate-400'
+                    }`}>
+                      {role.period}
+                    </span>
+                  </div>
+
+                  <span className={`font-display font-bold text-sm sm:text-base tracking-tight leading-tight transition-colors duration-300 z-10 ${
+                    isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'
                   }`}>
-                    {role.period}
+                    {role.role}
                   </span>
-                </div>
-                <span className="text-white font-sans font-bold text-sm line-clamp-1">
-                  {role.role}
-                </span>
-                <span className="text-slate-500 font-mono text-[11px] mt-0.5">
-                  {role.company}
-                </span>
-              </button>
-            ))}
+
+                  <span className={`font-mono text-xs mt-1 transition-colors duration-300 z-10 ${
+                    isActive ? 'text-emerald-500/80' : 'text-slate-500 group-hover:text-slate-400'
+                  }`}>
+                    {role.company}
+                  </span>
+                </motion.button>
+              );
+            })}
           </div>
 
           {/* Active Milestone Card (Right) */}
@@ -116,14 +142,16 @@ export default function Experience() {
 
                   {/* Duties Bullet points */}
                   <div className="space-y-4 mb-8">
-                    <h4 className="text-slate-400 font-mono text-[10px] uppercase tracking-widest font-semibold">
+                    <h4 className="text-slate-400 font-mono text-[10px] sm:text-[11px] uppercase tracking-widest font-semibold">
                       Key Deliverables &amp; Outcomes
                     </h4>
-                    <ul className="space-y-3">
+                    <ul className="space-y-3.5">
                       {role.description.map((bullet, bIdx) => (
-                        <li key={bIdx} className="flex gap-3 text-slate-300 text-sm leading-relaxed font-sans font-light">
-                          <span className="text-emerald-400 select-none shrink-0 mt-1">•</span>
-                          <span>{bullet}</span>
+                        <li key={bIdx} className="flex gap-3.5 text-slate-300 text-sm md:text-[15px] leading-relaxed font-sans font-light">
+                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-emerald-500/10 border border-emerald-500/15 text-emerald-400 mt-0.5">
+                            <Check className="h-3.5 w-3.5" />
+                          </div>
+                          <span className="text-slate-300/90">{bullet}</span>
                         </li>
                       ))}
                     </ul>

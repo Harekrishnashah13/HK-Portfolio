@@ -294,16 +294,37 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-16 md:mb-20">
+        <div className="max-w-3xl mb-8">
           <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
-            [04] Available for Opportunities
+            [07] Contact
           </span>
-          <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-white mb-4">
-            Get in Touch
+          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-white mb-4 flex items-center gap-3.5">
+            <Mail className="h-7 w-7 text-emerald-400/70 shrink-0" />
+            <span>Get in Touch</span>
           </h2>
           <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-light">
-            Have an opportunity, a technical question, or a project in mind? Drop a message below or contact me directly via email. I am currently available for new roles and will respond within 4 business hours.
+            I'm open to Data Analytics and Engineering roles in Dublin — reach out via LinkedIn or email and I'll reply within 2 hours.
           </p>
+        </div>
+
+        {/* Quick-Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-16 max-w-xl">
+          <a
+            href={`mailto:${PERSONAL_INFO.email}`}
+            className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold font-sans rounded-xl shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/20 active:scale-95 transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <Mail className="h-5 w-5" />
+            <span>Email Direct</span>
+          </a>
+          <a
+            href={PERSONAL_INFO.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-4 bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-white font-semibold font-sans rounded-xl shadow-lg shadow-black/20 active:scale-95 transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <Linkedin className="h-5 w-5 text-[#0A66C2]" />
+            <span>Connect on LinkedIn</span>
+          </a>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-stretch">

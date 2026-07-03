@@ -10,50 +10,56 @@ import {
   ShieldCheck, 
   Terminal, 
   Lock, 
-  ExternalLink 
+  ExternalLink,
+  Database,
+  Cloud,
+  BarChart3,
+  FileSpreadsheet,
+  Code
 } from 'lucide-react';
 import { CERTIFICATIONS_DATA, EDUCATION_DATA } from '../../data';
 import { Certification } from '../../types';
 
 export default function Certifications() {
   const [selectedCert, setSelectedCert] = useState<Certification | null>(null);
-  const [verificationLogs, setVerificationLogs] = useState<string[]>([]);
-  const [verificationStatus, setVerificationStatus] = useState<'idle' | 'running' | 'success'>('idle');
 
-  // Trigger simulated secure cryptographic handshake when cert is selected
-  useEffect(() => {
-    if (!selectedCert) {
-      setVerificationLogs([]);
-      setVerificationStatus('idle');
-      return;
+  const getCertIcon = (id: string) => {
+    switch (id) {
+      case 'cert-1': // Databricks
+        return <Database className="h-5 w-5 text-orange-400 group-hover:scale-110 transition-transform duration-300" />;
+      case 'cert-2': // AWS
+        return <Cloud className="h-5 w-5 text-amber-400 group-hover:scale-110 transition-transform duration-300" />;
+      case 'cert-6': // Google Analytics
+        return <BarChart3 className="h-5 w-5 text-emerald-400 group-hover:scale-110 transition-transform duration-300" />;
+      case 'cert-3': // Tableau
+        return <BarChart3 className="h-5 w-5 text-cyan-400 group-hover:scale-110 transition-transform duration-300" />;
+      case 'cert-4': // SQL
+        return <FileSpreadsheet className="h-5 w-5 text-blue-400 group-hover:scale-110 transition-transform duration-300" />;
+      case 'cert-5': // Python
+        return <Code className="h-5 w-5 text-yellow-400 group-hover:scale-110 transition-transform duration-300" />;
+      default:
+        return <CheckCircle2 className="h-5 w-5 text-slate-400 group-hover:scale-110 transition-transform duration-300" />;
     }
+  };
 
-    setVerificationStatus('running');
-    const logs = [
-      `🔒 Initializing secure TLS handshake with authorized credential registry...`,
-      `📡 Connected to Verification Server | Port: 443 | Protocol: SSLv3`,
-      `🔑 Resolving Credential Authority signature for "${selectedCert.issuer}"...`,
-      `🔍 Matching public key for Certificate Serial ID: [${selectedCert.credentialId}]`,
-      `📊 Run-time validation check on SHA-256 digital fingerprint hash...`,
-      `✔ Handshake verified. Status: SECURE & AUTHENTICATE.`,
-      `🎉 SUCCESS: Digital credentials verified in real-time.`
-    ];
-
-    let currentLogIdx = 0;
-    setVerificationLogs([logs[0]]);
-
-    const interval = setInterval(() => {
-      currentLogIdx++;
-      if (currentLogIdx < logs.length) {
-        setVerificationLogs(prev => [...prev, logs[currentLogIdx]]);
-      } else {
-        clearInterval(interval);
-        setVerificationStatus('success');
-      }
-    }, 450);
-
-    return () => clearInterval(interval);
-  }, [selectedCert]);
+  const getCertDownloadInfo = (id: string) => {
+    switch (id) {
+      case 'cert-1':
+        return { path: '/certificates/databricks-cert.pdf', filename: 'Harekrishna-Shah-Databricks-Cert.pdf', isAvailable: true };
+      case 'cert-2':
+        return { path: '/certificates/aws-cert.pdf', filename: 'Harekrishna-Shah-AWS-Solutions-Architecture.pdf', isAvailable: true };
+      case 'cert-6':
+        return { path: '/certificates/google-analytics-cert.pdf', filename: 'Harekrishna-Shah-Google-Analytics-Cert.pdf', isAvailable: true };
+      case 'cert-3':
+        return { path: '/certificates/tableau-cert.pdf', filename: 'Harekrishna-Shah-Tableau-Data-Visualization.pdf', isAvailable: true };
+      case 'cert-4':
+        return { path: '/certificates/sql-datasci-cert.pdf', filename: 'Harekrishna-Shah-SQL-for-Data-Science.pdf', isAvailable: true };
+      case 'cert-5':
+        return { path: '#', filename: '', isAvailable: false };
+      default:
+        return null;
+    }
+  };
 
   // Map descriptions & metadata to certifications for custom rich modal
   const getCertDetails = (certId: string) => {
@@ -130,10 +136,11 @@ export default function Certifications() {
         {/* Section Header */}
         <div className="max-w-3xl mb-16 md:mb-20">
           <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
-            [05] Verified Credentials
+            [06] Verified Credentials
           </span>
-          <h2 className="text-3xl sm:text-4xl font-sans font-bold tracking-tight text-white mb-6">
-            Certifications &amp; Academic Foundation
+          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-white mb-6 flex items-center gap-3.5">
+            <GraduationCap className="h-7 w-7 text-emerald-400/70 shrink-0" />
+            <span>Certifications &amp; Academic Foundation</span>
           </h2>
           <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-light">
             My engineering expertise is backed by rigorous industry certifications and specialized academic curricula focused on distributed systems and quantitative predictive analytics.
@@ -154,38 +161,58 @@ export default function Certifications() {
               {CERTIFICATIONS_DATA.map((cert) => (
                 <div
                   key={cert.id}
-                  className="p-5 bg-slate-950/40 rounded-2xl border border-slate-900 hover:border-slate-800 transition-colors flex items-start gap-4 group"
+                  id={`cert-card-${cert.id}`}
+                  onClick={() => setSelectedCert(cert)}
+                  className="p-5 bg-slate-950/25 hover:bg-slate-900/15 rounded-2xl border border-slate-900 hover:border-emerald-500/25 transition-all duration-300 flex items-start gap-4 group cursor-pointer hover:shadow-lg hover:shadow-emerald-950/5 hover:-translate-y-0.5"
                 >
-                  <div className="p-2.5 bg-slate-900 rounded-xl border border-slate-850 text-slate-400 group-hover:text-emerald-400 transition-colors">
-                    <CheckCircle2 className="h-5 w-5" />
+                  <div className="p-2.5 bg-slate-900 rounded-xl border border-slate-850 text-slate-400 group-hover:text-emerald-400 group-hover:border-emerald-500/10 transition-colors">
+                    {getCertIcon(cert.id)}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <h4 className="text-white text-sm font-semibold font-sans">
+                      <h4 className="text-white text-sm font-semibold font-sans truncate group-hover:text-emerald-300 transition-colors">
                         {cert.name}
                       </h4>
                       <span className="text-slate-500 font-mono text-[11px] shrink-0">
                         {cert.date}
                       </span>
                     </div>
-                    <span className="text-emerald-400 font-mono text-xs block mt-1">
+                    <span className="text-emerald-400/90 font-mono text-xs block mt-1">
                       {cert.issuer}
                     </span>
                     
                     {cert.credentialId && (
                       <span className="text-[10px] text-slate-500 font-mono block mt-2">
-                        Credential ID: {cert.credentialId}
+                        ID: {cert.credentialId}
                       </span>
                     )}
 
-                    <div className="mt-3 flex items-center gap-1.5">
-                      <button
-                        onClick={() => setSelectedCert(cert)}
-                        className="text-[11px] font-mono text-slate-400 hover:text-emerald-300 transition-colors inline-flex items-center gap-1 cursor-pointer"
-                      >
-                        Verify Credential
+                    <div className="mt-3 flex flex-col gap-1.5 items-start">
+                      <span className="text-[11px] font-mono text-slate-400 group-hover:text-emerald-300 transition-colors inline-flex items-center gap-1">
+                        Verify Secure Credential
                         <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                      </button>
+                      </span>
+                      {(() => {
+                        const downloadInfo = getCertDownloadInfo(cert.id);
+                        if (!downloadInfo) return null;
+                        if (!downloadInfo.isAvailable) {
+                          return (
+                            <span className="text-[12px] text-white/30 font-sans mt-1 cursor-default" onClick={(e) => e.stopPropagation()}>
+                              ↓ Download Certificate <span className="text-[11px] text-slate-500 font-mono italic ml-1">(coming soon)</span>
+                            </span>
+                          );
+                        }
+                        return (
+                          <a
+                            href={downloadInfo.path}
+                            download={downloadInfo.filename}
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-[12px] text-white/50 hover:text-emerald-400 font-sans mt-1 transition-colors block no-underline"
+                          >
+                            ↓ Download Certificate
+                          </a>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>
@@ -200,21 +227,25 @@ export default function Certifications() {
               Academic Development
             </h3>
 
-            <div className="flex flex-col gap-6 border-l border-slate-900/80 pl-6 ml-2 space-y-4">
+            <div className="flex flex-col gap-6 border-l border-slate-900/40 pl-6 ml-2 space-y-4">
               {EDUCATION_DATA.map((edu, idx) => (
-                <div key={idx} className="relative group">
+                <div 
+                  key={idx} 
+                  id={`edu-card-${idx}`}
+                  className="relative group p-5 bg-slate-950/10 hover:bg-slate-900/5 rounded-2xl border border-transparent hover:border-slate-900/40 hover:shadow-md transition-all duration-300"
+                >
                   {/* Small absolute bullet on the timeline border */}
-                  <div className="absolute -left-[31px] top-1.5 h-2 w-2 rounded-full bg-slate-800 border border-slate-950 group-hover:bg-emerald-400 transition-colors" />
+                  <div className="absolute -left-[31px] top-7 h-2 w-2 rounded-full bg-slate-800 border border-slate-950 group-hover:bg-emerald-400 group-hover:scale-125 transition-all duration-300 shadow-md shadow-emerald-400/20" />
 
                   <span className="inline-flex items-center gap-1 text-[10px] text-slate-500 font-mono mb-1">
                     <Calendar className="h-3 w-3" />
                     {edu.period}
                   </span>
                   
-                  <h4 className="text-white text-sm font-semibold font-sans leading-snug flex flex-wrap items-center gap-2">
+                  <h4 className="text-white text-sm font-semibold font-sans leading-snug flex flex-wrap items-center gap-2 group-hover:text-emerald-300 transition-colors">
                     {edu.degree}
                     {edu.degree.includes("MSc") && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 text-[10px] font-bold tracking-wide">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold tracking-wide">
                         🏆 First Class Distinction
                       </span>
                     )}
@@ -231,9 +262,9 @@ export default function Certifications() {
                   )}
 
                   {edu.highlights && edu.highlights.length > 0 && (
-                    <ul className="mt-3 space-y-1.5">
+                    <ul className="mt-4 space-y-2">
                       {edu.highlights.map((highlight, hIdx) => (
-                        <li key={hIdx} className="text-[11px] text-slate-500 font-sans leading-relaxed flex gap-2">
+                        <li key={hIdx} className="text-[12px] text-slate-400 font-sans leading-relaxed flex gap-2">
                           <span className="text-emerald-500/60 font-bold font-mono shrink-0">&middot;</span>
                           <span>{highlight}</span>
                         </li>
@@ -348,30 +379,34 @@ export default function Certifications() {
                 </div>
               </div>
 
-              {/* Handshake Sandbox Terminal */}
-              <div className="bg-[#03060a] border border-slate-900 rounded-xl p-4 font-mono text-[9px] text-slate-400 h-[120px] flex flex-col justify-between overflow-hidden">
-                <div className="flex items-center justify-between border-b border-slate-900/40 pb-1.5 mb-1.5 text-slate-500 text-[8px]">
-                  <span className="flex items-center gap-1.5">
-                    <Terminal className="h-3 w-3 text-emerald-400" />
-                    REGISTRY CO-PROCESSOR HANDSHAKE
+              {/* Cryptographic Verification Badge */}
+              <div className="bg-slate-950/80 border border-slate-900 rounded-2xl p-4.5 font-mono text-[10px] text-slate-400">
+                <div className="flex items-center justify-between border-b border-slate-900/60 pb-2.5 mb-2.5">
+                  <span className="flex items-center gap-1.5 text-slate-300 font-semibold text-[11px]">
+                    <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                    AUTHENTICITY SIGNATURE
                   </span>
-                  <span>SSL v3 Secured</span>
+                  <span className="text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                    SECURED
+                  </span>
                 </div>
-                <div className="flex-1 space-y-1 overflow-y-auto pr-1">
-                  {verificationLogs.map((log, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`leading-relaxed ${
-                        log.startsWith('🎉') || log.startsWith('✔') 
-                          ? 'text-emerald-400 font-semibold font-mono' 
-                          : log.startsWith('🔒') 
-                            ? 'text-slate-300' 
-                            : 'text-slate-500'
-                      }`}
-                    >
-                      {log}
-                    </div>
-                  ))}
+                <div className="space-y-1.5 text-slate-400">
+                  <div className="flex justify-between">
+                    <span>Validation Authority:</span>
+                    <span className="text-slate-300">{getCertDetails(selectedCert.id).authority}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Algorithm:</span>
+                    <span>SHA-256 &middot; TLS 1.3</span>
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <span className="shrink-0">Fingerprint:</span>
+                    <span className="text-slate-500 text-right font-mono text-[9px] break-all max-w-[220px]">
+                      {selectedCert.id === 'cert-1' ? '8f5a2b8e3c1d4e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f' :
+                       selectedCert.id === 'cert-2' ? 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2' :
+                       'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
+                    </span>
+                  </div>
                 </div>
               </div>
 

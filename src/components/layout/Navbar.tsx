@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, ArrowLeft, Linkedin, Github, Mail } from 'lucide-react';
+import { Menu, X, ArrowLeft, Linkedin, Github, Mail, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
+import { useActiveSection } from '../../hooks/useActiveSection';
 
 interface NavbarProps {
   activeCaseStudyId: string | null;
@@ -9,10 +10,35 @@ interface NavbarProps {
   onOpenResume?: () => void;
 }
 
+const SECTIONS = ['hero', 'projects', 'skills', 'experience', 'credentials', 'contact'];
+
 export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: NavbarProps) {
-  const [activeSection, setActiveSection] = useState('hero');
+  const activeSection = useActiveSection(SECTIONS);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light') return 'light';
+      return 'dark';
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'light') {
+      root.classList.add('light');
+      localStorage.setItem('theme', 'light');
+    } else {
+      root.classList.remove('light');
+      localStorage.setItem('theme', 'dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,22 +46,6 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
-      }
-
-      // Track active section
-      const sections = ['hero', 'impact', 'projects', 'experience', 'skills', 'credentials', 'contact'];
-      const scrollPosition = window.scrollY + 120;
-
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const top = element.offsetTop;
-          const height = element.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(sectionId);
-            break;
-          }
-        }
       }
     };
 
@@ -86,7 +96,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
       id="site-header"
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#080B11]/90 backdrop-blur-md border-b border-slate-900/80 py-3.5 shadow-lg shadow-black/15'
+          ? 'bg-[#080B11]/80 backdrop-blur-xl border-b border-slate-900/40 py-3.5 shadow-lg shadow-black/40'
           : 'bg-transparent py-5'
       }`}
     >
@@ -133,35 +143,43 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
               <nav className="flex items-center gap-4 bg-slate-950/40 p-1 rounded-full border border-slate-900/40">
                 <button
                   onClick={() => scrollToSection('hero')}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-mono transition-all ${
+                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
                     activeSection === 'hero' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  About
+                  ABOUT
                 </button>
                 <button
                   onClick={() => scrollToSection('projects')}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-mono transition-all ${
+                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
                     activeSection === 'projects' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  Projects
+                  PROJECTS
+                </button>
+                <button
+                  onClick={() => scrollToSection('skills')}
+                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
+                    activeSection === 'skills' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  SKILLS
                 </button>
                 <button
                   onClick={() => scrollToSection('experience')}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-mono transition-all ${
+                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
                     activeSection === 'experience' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  Experience
+                  EXPERIENCE
                 </button>
                 <button
                   onClick={() => scrollToSection('credentials')}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-mono transition-all ${
+                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
                     activeSection === 'credentials' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  Articles
+                  CREDENTIALS
                 </button>
               </nav>
 
@@ -200,6 +218,24 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
               {/* Separator */}
               <span className="text-slate-800 text-sm font-light select-none">│</span>
 
+              {/* Theme Toggle Button */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-slate-900/40 rounded-xl transition-all duration-300 cursor-pointer flex items-center justify-center"
+                aria-label="Toggle theme accessibility option"
+                title="Toggle High Contrast Light Theme"
+                id="desktop-theme-toggle"
+              >
+                {theme === 'light' ? (
+                  <Moon className="h-4 w-4 text-emerald-400" />
+                ) : (
+                  <Sun className="h-4 w-4 text-amber-400" />
+                )}
+              </button>
+
+              {/* Separator */}
+              <span className="text-slate-800 text-sm font-light select-none">│</span>
+
               {/* Download Resume Action */}
               <button
                 onClick={onOpenResume}
@@ -209,15 +245,31 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
               </button>
             </div>
 
-            {/* Mobile / Mid-size hamburger menu button */}
-            <button
-              className="lg:hidden text-slate-400 hover:text-white p-1"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-              id="mobile-menu-toggle"
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            {/* Mobile Actions with Theme Toggle */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-slate-900/40 rounded-xl transition-all duration-300 cursor-pointer flex items-center justify-center"
+                aria-label="Toggle theme accessibility option"
+                title="Toggle High Contrast Light Theme"
+                id="mobile-theme-toggle"
+              >
+                {theme === 'light' ? (
+                  <Moon className="h-5 w-5 text-emerald-400" />
+                ) : (
+                  <Sun className="h-5 w-5 text-amber-400" />
+                )}
+              </button>
+
+              <button
+                className="text-slate-400 hover:text-white p-1"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle menu"
+                id="mobile-menu-toggle"
+              >
+                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </>
         )}
       </div>
@@ -236,35 +288,43 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
             <div className="flex flex-col gap-4">
               <button
                 onClick={() => scrollToSection('hero')}
-                className={`text-left py-2 text-sm font-mono tracking-wide cursor-pointer hover:text-white transition-colors ${
+                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
                   activeSection === 'hero' ? 'text-emerald-400 font-medium' : 'text-slate-400'
                 }`}
               >
-                About
+                ABOUT
               </button>
               <button
                 onClick={() => scrollToSection('projects')}
-                className={`text-left py-2 text-sm font-mono tracking-wide cursor-pointer hover:text-white transition-colors ${
+                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
                   activeSection === 'projects' ? 'text-emerald-400 font-medium' : 'text-slate-400'
                 }`}
               >
-                Projects
+                PROJECTS
+              </button>
+              <button
+                onClick={() => scrollToSection('skills')}
+                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
+                  activeSection === 'skills' ? 'text-emerald-400 font-medium' : 'text-slate-400'
+                }`}
+              >
+                SKILLS
               </button>
               <button
                 onClick={() => scrollToSection('experience')}
-                className={`text-left py-2 text-sm font-mono tracking-wide cursor-pointer hover:text-white transition-colors ${
+                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
                   activeSection === 'experience' ? 'text-emerald-400 font-medium' : 'text-slate-400'
                 }`}
               >
-                Experience
+                EXPERIENCE
               </button>
               <button
                 onClick={() => scrollToSection('credentials')}
-                className={`text-left py-2 text-sm font-mono tracking-wide cursor-pointer hover:text-white transition-colors ${
+                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
                   activeSection === 'credentials' ? 'text-emerald-400 font-medium' : 'text-slate-400'
                 }`}
               >
-                Articles
+                CREDENTIALS
               </button>
               
               <div className="h-px bg-slate-900 my-2" />

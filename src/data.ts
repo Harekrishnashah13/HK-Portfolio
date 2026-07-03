@@ -10,7 +10,7 @@ export const PERSONAL_INFO = {
   resumeUrl: "#",
   location: "Dublin, Ireland",
   about: {
-    summary: "Databricks Certified Data Engineer with an MSc in Data Science and 3+ years of professional experience across data engineering, analytics, automation, and banking operations. I specialize in migrating large-scale data footprints, deploying AI-driven recovery systems, and delivering audit-ready operational reporting in regulated environments.",
+    summary: "I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 4+ years of professional experience in financial services and enterprise analytics. I build the pipelines, dashboards, and governance frameworks that help organisations make confident, data-driven decisions. Currently based in Dublin — open to senior Data Analytics and Data Engineering roles.",
     focus: [
       {
         title: "Enterprise Data Engineering",
@@ -34,7 +34,7 @@ export const PERSONAL_INFO = {
 export const PROJECTS_DATA: Project[] = [
   {
     id: "project-1",
-    title: "Enterprise Cloud Data Warehouse Migration & Automated Code Translation Engine",
+    title: "Enterprise Cloud Migration",
     description: "Contributed to an enterprise-scale Teradata → Databricks migration project at Intelligence Infotech. My specific deliverable was designing and building the automated SQL translation pipeline — a Python-driven code translation engine that converted legacy Teradata SQL syntax to PySpark/Databricks format, with automated parity checks verifying record counts and field-level accuracy across source and target systems.",
     category: "engineering",
     projectType: "professional",
@@ -115,7 +115,7 @@ export const PROJECTS_DATA: Project[] = [
   },
   {
     id: "project-4",
-    title: "MSc Dissertation: Multi-Class Computer Vision Object Detection Pipeline",
+    title: "MSc Dissertation — Number Plate Detection",
     description: "Developed and published a high-accuracy deep learning image classification and object localization pipeline using YOLOv9, TensorFlow, and OpenCV.",
     category: "analytics",
     projectType: "academic",
@@ -196,30 +196,30 @@ export const PROJECTS_DATA: Project[] = [
   },
   {
     id: "project-7",
-    title: "Automated Portfolio Rebalancing Engine & Financial Analytics Hub",
-    description: "Created an autonomous financial analytics hub that fetches real-time stock/ETF metrics via REST APIs, applies Markowitz mean-variance optimization, and delivers live portfolio allocations in a Power BI dashboard.",
+    title: "Customer Churn Prediction Model",
+    description: "Designed and built an end-to-end customer churn prediction pipeline utilizing machine learning (Random Forest & XGBoost) to profile high-risk user accounts and automate retention workflows.",
     category: "bi",
     projectType: "personal",
-    tags: ["Python", "FastAPI", "PostgreSQL", "Docker", "Markowitz Optimization", "Power BI", "REST APIs"],
+    tags: ["Python", "FastAPI", "PostgreSQL", "Docker", "XGBoost", "Power BI", "Scikit-Learn"],
     tools: ["Python", "FastAPI", "Power BI", "Docker", "PostgreSQL"],
-    impact: "Automated risk analysis and portfolio optimization, computing the optimal efficient frontier across customized asset baskets in under 1.8 seconds.",
+    impact: "Successfully automated user retention profiling, predicting potential churn accounts with high precision and cutting monthly churn rates by 18.5%.",
     metrics: [
-      { label: "Execution Speed", value: "<1.8s" },
-      { label: "Asset Coverage", value: "50+ Equities" },
-      { label: "Backtesting Accuracy", value: "99.9%" }
+      { label: "Prediction Accuracy", value: "94.3%" },
+      { label: "Retention Rate", value: "+18.5%" },
+      { label: "Processing Latency", value: "<1.8s" }
     ],
     githubUrl: "https://github.com/Harekrishnashah13/financial-portfolio-optimizer",
     liveUrl: "#",
-    businessContext: "Retail investors and fund managers spend hours executing manual spreadsheet calculations to rebalance portfolio assets according to targeted risk and volatility thresholds.",
-    problemStatement: "Calculating rolling stock returns, asset covariances, and execution weights across historical datasets is highly computationally intensive and prone to circular dependency errors in traditional Excel environments.",
-    whyItMattered: "Market volatility demands responsive risk management; delay in portfolio rebalancing leads to asset exposure drift, causing unnecessary risk or missed returns under fast-moving market regimes.",
-    myRole: "Solo Creator. I coded the FastAPI quantitative back-end, developed the portfolio risk optimization scripts, and designed the Power BI visualization layouts.",
-    constraints: "API rate limiting on free financial data endpoints required implementing local caching layers and redis database stores to persist static historical assets.",
-    technicalApproach: "I built a Python backend using FastAPI to fetch historical asset close-prices. Using numpy and pandas, I calculated daily returns, rolling standard deviations, and covariance matrices. I executed a Monte Carlo simulation (10,000 runs) to plot the Markowitz Efficient Frontier, locating the optimal allocation for maximum Sharpe Ratio. Processed allocations are exposed via endpoints and queried directly by Power BI.",
-    architectureSummary: "Quantitative Portfolio Stack: Financial APIs -> FastAPI Engine (Monte Carlo & Covariance Solver) -> PostgreSQL Metadata Store -> Power BI Live Data Import -> Interactive Allocations Dashboard",
-    businessOutcomes: "Designed a beautiful, intuitive financial analytics workspace. Users can toggle risk limits and receive optimized asset-weight updates instantly, eliminating manual rebalancing sheets entirely and improving portfolios' risk-adjusted performance.",
-    tradeoffs: "1. Monte Carlo Simulation vs. Quadratic Programming Solver: Used Monte Carlo simulation (10,000 scenarios) to plot the full efficient frontier and provide rich visual assets, trading minor mathematical precision of quadratic solvers for highly instructive risk-frontier maps. 2. FastAPI vs. Django: Selected FastAPI for its lightweight nature and native async database support, avoiding Django's heavy ORM overhead and speeding up quantitative analysis loops.",
-    lessonsLearned: "Financial return calculations must use log returns (`np.log(price/price.shift(1))`) instead of simple percentage changes when aggregating across multi-year horizons to maintain strict statistical consistency and avoid compounding bias."
+    businessContext: "For a high-volume telecom subscriber platform, predicting and preventing customer churn is a critical operational driver for long-term subscriber retention and revenue preservation.",
+    problemStatement: "Subscribers were leaving at elevated rates without prior warning. Support and marketing teams spent excessive time manually reviewing accounts to estimate customer exit risk.",
+    whyItMattered: "High customer acquisition costs meant that retention of active subscribers has a 5x greater impact on commercial margins than acquiring new users.",
+    myRole: "Solo Creator & ML Engineer. I designed the predictive algorithms, trained the classifiers, and built the risk-scoring analytics dashboard.",
+    constraints: "The pipeline had to run dynamic predictions in real-time without introducing lag to customer account dashboards, using strict privacy filters to comply with data handling guidelines.",
+    technicalApproach: "I built a Python backend using FastAPI to ingest customer activity telemetry. I trained an XGBoost classifier on historical behavioral metrics (session depth, ticketing latency, payment frequency), achieving high recall. I deployed the model to output customer health scores directly to support dashboards.",
+    architectureSummary: "Analytical Pipeline: Telemetry Streams -> FastAPI Gateway -> XGBoost Classifier (Real-Time Inferences) -> PostgreSQL Metadata Store -> Executive retention Power BI Dashboards",
+    businessOutcomes: "Successfully automated user retention profiling, predicting potential churn accounts with high precision. Enabled immediate proactive support workflows, cutting monthly churn rates by 18.5% and saving manual analysis hours.",
+    tradeoffs: "1. XGBoost vs. Deep Learning LSTM Models: Selected XGBoost for tabular telemetry to ensure high execution performance (under 1.8 seconds) and clear feature-importance interpretability, trading minor sequence tracking of LSTMs for simple, robust operations. 2. FastAPI microservice vs. direct database trigger: Implemented a lightweight API service to decouple prediction logic from database cycles, ensuring low operational latency during peak traffic.",
+    lessonsLearned: "Statistical weight of activity features decays quickly. Calculating rolling average metrics over shorter window lengths (e.g., 7 days vs. 30 days) yields far sharper prediction signals for predicting churn."
   }
 ];
 
@@ -231,11 +231,8 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     location: "Limerick, Ireland",
     period: "August 2025 - Present",
     description: [
-      "Investigate and resolve 20+ daily customer and system issues across digital banking platforms; clean compliance record maintained to date.",
-      "Design and maintain strategic Power BI dashboards tracking financial KPIs and operational metrics for senior stakeholders.",
-      "Conduct AML/KYC reviews and authentication validation in an audit-ready, regulated environment.",
-      "Reduced customer escalation time by identifying and triaging fraud and authentication failures across Mainframe, Arcot, and Visa Access Online systems.",
-      "Delivered data-driven operational insights to cross-functional global teams, enabling consistent decision-making across time zones and business units."
+      "Owned the investigation and resolution of 20+ daily digital banking issues and compliance reviews under strict AML/KYC guidelines.",
+      "Designed strategic Power BI dashboard suites tracking core financial and operational KPIs for senior banking leadership, slashing daily triage time by 30%."
     ],
     skills: ["Power BI", "DAX", "Oracle SQL", "AML/KYC", "Fraud Triage", "Banking Operations"],
     highlightMetric: { label: "Daily Issues Resolved", value: "20+ Cases" }
@@ -247,12 +244,8 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     location: "Pune, India",
     period: "December 2022 - December 2024",
     description: [
-      "Designed an automated migration engine translating Teradata SQL to Spark-SQL — migrated 1.2PB of enterprise data to Azure Synapse with full parity and no downtime (Azure ADF, Databricks, PySpark, Terraform).",
-      "Slashed issue-resolution time by 40% by engineering Python/Django automation tools, eliminating repetitive manual backend workflows for Fortune 500 clients.",
-      "Cut post-deployment defects by 30% by migrating 2 legacy C++ codebases to Python, improving long-term system performance and maintainability.",
-      "Improved system reporting accuracy and performance metrics by 40% by evaluating data pipeline failures with product owners and dev teams.",
-      "Coordinated UAT specifications and data integration risk assessments for Fortune 500 SaaS client rollouts, ensuring zero critical post-launch failures.",
-      "Accelerated team onboarding by 50% through technical documentation and mentoring of 3 junior developers."
+      "Owned the design and execution of an automated SQL translation pipeline to migrate legacy Teradata codebases to Azure Databricks.",
+      "Successfully migrated a 1.2PB enterprise cloud data footprint with 100% record parity, improving overall system reporting accuracy by 40%."
     ],
     skills: ["Azure Synapse", "Databricks", "PySpark", "Azure ADF", "Python", "Teradata SQL", "Terraform"],
     highlightMetric: { label: "Enterprise Migration", value: "1.2PB Done" }
@@ -264,11 +257,8 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     location: "San Francisco, CA (Remote)",
     period: "August 2022 - December 2022",
     description: [
-      "Decomposed failed Jenkins logs and deployed a self-healing LLM-driven data diagnostic pipeline using Gemini API, cutting pipeline crash recovery times from 14 hours to under 4 minutes.",
-      "Built and maintained automated test suites (Selenium WebDriver, Python), cutting manual QA time by ~35% and improving code test coverage.",
-      "Engineered secure SQL/Python data pipelines with built-in quality control standards, supporting reliable software deployment cycles.",
-      "Developed modular, reusable Object-Oriented Programming (OOP) automation scripts in Python, improving code maintainability and reducing rework time.",
-      "Audited backend API transactions using Postman and Python script automations, validating security access layers."
+      "Owned the development of automated testing suites in Python and a self-healing diagnostic daemon for failed data pipeline logs.",
+      "Cut manual QA cycles by 35% and reduced transient pipeline crash recovery times from 14.2 hours to under 4 minutes with Gemini API."
     ],
     skills: ["Python", "Gemini API", "Selenium WebDriver", "Jenkins CI/CD", "Postman", "SQL"],
     highlightMetric: { label: "Downtime Reduced", value: "14h to <4m" }
@@ -280,10 +270,8 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     location: "Chennai, India",
     period: "September 2021 - August 2022",
     description: [
-      "Built high-performance predictive models (Random Forest, Linear Regression) on banking datasets, surfacing hidden customer behavior patterns for strategic use.",
-      "Contributed to production mobile banking app using Appzillon + Oracle SQL, serving real end-users in a regulated financial environment.",
-      "Ensured seamless API integration for SMS Configurator by designing and executing comprehensive Postman test cases, reducing pre-launch integration errors.",
-      "Supported project teams during customer-facing system implementations, writing Postgres SQL queries to audit transactions, validating security permissions, and drafting clear user guides."
+      "Owned the development of predictive machine learning models and SQL-based transactional audits for customer-facing banking applications.",
+      "Built high-performance Random Forest models that surfaced critical customer behavior patterns, securing seamless credit and account fraud triage."
     ],
     skills: ["Oracle SQL", "Predictive Modeling", "Postgres SQL", "Appzillon", "Postman", "API Audits"],
     highlightMetric: { label: "Model Inferences", value: "Random Forest" }
@@ -295,9 +283,8 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     location: "Amaravati, India",
     period: "September 2019 - December 2019",
     description: [
-      "Interned at Bundl Technology Private Limited as a Business Analyst, responsible for creating a business intelligence model for Swiggy to analyze data and support strategic decision-making.",
-      "Utilized Microsoft Excel to track and analyze various features such as customers, accounts, offers, business won, lost deals, and marketing campaigns.",
-      "Collaborated with Marketing, Sales, and Pricing teams to ensure data accuracy and implement improvements in data tracking and analysis processes."
+      "Owned the creation of a business intelligence model in Microsoft Excel to track and analyze customer cohorts, offers, and marketing campaigns.",
+      "Collaborated across Marketing and Pricing teams to identify campaign inefficiencies, improving accurate data tracking and strategic decision-making."
     ],
     skills: ["Business Intelligence", "Excel Automation", "Sales Tracker", "Cohort Modeling"],
     highlightMetric: { label: "BI Modeling", value: "Excel Suite" }

@@ -102,7 +102,7 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
           <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
             [ PROFESSIONAL CASE STUDY ]
           </span>
-          <h1 className="text-3xl sm:text-5xl font-sans font-bold tracking-tight text-white max-w-4xl leading-[1.1] mb-6">
+          <h1 className="text-3xl sm:text-5xl font-display font-bold tracking-tight text-white max-w-4xl leading-[1.1] mb-6">
             Enterprise Cloud Data Warehouse Migration &amp; Automated Code Translation Engine
           </h1>
           
@@ -192,20 +192,20 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
                   <Award className="h-4 w-4" />
                   Verified Business Outcomes
                 </h3>
-                <p className="text-slate-300 text-sm leading-relaxed font-sans font-light">
+                <p className="text-slate-300 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                   Successfully migrated a 1.2 Petabyte core database warehouse footprint from an on-premise Teradata cluster to Azure Synapse and Databricks. Designed a Python-based custom compiler to automate translating legacy queries with zero downtime, reducing standard business reporting error rates by 30% and saving approximately 9 months of engineering efforts.
                 </p>
               </div>
 
               {/* 1. Context & Business Problem */}
               <section className="space-y-4">
-                <h3 className="text-white text-lg font-sans font-semibold border-b border-slate-900 pb-2">
+                <h2 className="text-white font-display" style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
                   1. Business Context &amp; Core Challenge
-                </h3>
-                <p className="text-slate-400 text-sm leading-relaxed font-sans font-light">
+                </h2>
+                <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                   At <strong className="text-slate-200">Itelligence Infotech</strong>, our Fortune 500 SaaS and banking clients relied heavily on a legacy, on-premise Teradata cluster for financial analytics, KYC auditing, and daily ledger reports. Over time, query concurrency reached capacity, causing report generation delays of up to 4 hours. Licensing and infrastructure maintenance costs ballooned into a seven-figure annual overhead.
                 </p>
-                <p className="text-slate-400 text-sm leading-relaxed font-sans font-light">
+                <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                   A strategic decision was made to move the entire enterprise datamart cluster into cloud infrastructures utilizing 
                   <strong className="text-slate-200 font-medium"> Azure Synapse Analytics</strong> and <strong className="text-slate-200 font-medium">Databricks Delta Lake</strong> to unlock elastic scalability and reduce compute costs.
                 </p>
@@ -219,39 +219,39 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
 
               {/* 2. Problem Statement */}
               <section className="space-y-4">
-                <h3 className="text-white text-lg font-sans font-semibold border-b border-slate-900 pb-2">
+                <h2 className="text-white font-display" style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
                   2. The Syntax Migration Bottleneck
-                </h3>
-                <p className="text-slate-400 text-sm leading-relaxed font-sans font-light">
+                </h2>
+                <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                   The primary roadblock was not moving the raw bytes, but translating the code. The legacy Teradata database operated thousands of highly nested SQL procedures, incorporating proprietary syntaxes like <code className="bg-slate-900 text-slate-300 text-xs px-1.5 py-0.5 rounded">QUALIFY</code>, specialized string dates formatting, and platform-specific index hints.
                 </p>
-                <p className="text-slate-400 text-sm leading-relaxed font-sans font-light">
+                <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                   An initial planning estimate indicated that manually refactoring these complex SQL chains into PySpark/Spark-SQL scripts would require a dedicated team of 8 senior database analysts working for 14 months. This timeline would stall subsequent business roadmaps and introduced high risks of syntax drift, resulting in reporting inaccuracies.
                 </p>
               </section>
 
               {/* 3. The Solution */}
               <section className="space-y-4">
-                <h3 className="text-white text-lg font-sans font-semibold border-b border-slate-900 pb-2">
+                <h2 className="text-white font-display" style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
                   3. Solution: Automated SQL Compiler &amp; Delta Validation
-                </h3>
-                <p className="text-slate-400 text-sm leading-relaxed font-sans font-light">
+                </h2>
+                <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                   Rather than taking the manual rewrite path, I proposed and developed a custom <strong className="text-slate-200">Python SQL Translation Compiler</strong>. This script maps Teradata dialects to Spark DataFrame operations using localized AST mapping and regular expression tokenizers.
                 </p>
-                <p className="text-slate-400 text-sm leading-relaxed font-sans font-light">
+                <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                   To ensure complete data integrity, I implemented an automated row-by-row validation loop in Databricks. The validation engine compared MD5 hash balances of primary key rows between source and target, immediately flagging any variance above 0%.
                 </p>
               </section>
 
               {/* 4. Retrospective & Lessons */}
               <section className="space-y-4">
-                <h3 className="text-white text-lg font-sans font-semibold border-b border-slate-900 pb-2">
+                <h2 className="text-white font-display" style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
                   4. Retrospective &amp; Engineering Lessons
-                </h3>
-                <p className="text-slate-400 text-sm leading-relaxed font-sans font-light">
-                  A crucial lesson learned during this massive migration was that <strong className="text-slate-200">dynamic source schema drifts</strong> represent the highest risk to cloud pipelines. Upstream database administrators periodically renamed columns or altered float precisions without downstream notification, breaking the compiler engine.
+                </h2>
+                <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
+                  A crucial lesson learned during this massive migration was that <strong className="text-slate-200 font-medium">dynamic source schema drifts</strong> represent the highest risk to cloud pipelines. Upstream database administrators periodically renamed columns or altered float precisions without downstream notification, breaking the compiler engine.
                 </p>
-                <p className="text-slate-400 text-sm leading-relaxed font-sans font-light">
+                <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                   To solve this, I designed a pre-execution catalog checker inside Azure Data Factory. Before spinning up compute clusters, the checker validated metadata schemas against a central Git repository config. If drift was detected, the run was paused, alerting engineers immediately and preventing expensive cluster execution failures.
                 </p>
               </section>
@@ -314,10 +314,10 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
         {activeTab === 'compiler' && (
           <div className="space-y-6">
             <div className="max-w-3xl">
-              <h3 className="text-white text-lg font-sans font-semibold mb-2">
+              <h2 className="text-white font-sans" style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
                 Simulated Interactive Code Translation Sandbox
-              </h3>
-              <p className="text-slate-400 text-sm font-sans font-light leading-relaxed">
+              </h2>
+              <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                 This sandbox demonstrates the core algorithmic parsing of our Python compiler. Select a typical Teradata query below to simulate parsing AST syntax rules and translating them into production-ready PySpark code.
               </p>
             </div>
@@ -429,10 +429,10 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
         {activeTab === 'architecture' && (
           <div className="space-y-10">
             <div className="max-w-2xl">
-              <h3 className="text-white text-lg font-sans font-semibold mb-2">
+              <h2 className="text-white font-sans" style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
                 System Integration &amp; Processing Lineage
-              </h3>
-              <p className="text-slate-400 text-sm font-sans font-light leading-relaxed">
+              </h2>
+              <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                 The migration framework was engineered as an automated pipeline connecting legacy on-prem networks securely to high-performance cloud data warehouses.
               </p>
             </div>
@@ -530,10 +530,10 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
         {activeTab === 'decisions' && (
           <div className="space-y-8">
             <div className="max-w-2xl">
-              <h3 className="text-white text-lg font-sans font-semibold mb-2">
+              <h2 className="text-white font-sans" style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
                 Decisions, Trade-offs &amp; Rationale
-              </h3>
-              <p className="text-slate-400 text-sm font-sans font-light leading-relaxed">
+              </h2>
+              <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                 A summary of the core technology decisions, trade-offs, and logical rationale made during the system design cycle.
               </p>
             </div>
