@@ -19,3 +19,11 @@ export const messages = pgTable('messages', {
   status: text('status').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
+
+export const analyticsEvents = pgTable('analytics_events', {
+  id: serial('id').primaryKey(),
+  eventType: text('event_type').notNull(),
+  metadata: text('metadata').default(''),
+  timestamp: timestamp('timestamp').defaultNow(),
+});
+

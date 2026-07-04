@@ -3,6 +3,7 @@ import { Mail, Linkedin, Github, MapPin, Send, CheckCircle, RefreshCw, Clock, Te
 import { AnimatePresence, motion } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
 import { auth, googleAuthProvider } from '../../lib/firebase';
+import { trackEvent } from '../../lib/analytics';
 import { signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
 
 interface Message {
@@ -35,6 +36,27 @@ export default function Contact() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showNotification, setShowNotification] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+
+  const [activeTab, setActiveTab] = useState<'messages' | 'analytics'>('messages');
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
+
+  const fetchAnalytics = async () => {
+    try {
+      const response = await fetch('/api/analytics');
+      if (response.ok) {
+        const data = await response.json();
+        setAnalyticsData(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch analytics:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (isInboxOpen) {
+      fetchAnalytics();
+    }
+  }, [isInboxOpen, activeTab]);
 
   // Track Auth state
   useEffect(() => {
@@ -191,6 +213,7 @@ export default function Contact() {
       });
 
       if (response.ok) {
+        trackEvent('contact_form_submit', `Name: ${formData.name}, Topic: ${topicLabel}, Company: ${formData.company || 'N/A'}`);
         fetchMessages();
       } else {
         throw new Error("HTTP error " + response.status);
@@ -286,32 +309,53 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="bg-[#05080c] py-24 md:py-32 relative overflow-hidden border-t border-slate-900/40"
+      className="bg-[#05080c] py-[48px] px-5 md:py-[80px] md:px-12 relative overflow-hidden border-t border-slate-900/40"
     >
       {/* Background soft glowing accent */}
       <div className="absolute bottom-1/4 left-1/3 -translate-x-1/2 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <div className="max-w-3xl mb-8">
           <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
             [07] Contact
           </span>
-          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-white mb-4 flex items-center gap-3.5">
-            <Mail className="h-7 w-7 text-emerald-400/70 shrink-0" />
-            <span>Get in Touch</span>
+          <h2 className="text-white font-display" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Get in Touch
           </h2>
-          <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-light">
-            I'm open to Data Analytics and Engineering roles in Dublin — reach out via LinkedIn or email and I'll reply within 2 hours.
+          <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-normal max-w-2xl">
+            I'm open to Data Analytics and Engineering roles in Dublin — reach out and I'll reply within 4 hours.
           </p>
         </div>
 
         {/* Quick-Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-16 max-w-xl">
+        <div 
+          className="flex flex-col md:flex-row gap-[10px] md:gap-[12px]" 
+          style={{ marginBottom: '36px' }}
+        >
           <a
             href={`mailto:${PERSONAL_INFO.email}`}
-            className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold font-sans rounded-xl shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/20 active:scale-95 transition-all duration-200 hover:-translate-y-0.5"
+            onClick={() => trackEvent('email_click')}
+            style={{
+              height: '52px',
+              padding: '0 28px',
+              borderRadius: '10px',
+              fontSize: '15px',
+              fontWeight: 600,
+              fontFamily: 'Inter, sans-serif',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              minWidth: '200px',
+              background: '#00CC88',
+              color: '#050E09',
+              border: 'none',
+            }}
+            className="w-full md:w-auto hover:bg-[#00E699] hover:-translate-y-[1px]"
           >
             <Mail className="h-5 w-5" />
             <span>Email Direct</span>
@@ -320,43 +364,85 @@ export default function Contact() {
             href={PERSONAL_INFO.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-4 bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-white font-semibold font-sans rounded-xl shadow-lg shadow-black/20 active:scale-95 transition-all duration-200 hover:-translate-y-0.5"
+            onClick={() => trackEvent('linkedin_click')}
+            style={{
+              height: '52px',
+              padding: '0 28px',
+              borderRadius: '10px',
+              fontSize: '15px',
+              fontWeight: 600,
+              fontFamily: 'Inter, sans-serif',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              minWidth: '200px',
+              background: 'transparent',
+              color: '#FFFFFF',
+              border: '0.5px solid rgba(255,255,255,0.2)',
+            }}
+            className="w-full md:w-auto hover:border-white/50 hover:bg-white/[0.05] hover:-translate-y-[1px]"
           >
-            <Linkedin className="h-5 w-5 text-[#0A66C2]" />
+            <Linkedin className="h-5 w-5" />
             <span>Connect on LinkedIn</span>
           </a>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-[340px_1fr] gap-[40px] items-start" id="contact-main-grid">
           
           {/* Quick Contact & Relocation details (Left) */}
-          <div className="lg:col-span-5 flex flex-col justify-between" id="contact-info">
-            <div className="space-y-8">
+          <div className="flex flex-col gap-6" id="contact-info">
+            <div className="space-y-6">
               
               {/* Core SLA Badge */}
-              <div className="p-5 bg-slate-950/60 rounded-2xl border border-slate-900 flex items-start gap-3.5">
-                <Clock className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+              <div 
+                style={{
+                  background: 'rgba(0,204,136,0.06)',
+                  border: '0.5px solid rgba(0,204,136,0.2)',
+                  borderRadius: '12px',
+                  padding: '16px 18px',
+                  marginBottom: '20px'
+                }}
+                className="flex items-start gap-3.5"
+              >
+                <Clock className="shrink-0 mt-0.5" style={{ color: '#00CC88', width: '18px', height: '18px' }} />
                 <div>
-                  <h4 className="text-white text-sm font-semibold font-sans">
+                  <h4 className="font-sans" style={{ fontSize: '14px', fontWeight: 600, color: '#FFFFFF', marginBottom: '4px' }}>
                     Recruiter Response SLA
                   </h4>
-                  <p className="text-slate-400 text-xs mt-1 leading-relaxed">
-                    I value your pipeline timeline. General inquiries and interview requests receive a response within <strong className="text-emerald-400">4 business hours</strong>.
+                  <p className="font-sans" style={{ fontSize: '14px', lineHeight: '1.6', color: 'rgba(255,255,255,0.65)' }}>
+                    General inquiries and interview requests receive a response within <strong style={{ color: '#00CC88', fontWeight: 600 }}>4 business hours</strong>.
                   </p>
                 </div>
               </div>
 
               {/* Specific Location Info */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 text-slate-400">
-                  <MapPin className="h-5 w-5 text-emerald-500/80" />
-                  <span className="text-sm font-sans">{PERSONAL_INFO.location}</span>
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                  <MapPin className="shrink-0" style={{ color: '#00CC88', width: '16px', height: '16px' }} />
+                  <span className="font-sans" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', fontWeight: 400 }}>
+                    {PERSONAL_INFO.location}
+                  </span>
                 </div>
-                <div className="flex items-center gap-3 text-slate-400">
-                  <Mail className="h-5 w-5 text-emerald-500/80" />
-                  <a href={`mailto:${PERSONAL_INFO.email}`} className="text-sm font-sans hover:text-emerald-400 transition-colors">
+                <div 
+                  className="group relative"
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px', cursor: 'pointer' }}
+                  onClick={() => copyToClipboard(PERSONAL_INFO.email, 'direct-email')}
+                >
+                  <Mail className="shrink-0" style={{ color: '#00CC88', width: '16px', height: '16px' }} />
+                  <span 
+                    className="font-sans transition-colors duration-200 group-hover:text-[#00CC88]"
+                    style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', fontWeight: 400 }}
+                  >
                     {PERSONAL_INFO.email}
-                  </a>
+                  </span>
+                  
+                  {/* Tooltip on hover */}
+                  <div className="absolute left-[24px] -top-8 px-2 py-1 bg-slate-950 text-white text-[11px] font-sans rounded border border-slate-800 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-md whitespace-nowrap z-20">
+                    {copiedId === 'direct-email' ? 'Copied!' : 'Click to copy'}
+                  </div>
                 </div>
               </div>
 
@@ -403,7 +489,7 @@ export default function Contact() {
             </div>
 
             {/* Resume Callout Link */}
-            <div className="mt-12 pt-6 border-t border-slate-900/60">
+            <div className="pt-6 border-t border-slate-900/60">
               <span className="text-slate-500 text-xs font-mono block mb-3">
                 Need a traditional document for ATS?
               </span>
@@ -417,116 +503,131 @@ export default function Contact() {
           </div>
 
           {/* Interactive Form Intake (Right) */}
-          <div className="lg:col-span-7">
+          <div>
             <div className="p-6 md:p-8 bg-slate-950/60 rounded-3xl border border-slate-900/80 backdrop-blur-md relative h-full">
               
               <AnimatePresence mode="wait">
                 {!isSuccess ? (
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-[14px]">
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Name input */}
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="form-name" className="text-xs font-mono text-slate-400 uppercase">
-                          Your Name *
-                        </label>
-                        <input
-                          type="text"
-                          id="form-name"
-                          required
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          placeholder="Jane Doe"
-                          className="w-full bg-slate-900/60 border border-slate-800 focus:border-emerald-500/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all"
-                        />
-                      </div>
-
-                      {/* Email input */}
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="form-email" className="text-xs font-mono text-slate-400 uppercase">
-                          Business Email *
-                        </label>
-                        <input
-                          type="type"
-                          id="form-email"
-                          required
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          placeholder="jane@company.com"
-                          className="w-full bg-slate-900/60 border border-slate-800 focus:border-emerald-500/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all"
-                        />
-                      </div>
+                    {/* Name input */}
+                    <div className="flex flex-col">
+                      <label htmlFor="form-name" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                        Your Name<span className="text-[#00CC88] ml-[2px]">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="form-name"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder="Jane Doe"
+                        className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[12px] text-[16px] font-sans text-white placeholder-white/[0.25] w-full transition-colors duration-200 focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none"
+                      />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Company input */}
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="form-company" className="text-xs font-mono text-slate-400 uppercase">
-                          Company / Organization
-                        </label>
-                        <input
-                          type="text"
-                          id="form-company"
-                          value={formData.company}
-                          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                          placeholder="SaaS Corp"
-                          className="w-full bg-slate-900/60 border border-slate-800 focus:border-emerald-500/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all"
-                        />
-                      </div>
+                    {/* Email input */}
+                    <div className="flex flex-col">
+                      <label htmlFor="form-email" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                        Business Email<span className="text-[#00CC88] ml-[2px]">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="form-email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="jane@company.com"
+                        className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[12px] text-[16px] font-sans text-white placeholder-white/[0.25] w-full transition-colors duration-200 focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none"
+                      />
+                    </div>
 
-                      {/* Topic dropdown */}
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="form-topic" className="text-xs font-mono text-slate-400 uppercase">
-                          Discussion Topic
-                        </label>
-                        <select
-                          id="form-topic"
-                          value={formData.topic}
-                          onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
-                          className="w-full bg-[#0a0f19] border border-slate-800 focus:border-emerald-500/50 rounded-xl px-4 py-3 text-sm text-white outline-none transition-all cursor-pointer"
-                        >
-                          <option value="permanent">Full-Time Hiring Pipeline</option>
-                          <option value="consulting">Analytics Consulting</option>
-                          <option value="technical">Pipeline &amp; ETL Auditing</option>
-                          <option value="general">General Professional Connect</option>
-                        </select>
-                      </div>
+                    {/* Company input */}
+                    <div className="flex flex-col">
+                      <label htmlFor="form-company" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                        Company / Organization
+                      </label>
+                      <input
+                        type="text"
+                        id="form-company"
+                        value={formData.company}
+                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        placeholder="SaaS Corp"
+                        className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[12px] text-[16px] font-sans text-white placeholder-white/[0.25] w-full transition-colors duration-200 focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Topic dropdown */}
+                    <div className="flex flex-col">
+                      <label htmlFor="form-topic" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                        Discussion Topic
+                      </label>
+                      <select
+                        id="form-topic"
+                        value={formData.topic}
+                        onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
+                        className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[12px] text-[16px] font-sans text-white w-full transition-colors duration-200 focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none cursor-pointer"
+                        style={{ colorScheme: 'dark' }}
+                      >
+                        <option value="permanent" className="bg-[#05080c]">Full-Time Hiring Pipeline</option>
+                        <option value="consulting" className="bg-[#05080c]">Analytics Consulting</option>
+                        <option value="technical" className="bg-[#05080c]">Pipeline &amp; ETL Auditing</option>
+                        <option value="general" className="bg-[#05080c]">General Professional Connect</option>
+                      </select>
                     </div>
 
                     {/* Message input */}
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="form-message" className="text-xs font-mono text-slate-400 uppercase">
-                        Your Message *
+                    <div className="col-span-1 md:col-span-2 flex flex-col">
+                      <label htmlFor="form-message" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                        Your Message<span className="text-[#00CC88] ml-[2px]">*</span>
                       </label>
                       <textarea
                         id="form-message"
                         required
-                        rows={5}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         placeholder="Hi Harekrishna, we're building a Snowflake analytics infrastructure and wanted to discuss your data warehousing experience..."
-                        className="w-full bg-slate-900/60 border border-slate-800 focus:border-emerald-500/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all resize-none"
+                        style={{ minHeight: '120px', resize: 'vertical' }}
+                        className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[12px] text-[16px] font-sans text-white placeholder-white/[0.25] w-full transition-colors duration-200 focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none"
                       />
                     </div>
 
                     {/* Submit Button */}
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full py-4 bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-800 text-slate-950 font-sans font-bold text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer active:scale-98 disabled:cursor-not-allowed"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <RefreshCw className="h-4 w-4 animate-spin" />
-                          Scheduling Ingestion...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="h-4 w-4" />
-                          Transmit Secure Message
-                        </>
-                      )}
-                    </button>
+                    <div className="col-span-1 md:col-span-2">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        style={{
+                          width: '100%',
+                          height: '52px',
+                          background: '#00CC88',
+                          color: '#050E09',
+                          fontSize: '15px',
+                          fontWeight: 700,
+                          border: 'none',
+                          borderRadius: '10px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
+                          marginTop: '4px',
+                          transition: 'all 0.2s',
+                        }}
+                        className="hover:bg-[#00E699] hover:-translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <RefreshCw className="h-4 w-4 animate-spin" />
+                            <span>Scheduling Ingestion...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Send Message →</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
 
                   </form>
                 ) : (
@@ -535,7 +636,7 @@ export default function Contact() {
                     <h3 className="text-white text-xl font-bold font-sans tracking-tight mb-2">
                       Message Ingested Successfully!
                     </h3>
-                    <p className="text-slate-400 text-sm max-w-sm mb-8 font-sans font-light leading-relaxed">
+                    <p className="text-slate-400 text-sm max-w-sm mb-8 font-sans font-normal leading-relaxed">
                       Thank you. Your message has been saved to the secure local message store (Option 2). You can view it immediately by opening the Secure Message Hub.
                     </p>
                     <div className="flex flex-wrap gap-4 justify-center">
@@ -579,7 +680,7 @@ export default function Contact() {
               className="w-full max-w-5xl h-[85vh] sm:h-[80vh] bg-[#070b12] rounded-3xl border border-slate-900 shadow-2xl overflow-hidden flex flex-col"
             >
               {/* Header */}
-              <div className="px-6 py-4 bg-slate-950 border-b border-slate-900/60 flex items-center justify-between">
+              <div className="px-6 py-4 bg-slate-950 border-b border-slate-900/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-emerald-500/15 rounded-lg border border-emerald-500/20">
                     <Terminal className="h-5 w-5 text-emerald-400 animate-pulse" />
@@ -596,10 +697,35 @@ export default function Contact() {
                     </p>
                   </div>
                 </div>
+
+                {/* Tab Toggle buttons */}
+                <div className="flex bg-slate-900 border border-slate-850 rounded-xl p-0.5 shrink-0">
+                  <button
+                    onClick={() => setActiveTab('messages')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer ${
+                      activeTab === 'messages'
+                        ? 'bg-emerald-500 text-slate-950 font-semibold shadow-md'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    Messages
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('analytics')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer ${
+                      activeTab === 'analytics'
+                        ? 'bg-emerald-500 text-slate-950 font-semibold shadow-md'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    Analytics
+                  </button>
+                </div>
+
                 <div className="flex items-center gap-2">
                   {user ? (
                     <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5">
-                      {user.photoURL && <img src={user.photoURL} alt="" className="h-4 w-4 rounded-full referrerpolicy=no-referrer" referrerPolicy="no-referrer" />}
+                      {user.photoURL && <img src={user.photoURL} alt="" loading="lazy" className="h-4 w-4 rounded-full referrerpolicy=no-referrer" referrerPolicy="no-referrer" />}
                       <span className="text-slate-300 text-xs font-mono truncate max-w-[120px]">{user.displayName || user.email}</span>
                       <button onClick={handleSignOut} className="text-red-400 hover:text-red-300 text-[10px] font-mono border-l border-slate-800 pl-2 ml-1 cursor-pointer">
                         Sign Out
@@ -617,15 +743,106 @@ export default function Contact() {
                     onClick={() => setIsInboxOpen(false)}
                     className="px-3 py-1.5 bg-slate-900 hover:bg-slate-850 text-slate-400 hover:text-white rounded-xl transition-all border border-slate-800 text-xs font-mono cursor-pointer"
                   >
-                    ESC / CLOSE
+                    Esc / Close
                   </button>
                 </div>
               </div>
 
               {/* Main Content Pane */}
               <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-                {/* Left Sidebar: Message List */}
-                <div className="w-full md:w-2/5 border-r border-slate-900/60 bg-[#080d16] overflow-y-auto flex flex-col">
+                {activeTab === 'analytics' ? (
+                  <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 bg-[#080d16]" id="analytics-view">
+                    {/* Title */}
+                    <div className="border-b border-slate-900/60 pb-5 flex items-center justify-between">
+                      <div>
+                        <h4 className="text-white text-lg font-bold font-sans">Visitor Engagement Intelligence</h4>
+                        <p className="text-slate-500 text-xs font-mono mt-1">Real-time telemetry of document accesses, social engagements, and contact submissions.</p>
+                      </div>
+                      <button onClick={fetchAnalytics} className="p-2 text-slate-400 hover:text-emerald-400 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono" title="Refresh analytics">
+                        <RefreshCw className="h-3.5 w-3.5" />
+                        Refresh
+                      </button>
+                    </div>
+
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div className="bg-[#0b1320] border border-slate-900/50 rounded-2xl p-4 flex flex-col justify-between">
+                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Total Telemetry Events</span>
+                        <div className="mt-4 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-white font-mono">{analyticsData?.totalEvents ?? 0}</span>
+                          <span className="text-xs text-emerald-400 font-mono">records</span>
+                        </div>
+                      </div>
+                      <div className="bg-[#0b1320] border border-slate-900/50 rounded-2xl p-4 flex flex-col justify-between">
+                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Resume Views (Modal)</span>
+                        <div className="mt-4 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-emerald-400 font-mono">{analyticsData?.resumeOpens ?? 0}</span>
+                          <span className="text-xs text-slate-500 font-mono">opens</span>
+                        </div>
+                      </div>
+                      <div className="bg-[#0b1320] border border-slate-900/50 rounded-2xl p-4 flex flex-col justify-between">
+                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Resume Downloads</span>
+                        <div className="mt-4 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-white font-mono">
+                            {(analyticsData?.resumeDownloads ?? 0) + (analyticsData?.resumeCopies ?? 0) + (analyticsData?.resumePrints ?? 0)}
+                          </span>
+                          <span className="text-xs text-slate-500 font-mono">actions</span>
+                        </div>
+                        <span className="text-[9px] text-slate-600 font-mono block mt-1">
+                          TXT: {analyticsData?.resumeDownloads ?? 0} &middot; Copy: {analyticsData?.resumeCopies ?? 0} &middot; Print: {analyticsData?.resumePrints ?? 0}
+                        </span>
+                      </div>
+                      <div className="bg-[#0b1320] border border-slate-900/50 rounded-2xl p-4 flex flex-col justify-between">
+                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Social &amp; Lead Clicks</span>
+                        <div className="mt-4 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-white font-mono">
+                            {(analyticsData?.linkedinClicks ?? 0) + (analyticsData?.emailClicks ?? 0) + (analyticsData?.contactSubmissions ?? 0)}
+                          </span>
+                          <span className="text-xs text-slate-500 font-mono">clicks</span>
+                        </div>
+                        <span className="text-[9px] text-slate-600 font-mono block mt-1">
+                          LinkedIn: {analyticsData?.linkedinClicks ?? 0} &middot; Email: {analyticsData?.emailClicks ?? 0} &middot; Submit: {analyticsData?.contactSubmissions ?? 0}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Table of events */}
+                    <div className="bg-[#0b1320] border border-slate-900 rounded-2xl overflow-hidden">
+                      <div className="px-4 py-3 bg-slate-950 border-b border-slate-900/60 flex items-center justify-between">
+                        <span className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">Recent Activity Logs</span>
+                      </div>
+                      <div className="overflow-x-auto max-h-[40vh] overflow-y-auto">
+                        <table className="w-full text-left text-xs text-slate-400">
+                          <thead className="bg-[#0c1626] text-slate-500 uppercase font-mono text-[9px] tracking-wider border-b border-slate-900/40 sticky top-0">
+                            <tr>
+                              <th className="px-4 py-2.5">Event Type</th>
+                              <th className="px-4 py-2.5">Metadata</th>
+                              <th className="px-4 py-2.5">Timestamp</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-900/40 font-mono text-[11px]">
+                            {!analyticsData?.recentEvents || analyticsData.recentEvents.length === 0 ? (
+                              <tr>
+                                <td colSpan={3} className="px-4 py-8 text-center text-slate-600">No telemetry events logged yet. Try clicking resume or social links, then refresh!</td>
+                              </tr>
+                            ) : (
+                              analyticsData.recentEvents.map((e: any) => (
+                                <tr key={e.id} className="hover:bg-slate-950/40">
+                                  <td className="px-4 py-2 text-emerald-400 font-semibold">{e.eventType}</td>
+                                  <td className="px-4 py-2 text-slate-300 max-w-xs truncate" title={e.metadata}>{e.metadata || 'N/A'}</td>
+                                  <td className="px-4 py-2 text-slate-500">{new Date(e.timestamp).toLocaleString()}</td>
+                                </tr>
+                              ))
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Left Sidebar: Message List */}
+                    <div className="w-full md:w-2/5 border-r border-slate-900/60 bg-[#080d16] overflow-y-auto flex flex-col">
                   <div className="p-4 border-b border-slate-900/40 bg-slate-950/40 flex items-center justify-between gap-2">
                     <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider">
                       Message Ingestion Feed
@@ -820,6 +1037,8 @@ export default function Contact() {
                     </div>
                   </div>
                 </div>
+                  </>
+                )}
               </div>
             </motion.div>
           </div>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Sparkles, CheckCircle2, FileText, Briefcase, Linkedin, Github, Mail, MapPin, Award, BarChart3, ShieldCheck } from 'lucide-react';
-import { motion } from 'motion/react';
+import { Linkedin, Github, Mail, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
+import WaveCanvas from '../layout/WaveCanvas';
 
 interface HeroProps {
   onOpenResume?: () => void;
@@ -9,421 +10,519 @@ interface HeroProps {
 
 export default function Hero({ onOpenResume }: HeroProps) {
   const [imageError, setImageError] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
-  const highlightBio = (text: string) => {
-    const keywords = [
-      "Databricks Certified Data Engineer & Analyst",
-      "MSc in Data Science",
-      "First Class Distinction",
-      "4+ years of professional experience",
-      "financial services and enterprise analytics",
-      "pipelines, dashboards, and governance frameworks",
-      "Dublin",
-      "senior Data Analytics and Data Engineering roles"
-    ];
-    
-    const parts: (string | React.ReactNode)[] = [];
-    let currentText = text;
-    const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
-    let indexKey = 0;
-
-    while (currentText.length > 0) {
-      let foundIndex = -1;
-      let matchedKeyword = "";
-      
-      for (const keyword of sortedKeywords) {
-        const index = currentText.indexOf(keyword);
-        if (index !== -1 && (foundIndex === -1 || index < foundIndex)) {
-          foundIndex = index;
-          matchedKeyword = keyword;
-        }
-      }
-      
-      if (foundIndex !== -1) {
-        if (foundIndex > 0) {
-          parts.push(currentText.substring(0, foundIndex));
-        }
-        parts.push(
-          <span key={`kw-${indexKey++}`} className="text-white font-medium border-b border-emerald-400/30 pb-[1px] hover:text-emerald-300 transition-colors">
-            {matchedKeyword}
-          </span>
-        );
-        currentText = currentText.substring(foundIndex + matchedKeyword.length);
-      } else {
-        parts.push(currentText);
-        break;
-      }
-    }
-    
-    return parts;
-  };
-
+  // Subtitle roles slide-up cycling list
   const roles = [
-    "Business Decisions.",
-    "Trusted Pipelines.",
-    "Analytics Intelligence.",
-    "Executive Insights."
+    'Databricks Certified Data Engineer & Analyst',
+    'MSc Data Science — First Class Distinction',
+    'Power BI · SQL · Python · AWS · Databricks',
+    'Building data systems organisations can trust'
   ];
-
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [displayText, setDisplayText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [currentRole, setCurrentRole] = useState(0);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    const currentFullText = roles[roleIndex];
-    
-    const handleTyping = () => {
-      if (!isDeleting) {
-        setDisplayText(currentFullText.substring(0, displayText.length + 1));
-        if (displayText === currentFullText) {
-          timer = setTimeout(() => setIsDeleting(true), 1800);
-          return;
-        }
-      } else {
-        setDisplayText(currentFullText.substring(0, displayText.length - 1));
-        if (displayText === "") {
-          setIsDeleting(false);
-          setRoleIndex((prev) => (prev + 1) % roles.length);
-          return;
-        }
-      }
-      
-      const speed = isDeleting ? 40 : 80;
-      timer = setTimeout(handleTyping, speed);
+    const timer = setInterval(() => {
+      setCurrentRole((i) => (i + 1) % roles.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Main tagline typewriter cycling list
+  const typewriterPhrases = [
+    "Business Decisions",
+    "Trusted Pipelines",
+    "Analytics Intelligence",
+    "Executive Insights"
+  ];
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+  const [typewriterText, setTypewriterText] = useState("");
+
+  useEffect(() => {
+    if (subIndex === typewriterPhrases[phraseIndex].length + 1 && !reverse) {
+      const timeout = setTimeout(() => setReverse(true), 2000);
+      return () => clearTimeout(timeout);
+    }
+
+    if (subIndex === 0 && reverse) {
+      setReverse(false);
+      setPhraseIndex((prev) => (prev + 1) % typewriterPhrases.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (reverse ? -1 : 1));
+    }, reverse ? 35 : 70);
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, reverse, phraseIndex]);
+
+  useEffect(() => {
+    setTypewriterText(typewriterPhrases[phraseIndex].substring(0, subIndex));
+  }, [subIndex, phraseIndex]);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      const isLight = document.documentElement.classList.contains('light');
+      setTheme(isLight ? 'light' : 'dark');
     };
 
-    timer = setTimeout(handleTyping, isDeleting ? 40 : 80);
-    return () => clearTimeout(timer);
-  }, [displayText, isDeleting, roleIndex]);
+    // Initial check
+    checkTheme();
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.1,
-      }
-    }
-  };
+    // Observe changes on documentElement's class
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1],
-      }
-    }
-  };
-
-  const scrollToProjects = () => {
-    const element = document.getElementById('projects');
-    if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen bg-[#080B11] flex items-center pt-28 pb-20 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden transition-colors duration-500 bg-[#020408]"
     >
-      {/* Premium Backdrops */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[140px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[120px]" />
-      </div>
+      <style>{`
+        #hero-content-grid {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 48px;
+          align-items: center;
+          min-height: 85vh;
+          padding: 80px clamp(24px, 6vw, 80px);
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+        #hero-photo-col {
+          width: 220px;
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        #hero-text-col {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        @media (max-width: 768px) {
+          #hero-content-grid {
+            grid-template-columns: 1fr;
+            text-align: left;
+            padding: 80px 20px 48px;
+          }
+          #hero-photo-col {
+            width: 120px !important;
+            margin-bottom: 20px;
+          }
+          #hero-photo-container {
+            width: 120px !important;
+            height: 120px !important;
+          }
+          #hero-photo-container img, #hero-photo-container div {
+            width: 120px !important;
+            height: 120px !important;
+          }
+          #hero-name {
+            font-size: clamp(32px, 9vw, 48px) !important;
+          }
+          #hero-cta-buttons {
+            flex-direction: column;
+            width: 100%;
+          }
+          #hero-cta-buttons button, #hero-cta-buttons a {
+            width: 100% !important;
+            min-height: 48px !important;
+          }
+        }
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0) translateX(-50%); }
+          50% { transform: translateY(4px) translateX(-50%); }
+        }
+        @keyframes pulse-dot {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.5); opacity: 0.5; }
+        }
+      `}</style>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
-          {/* Main Storytelling Copy (Left Side) */}
-          <motion.div
-            className="lg:col-span-7 flex flex-col items-start"
-            id="hero-story"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+      {/* Absolute Flowing Wave Ribbon Canvas Background */}
+      <WaveCanvas theme={theme} />
+
+      {/* Hero Content Wrapper */}
+      <div id="hero-content-grid" className="relative z-10 w-full">
+        
+        {/* Grayscale Circular Portrait Avatar (Left column) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          id="hero-photo-col"
+          className="select-none"
+        >
+          <div 
+            id="hero-photo-container"
+            style={{
+              position: 'relative',
+              width: '200px',
+              height: '200px',
+            }}
           >
-            
-            {/* Status Pill */}
-            <motion.div
-              variants={itemVariants}
-              className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/25 rounded-full mb-6"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-emerald-400 text-[11px] font-mono tracking-wider uppercase font-medium">
-                Stamp 1G &middot; Dublin, Ireland &middot; Open to Opportunities
-              </span>
-            </motion.div>
-
-            {/* Blinking cursor style definition */}
-            <style>{`
-              @keyframes blink {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0; }
-              }
-              .animate-blink {
-                animation: blink 1s infinite;
-              }
-            `}</style>
-
-            {/* Main Display Headlines */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight text-white leading-[1.1] mb-6"
-            >
-              Hey, I'm <span className="text-emerald-400 font-semibold">Harekrishna</span>.<br />
-              <span className="text-slate-300">I transform data into </span>
-              <span className="relative inline-block text-emerald-400 font-mono font-bold text-[0.85em] tracking-tight whitespace-nowrap min-w-[200px]">
-                {displayText}
-                <span className="inline-block text-emerald-400 font-light ml-1 animate-blink">|</span>
-                <span className="absolute left-0 bottom-1 w-full h-[2px] bg-emerald-500/20 rounded-full" />
-              </span>
-            </motion.h1>
-
-            {/* Human-First Mission Summary */}
-            <div className="space-y-4 mb-8 max-w-xl text-slate-400 text-base md:text-lg font-sans font-light leading-relaxed">
-              <motion.p variants={itemVariants}>
-                {highlightBio(PERSONAL_INFO.about.summary)}
-              </motion.p>
-            </div>
-
-            {/* Repeated Recruiter-Optimized Key Ingestion Actions */}
-            <motion.div
-              variants={itemVariants}
-              className="space-y-4 mb-10 w-full"
-            >
-              <div className="flex flex-wrap items-center gap-3 w-full">
-                {/* 1. Download Resume */}
-                <button
-                  onClick={onOpenResume}
-                  className="px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-xs rounded-xl transition-all shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer"
-                >
-                  <FileText className="h-4 w-4" />
-                  Download Resume
-                </button>
-
-                {/* 2. View Projects */}
-                <button
-                  onClick={scrollToProjects}
-                  className="px-5 py-3 bg-slate-900 hover:bg-slate-850 text-slate-200 hover:text-white font-sans font-semibold text-xs rounded-xl border border-slate-800 transition-all flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer"
-                >
-                  <Briefcase className="h-4 w-4 text-emerald-400" />
-                  View Projects
-                </button>
-
-                {/* Social links grouped together so they wrap gracefully as a unit */}
-                <div className="flex items-center gap-3 flex-wrap">
-                  {/* 3. LinkedIn */}
-                  <a
-                    href={PERSONAL_INFO.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-3 bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-white font-mono text-xs rounded-xl border border-slate-900 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
-                  >
-                    <Linkedin className="h-3.5 w-3.5 text-[#0A66C2]" />
-                    LinkedIn
-                  </a>
-
-                  {/* 4. GitHub */}
-                  <a
-                    href={PERSONAL_INFO.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-3 bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-white font-mono text-xs rounded-xl border border-slate-900 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
-                  >
-                    <Github className="h-3.5 w-3.5 text-white" />
-                    GitHub
-                  </a>
-
-                  {/* 5. Email */}
-                  <a
-                    href={`mailto:${PERSONAL_INFO.email}`}
-                    className="px-4 py-3 bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-white font-mono text-xs rounded-xl border border-slate-900 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
-                  >
-                    <Mail className="h-3.5 w-3.5 text-emerald-400" />
-                    Email
-                  </a>
+            {!imageError ? (
+              <img
+                src="/profile.jpg"
+                alt="Harekrishna Shah Portrait"
+                loading="lazy"
+                width={200}
+                height={200}
+                style={{
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  filter: 'grayscale(100%)',
+                  display: 'block',
+                  outline: '2px solid rgba(0,204,136,0.4)',
+                  outlineOffset: '4px',
+                }}
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              /* Premium Typographic Circular Fallback Badge */
+              <div 
+                style={{
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '50%',
+                  outline: '2px solid rgba(0,204,136,0.4)',
+                  outlineOffset: '4px',
+                }}
+                className="bg-slate-950/90 flex flex-col items-center justify-center relative select-none overflow-hidden"
+              >
+                <div className="absolute inset-0 opacity-5 pointer-events-none font-mono text-[6px] text-emerald-400 leading-none overflow-hidden select-none">
+                  {Array.from({ length: 15 }).map((_, idx) => (
+                    <div key={idx} className="whitespace-nowrap mb-0.5">010101 DATA PIPELINE ACTIVE</div>
+                  ))}
                 </div>
+                <span className="text-3xl font-display font-extrabold text-white tracking-wider group-hover:text-emerald-400 transition-colors">
+                  HS<span className="text-emerald-500 font-bold">.</span>
+                </span>
+                <span className="text-[9px] text-slate-500 font-mono tracking-widest uppercase mt-1 shrink-0">
+                  Dublin
+                </span>
               </div>
-            </motion.div>
+            )}
+          </div>
+        </motion.div>
 
-            {/* Quick Strategic Pillars - Removed to make portfolio shorter and crisper */}
-          </motion.div>
-
-          {/* Recruiter Cheat-Sheet / Executive Overview (Right Side) */}
-          <div className="lg:col-span-5 flex flex-col gap-6" id="hero-overview-card">
-            
-            {/* Elegant Portrait Frame with Grayscale-to-Color Editorial Transition */}
-            <div className="relative aspect-[4/5] rounded-3xl border border-slate-900 overflow-hidden group shadow-2xl shadow-black/80 bg-slate-950/40 flex flex-col justify-between">
-              
-              {!imageError ? (
-                <>
-                  <img
-                    src="/profile.jpg"
-                    alt="Harekrishna Shah Professional Portrait"
-                    className="absolute inset-0 w-full h-full object-cover grayscale contrast-[1.05] hover:grayscale-0 transition-all duration-700 ease-out scale-[1.02] group-hover:scale-100 z-0"
-                    onError={() => setImageError(true)}
-                  />
-                  
-                  {/* Subtle vignette gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80 z-10 pointer-events-none" />
-                  
-                  {/* Floating Identity Overlay */}
-                  <div className="relative z-20 p-6 mt-auto">
-                    <div className="flex items-center gap-2 bg-slate-950/80 backdrop-blur-md border border-slate-800/80 px-3.5 py-2 rounded-2xl w-fit">
-                      <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                      <span className="text-[10px] text-slate-300 font-mono uppercase tracking-widest font-semibold">
-                        HAREKRISHNA SHAH
-                      </span>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                /* High-End Editorial Typographic Fallback Card (Loads if profile.jpg is not present yet) */
-                <div className="absolute inset-0 flex flex-col justify-between p-6 bg-[#0c111e]/90 overflow-hidden">
-                  {/* Abstract subtle grid lines background */}
-                  <div className="absolute inset-0 opacity-5 pointer-events-none font-mono text-[8px] text-emerald-400 select-none overflow-hidden leading-none">
-                    {Array.from({ length: 12 }).map((_, i) => (
-                      <div key={i} className="whitespace-nowrap mb-1">
-                        010101010101 DATA_FLOW_ACTIVE SYNC_OK PIPELINE_METRICS_PARITY_100
-                      </div>
-                    ))}
-                  </div>
-                  <div className="absolute -right-12 -top-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-emerald-500/15 transition-all duration-500" />
-                  
-                  <div className="relative z-10 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 bg-emerald-950/40 border border-emerald-500/30 rounded-xl flex items-center justify-center font-sans font-extrabold text-white text-sm">
-                        HK<span className="text-emerald-400">.</span>
-                      </div>
-                      <div>
-                        <h3 className="text-slate-100 font-sans font-bold text-xs tracking-tight">
-                          Harekrishna Shah
-                        </h3>
-                        <p className="text-[9px] text-slate-500 font-mono tracking-wider uppercase mt-0.5">
-                          Verified Portfolio Identity
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                      </span>
-                      <span className="text-emerald-400 text-[9px] font-mono uppercase tracking-widest font-semibold">
-                        SYSTEMS_LIVE
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="my-auto py-8 relative z-10 text-center">
-                    <div className="h-16 w-16 bg-slate-900 border border-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-400">
-                      <Sparkles className="h-6 w-6 animate-pulse" />
-                    </div>
-                    <h4 className="text-white text-xs font-semibold font-sans tracking-tight uppercase">
-                      Portrait Slot Active
-                    </h4>
-                    <p className="text-slate-400 text-[10px] font-sans max-w-[240px] mx-auto mt-2 leading-relaxed">
-                      To display your professional photo here, drop your portrait file named <code className="text-emerald-400 font-mono bg-slate-900 px-1 py-0.5 rounded">profile.jpg</code> into the <code className="text-emerald-400 font-mono bg-slate-900 px-1 py-0.5 rounded">/public</code> folder.
-                    </p>
-                  </div>
-
-                  <div className="relative z-10 border-t border-slate-900/60 pt-4 flex items-center justify-between">
-                    <span className="text-[10px] text-slate-500 font-mono">
-                      Databricks ID:
-                    </span>
-                    <span className="text-[10px] text-emerald-400 font-mono bg-emerald-500/5 border border-emerald-500/10 px-2 py-0.5 rounded">
-                      620583 (Active)
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Professional Snapshot Bento Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              
-              {/* Card 1: Geographic Location */}
-              <div className="p-5 bg-slate-950/60 rounded-2xl border border-slate-900/80 hover:border-slate-800 transition-all duration-300 flex flex-col justify-between h-32 group hover:shadow-lg hover:shadow-black/25">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Location</span>
-                  <MapPin className="h-4 w-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                </div>
-                <div>
-                  <h4 className="text-white text-sm font-semibold font-sans">Dublin, Ireland</h4>
-                  <p className="text-slate-400 text-[10px] font-mono mt-1">
-                    53.3498° N, 6.2603° W
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 2: Work Authorization status */}
-              <div className="p-5 bg-slate-950/60 rounded-2xl border border-slate-900/80 hover:border-slate-800 transition-all duration-300 flex flex-col justify-between h-32 group hover:shadow-lg hover:shadow-black/25">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Visa Status</span>
-                  <Award className="h-4 w-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                </div>
-                <div>
-                  <h4 className="text-white text-sm font-semibold font-sans">Stamp 1G Visa</h4>
-                  <p className="text-slate-400 text-[10px] font-mono mt-1">
-                    Sponsorship Eligible
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 3: Opportunities Availability */}
-              <div className="p-5 bg-slate-950/60 rounded-2xl border border-slate-900/80 hover:border-slate-800 transition-all duration-300 flex flex-col justify-between h-32 group hover:shadow-lg hover:shadow-black/25">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Opportunities</span>
-                  <Briefcase className="h-4 w-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                </div>
-                <div>
-                  <h4 className="text-white text-sm font-semibold font-sans">Open to Permanent</h4>
-                  <p className="text-emerald-400 text-[10px] font-mono mt-1 flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse inline-block" />
-                    Interview Ready
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 4: Domain expertise focus */}
-              <div className="p-5 bg-slate-950/60 rounded-2xl border border-slate-900/80 hover:border-slate-800 transition-all duration-300 flex flex-col justify-between h-32 group hover:shadow-lg hover:shadow-black/25">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Expertise</span>
-                  <BarChart3 className="h-4 w-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                </div>
-                <div>
-                  <h4 className="text-white text-sm font-semibold font-sans">Data Analytics</h4>
-                  <p className="text-slate-400 text-[10px] font-mono mt-1">
-                    Databricks &amp; Power BI
-                  </p>
-                </div>
-              </div>
-
-            </div>
-
+        {/* Brand Information & Social Group (Right column) */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          id="hero-text-col"
+        >
+          {/* Eyebrow status pill */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: 'rgba(0,204,136,0.08)',
+            border: '0.5px solid rgba(0,204,136,0.25)',
+            borderRadius: '20px',
+            padding: '4px 12px',
+            marginBottom: '14px',
+            width: 'fit-content'
+          }}>
+            <span style={{
+              width: '6px', height: '6px',
+              borderRadius: '50%',
+              background: '#00CC88',
+              animation: 'pulse-dot 2s infinite'
+            }}/>
+            <span style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '11px',
+              fontWeight: '500',
+              letterSpacing: '0.1em',
+              color: '#00CC88'
+            }}>
+              DUBLIN, IRELAND · AVAILABLE NOW
+            </span>
           </div>
 
-        </div>
+          {/* Large Name Headline */}
+          <h1 
+            id="hero-name"
+            className="font-sans"
+            style={{
+              fontSize: 'clamp(40px, 5.5vw, 64px)',
+              fontWeight: 700,
+              lineHeight: 1.1,
+              letterSpacing: '-0.03em',
+              color: '#FFFFFF',
+              marginBottom: '6px',
+            }}
+          >
+            Harekrishna Shah
+          </h1>
+
+          {/* Main Tagline with Typewriter Effect */}
+          <div 
+            className="font-sans" 
+            style={{
+              fontSize: 'clamp(24px, 3.5vw, 36px)',
+              fontWeight: 600,
+              color: 'rgba(255,255,255,0.9)',
+              letterSpacing: '-0.01em',
+              lineHeight: 1.3,
+              marginBottom: '8px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+            }}
+          >
+            <span className="shrink-0">I transform data into&nbsp;</span>
+            <span style={{ color: '#00CC88', fontWeight: 700 }} className="inline-flex items-center min-h-[1.2em] whitespace-nowrap">
+              {typewriterText || "\u00A0"}
+              <span className="inline-block w-[2px] h-[1.1em] bg-[#00CC88] ml-1 animate-pulse shrink-0" style={{ animationDuration: '0.9s' }} />
+            </span>
+          </div>
+
+          {/* Subtitle / Professional Role Designation with Cycling Slide-Up Effect */}
+          <div className="relative overflow-hidden w-full h-7 mb-3">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentRole}
+                initial={{ y: '100%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: '-100%', opacity: 0 }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
+                className="absolute left-0 top-0 w-full block text-left text-[13px] md:text-[15px] font-medium tracking-wide text-white/55 font-sans leading-tight sm:leading-normal whitespace-nowrap"
+              >
+                {roles[currentRole]}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+
+          {/* Styled MSc badge */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginBottom: '16px',
+            marginTop: '8px',
+            flexWrap: 'wrap'
+          }}>
+            <span style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '12px',
+              fontWeight: '500',
+              color: 'rgba(255,255,255,0.6)',
+              letterSpacing: '0.04em'
+            }}>
+              MSc Data Science
+            </span>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              background: 'rgba(0,204,136,0.1)',
+              border: '0.5px solid rgba(0,204,136,0.3)',
+              borderRadius: '4px',
+              padding: '2px 8px',
+              fontSize: '11px',
+              fontWeight: '600',
+              color: '#00CC88',
+              letterSpacing: '0.04em'
+            }}>
+              First Class Distinction
+            </span>
+            <span style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '11px',
+              color: 'rgba(255,255,255,0.3)'
+            }}>
+              · Dublin Business School
+            </span>
+          </div>
+
+          {/* Professional Bio Paragraph */}
+          <p 
+            className="font-sans"
+            style={{
+              fontSize: '16px',
+              lineHeight: '1.75',
+              color: 'rgba(255,255,255,0.65)',
+              maxWidth: '560px',
+              marginBottom: '20px',
+              fontWeight: 400,
+            }}
+          >
+            I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 2+ years of professional experience in financial services and enterprise analytics.
+          </p>
+
+          <p className="font-sans font-normal text-slate-500 tracking-wide text-xs sm:text-sm mb-6 max-w-xl">
+            Dublin, Ireland &middot; Stamp 1G
+          </p>
+
+          {/* CTA Buttons Row */}
+          <div id="hero-cta-buttons" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '24px' }}>
+            <button
+              onClick={onOpenResume}
+              style={{
+                height: '48px',
+                padding: '0 24px',
+                background: '#00CC88',
+                color: '#050E09',
+                borderRadius: '8px',
+                fontSize: '15px',
+                fontWeight: 700,
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                transition: 'all 0.2s',
+              }}
+              className="hover:bg-[#00E699] hover:-translate-y-[1px]"
+            >
+              <span>Download Resume</span>
+            </button>
+            <a
+              href="#projects"
+              style={{
+                height: '48px',
+                padding: '0 24px',
+                background: 'transparent',
+                color: 'rgba(255,255,255,0.8)',
+                border: '0.5px solid rgba(255,255,255,0.2)',
+                borderRadius: '8px',
+                fontSize: '15px',
+                fontWeight: 500,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s',
+                textDecoration: 'none'
+              }}
+              className="hover:border-white/50"
+            >
+              View Projects
+            </a>
+          </div>
+
+          {/* Social Links Row */}
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <a
+              href={PERSONAL_INFO.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '8px',
+                border: '0.5px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.04)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'rgba(255,255,255,0.5)',
+                transition: 'all 0.2s',
+                textDecoration: 'none'
+              }}
+              className="hover:border-[#00CC88]/40 hover:text-[#00CC88] hover:bg-[#00CC88]/[0.06]"
+              title="GitHub Profile"
+            >
+              <Github className="h-4 w-4" />
+            </a>
+            <a
+              href={PERSONAL_INFO.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '8px',
+                border: '0.5px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.04)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'rgba(255,255,255,0.5)',
+                transition: 'all 0.2s',
+                textDecoration: 'none'
+              }}
+              className="hover:border-[#00CC88]/40 hover:text-[#00CC88] hover:bg-[#00CC88]/[0.06]"
+              title="LinkedIn Profile"
+            >
+              <Linkedin className="h-4 w-4" />
+            </a>
+            <a
+              href={`mailto:${PERSONAL_INFO.email}`}
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '8px',
+                border: '0.5px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.04)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'rgba(255,255,255,0.5)',
+                transition: 'all 0.2s',
+                textDecoration: 'none'
+              }}
+              className="hover:border-[#00CC88]/40 hover:text-[#00CC88] hover:bg-[#00CC88]/[0.06]"
+              title="Email Contact"
+            >
+              <Mail className="h-4 w-4" />
+            </a>
+          </div>
+
+        </motion.div>
+
       </div>
+
+      {/* Scroll Down Indicator */}
+      <div 
+        style={{
+          position: 'absolute',
+          bottom: '28px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '6px',
+          zIndex: 10,
+          animation: 'bounce 2s ease-in-out infinite'
+        }}
+      >
+        <span 
+          style={{
+            fontSize: '10px',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.25)',
+            fontFamily: 'JetBrains Mono, monospace'
+          }}
+        >
+          Scroll Down
+        </span>
+        <ChevronDown 
+          style={{
+            width: '16px',
+            color: 'rgba(255,255,255,0.25)',
+          }}
+        />
+      </div>
+
     </section>
   );
 }

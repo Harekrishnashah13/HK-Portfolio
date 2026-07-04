@@ -10,7 +10,7 @@ export const PERSONAL_INFO = {
   resumeUrl: "#",
   location: "Dublin, Ireland",
   about: {
-    summary: "I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 4+ years of professional experience in financial services and enterprise analytics. I build the pipelines, dashboards, and governance frameworks that help organisations make confident, data-driven decisions. Currently based in Dublin — open to senior Data Analytics and Data Engineering roles.",
+    summary: "I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 2+ years of professional experience in financial services and enterprise analytics. I build the pipelines, dashboards, and governance frameworks that help organisations make confident, data-driven decisions. Currently based in Dublin — open to senior Data Analytics and Data Engineering roles.",
     focus: [
       {
         title: "Enterprise Data Engineering",
@@ -198,7 +198,7 @@ export const PROJECTS_DATA: Project[] = [
     id: "project-7",
     title: "Customer Churn Prediction Model",
     description: "Designed and built an end-to-end customer churn prediction pipeline utilizing machine learning (Random Forest & XGBoost) to profile high-risk user accounts and automate retention workflows.",
-    category: "bi",
+    category: "analytics",
     projectType: "personal",
     tags: ["Python", "FastAPI", "PostgreSQL", "Docker", "XGBoost", "Power BI", "Scikit-Learn"],
     tools: ["Python", "FastAPI", "Power BI", "Docker", "PostgreSQL"],
@@ -227,8 +227,8 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
   {
     id: "exp-1",
     role: "Operations Analyst",
-    company: "Covalen (Client: Allied Irish Banks)",
-    location: "Limerick, Ireland",
+    company: "Covalen Solutions",
+    location: "Dublin, Ireland",
     period: "August 2025 - Present",
     description: [
       "Owned the investigation and resolution of 20+ daily digital banking issues and compliance reviews under strict AML/KYC guidelines.",

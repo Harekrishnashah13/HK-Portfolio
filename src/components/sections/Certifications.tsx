@@ -26,19 +26,19 @@ export default function Certifications() {
   const getCertIcon = (id: string) => {
     switch (id) {
       case 'cert-1': // Databricks
-        return <Database className="h-5 w-5 text-orange-400 group-hover:scale-110 transition-transform duration-300" />;
+        return <Database className="h-5 w-5" style={{ color: '#00CC88' }} />;
       case 'cert-2': // AWS
-        return <Cloud className="h-5 w-5 text-amber-400 group-hover:scale-110 transition-transform duration-300" />;
+        return <Cloud className="h-5 w-5" style={{ color: '#00CC88' }} />;
       case 'cert-6': // Google Analytics
-        return <BarChart3 className="h-5 w-5 text-emerald-400 group-hover:scale-110 transition-transform duration-300" />;
+        return <BarChart3 className="h-5 w-5" style={{ color: '#00CC88' }} />;
       case 'cert-3': // Tableau
-        return <BarChart3 className="h-5 w-5 text-cyan-400 group-hover:scale-110 transition-transform duration-300" />;
+        return <BarChart3 className="h-5 w-5" style={{ color: '#00CC88' }} />;
       case 'cert-4': // SQL
-        return <FileSpreadsheet className="h-5 w-5 text-blue-400 group-hover:scale-110 transition-transform duration-300" />;
+        return <FileSpreadsheet className="h-5 w-5" style={{ color: '#00CC88' }} />;
       case 'cert-5': // Python
-        return <Code className="h-5 w-5 text-yellow-400 group-hover:scale-110 transition-transform duration-300" />;
+        return <Code className="h-5 w-5" style={{ color: '#00CC88' }} />;
       default:
-        return <CheckCircle2 className="h-5 w-5 text-slate-400 group-hover:scale-110 transition-transform duration-300" />;
+        return <CheckCircle2 className="h-5 w-5" style={{ color: '#00CC88' }} />;
     }
   };
 
@@ -126,150 +126,329 @@ export default function Certifications() {
   return (
     <section
       id="credentials"
-      className="bg-[#05080c] py-24 md:py-32 relative overflow-hidden border-t border-slate-900/40"
+      className="bg-[#05080c] py-[48px] px-5 md:py-[80px] md:px-12 relative overflow-hidden border-t border-slate-900/40"
     >
       {/* Background Soft Glow */}
       <div className="absolute top-1/2 left-1/4 -translate-x-1/2 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-16 md:mb-20">
+        <div className="max-w-3xl mb-0">
           <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
             [06] Verified Credentials
           </span>
-          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-white mb-6 flex items-center gap-3.5">
-            <GraduationCap className="h-7 w-7 text-emerald-400/70 shrink-0" />
-            <span>Certifications &amp; Academic Foundation</span>
+          <h2 className="text-white font-display" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Credentials
           </h2>
-          <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-light">
-            My engineering expertise is backed by rigorous industry certifications and specialized academic curricula focused on distributed systems and quantitative predictive analytics.
+          <p 
+            className="font-sans"
+            style={{ 
+              fontSize: '16px', 
+              lineHeight: '1.7', 
+              color: 'rgba(255,255,255,0.55)', 
+              maxWidth: '540px', 
+              marginBottom: '32px', 
+              fontWeight: 400 
+            }}
+          >
+            Verified industry certifications and First Class academic credentials — every credential ID is real and checkable.
           </p>
         </div>
 
         {/* Credentials Split Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start" id="credentials-grid">
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start" 
+          id="credentials-grid"
+        >
           
-          {/* Certifications (Left Columns) */}
-          <div className="lg:col-span-6 flex flex-col gap-6">
-            <h3 className="text-white font-sans font-bold text-lg mb-2 flex items-center gap-2.5">
-              <Award className="h-5 w-5 text-emerald-400" />
+          {/* Certifications Column - Shown second on mobile */}
+          <div className="order-2 md:order-1 flex flex-col gap-6">
+            <h3 
+              style={{
+                fontSize: '16px',
+                fontWeight: 600,
+                color: 'rgba(255,255,255,0.7)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                borderBottom: '0.5px solid rgba(255,255,255,0.08)',
+                paddingBottom: '12px',
+                marginBottom: '20px',
+                letterSpacing: 0
+              }}
+            >
               Industry Certifications
             </h3>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-[10px]">
               {CERTIFICATIONS_DATA.map((cert) => (
                 <div
                   key={cert.id}
                   id={`cert-card-${cert.id}`}
                   onClick={() => setSelectedCert(cert)}
-                  className="p-5 bg-slate-950/25 hover:bg-slate-900/15 rounded-2xl border border-slate-900 hover:border-emerald-500/25 transition-all duration-300 flex items-start gap-4 group cursor-pointer hover:shadow-lg hover:shadow-emerald-950/5 hover:-translate-y-0.5"
+                  className="flex flex-col text-left cursor-pointer group select-none transition-all duration-300 p-4 md:py-[18px] md:px-[20px]"
+                  style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '0.5px solid rgba(255,255,255,0.08)',
+                    borderRadius: '12px',
+                    marginBottom: '10px',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(0,204,136,0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                  }}
                 >
-                  <div className="p-2.5 bg-slate-900 rounded-xl border border-slate-850 text-slate-400 group-hover:text-emerald-400 group-hover:border-emerald-500/10 transition-colors">
-                    {getCertIcon(cert.id)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
-                      <h4 className="text-white text-sm font-semibold font-sans truncate group-hover:text-emerald-300 transition-colors">
+                  {/* Row 1: [icon] [cert name] [date — right aligned] */}
+                  <div className="flex items-center justify-between gap-3 w-full">
+                    <div className="flex items-center gap-3.5 min-w-0">
+                      {/* Icon */}
+                      <div 
+                        style={{
+                          background: 'rgba(0,204,136,0.1)',
+                          border: '0.5px solid rgba(0,204,136,0.2)',
+                          borderRadius: '10px',
+                          width: '40px',
+                          height: '40px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        className="shrink-0"
+                      >
+                        {getCertIcon(cert.id)}
+                      </div>
+                      {/* Cert name */}
+                      <h4 className="text-white font-sans truncate" style={{ fontSize: '14px', fontWeight: 600, lineHeight: 1.3 }}>
                         {cert.name}
                       </h4>
-                      <span className="text-slate-500 font-mono text-[11px] shrink-0">
-                        {cert.date}
-                      </span>
                     </div>
-                    <span className="text-emerald-400/90 font-mono text-xs block mt-1">
-                      {cert.issuer}
+                    {/* Date */}
+                    <span className="font-mono text-[11px] whitespace-nowrap shrink-0" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                      {cert.date}
                     </span>
-                    
-                    {cert.credentialId && (
-                      <span className="text-[10px] text-slate-500 font-mono block mt-2">
-                        ID: {cert.credentialId}
-                      </span>
-                    )}
+                  </div>
 
-                    <div className="mt-3 flex flex-col gap-1.5 items-start">
-                      <span className="text-[11px] font-mono text-slate-400 group-hover:text-emerald-300 transition-colors inline-flex items-center gap-1">
-                        Verify Secure Credential
-                        <ArrowUpRight className="h-3 w-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                      </span>
-                      {(() => {
-                        const downloadInfo = getCertDownloadInfo(cert.id);
-                        if (!downloadInfo) return null;
-                        if (!downloadInfo.isAvailable) {
-                          return (
-                            <span className="text-[12px] text-white/30 font-sans mt-1 cursor-default" onClick={(e) => e.stopPropagation()}>
-                              ↓ Download Certificate <span className="text-[11px] text-slate-500 font-mono italic ml-1">(coming soon)</span>
-                            </span>
-                          );
-                        }
+                  {/* Row 2: [issuer name] */}
+                  <div className="font-sans" style={{ fontSize: '13px', fontWeight: 500, color: '#00CC88', marginTop: '2px' }}>
+                    {cert.issuer}
+                  </div>
+
+                  {/* Row 3: ID: [credential ID] */}
+                  {cert.credentialId && (
+                    <div className="font-mono" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', marginTop: '6px' }}>
+                      ID: {cert.credentialId}
+                    </div>
+                  )}
+
+                  {/* Row 4: Action row (bottom) */}
+                  <div 
+                    style={{
+                      display: 'flex',
+                      gap: '16px',
+                      alignItems: 'center',
+                      marginTop: '12px',
+                      paddingTop: '10px',
+                      borderTop: '0.5px solid rgba(255,255,255,0.06)'
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span 
+                      className="cursor-pointer font-sans"
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        color: '#00CC88',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                      onClick={() => setSelectedCert(cert)}
+                      onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                      onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                    >
+                      Verify Secure Credential <ArrowUpRight className="h-3 w-3" />
+                    </span>
+                    {(() => {
+                      const downloadInfo = getCertDownloadInfo(cert.id);
+                      if (!downloadInfo) return null;
+                      if (!downloadInfo.isAvailable) {
                         return (
-                          <a
-                            href={downloadInfo.path}
-                            download={downloadInfo.filename}
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-[12px] text-white/50 hover:text-emerald-400 font-sans mt-1 transition-colors block no-underline"
+                          <span 
+                            style={{
+                              fontSize: '12px',
+                              fontWeight: 400,
+                              color: 'rgba(255,255,255,0.2)'
+                            }}
+                            className="font-sans cursor-default"
                           >
                             ↓ Download Certificate
-                          </a>
+                          </span>
                         );
-                      })()}
-                    </div>
+                      }
+                      return (
+                        <a
+                          href={downloadInfo.path}
+                          download={downloadInfo.filename}
+                          style={{
+                            fontSize: '12px',
+                            fontWeight: 400,
+                            color: 'rgba(255,255,255,0.4)',
+                            textDecoration: 'none'
+                          }}
+                          className="font-sans transition-colors"
+                          onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
+                          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+                        >
+                          ↓ Download Certificate
+                        </a>
+                      );
+                    })()}
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Academic Background (Right Columns) */}
-          <div className="lg:col-span-6 flex flex-col gap-6">
-            <h3 className="text-white font-sans font-bold text-lg mb-2 flex items-center gap-2.5">
-              <GraduationCap className="h-5 w-5 text-emerald-400" />
+          {/* Academic Background Column - Shown first on mobile */}
+          <div className="order-1 md:order-2 flex flex-col gap-6">
+            <h3 
+              style={{
+                fontSize: '16px',
+                fontWeight: 600,
+                color: 'rgba(255,255,255,0.7)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                borderBottom: '0.5px solid rgba(255,255,255,0.08)',
+                paddingBottom: '12px',
+                marginBottom: '20px',
+                letterSpacing: 0
+              }}
+            >
               Academic Development
             </h3>
 
-            <div className="flex flex-col gap-6 border-l border-slate-900/40 pl-6 ml-2 space-y-4">
+            <div className="flex flex-col gap-[10px]" style={{ paddingLeft: 0, marginLeft: 0 }}>
               {EDUCATION_DATA.map((edu, idx) => (
                 <div 
                   key={idx} 
                   id={`edu-card-${idx}`}
-                  className="relative group p-5 bg-slate-950/10 hover:bg-slate-900/5 rounded-2xl border border-transparent hover:border-slate-900/40 hover:shadow-md transition-all duration-300"
+                  style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '0.5px solid rgba(255,255,255,0.08)',
+                    borderRadius: '12px',
+                    padding: '18px 20px',
+                    marginBottom: '10px'
+                  }}
+                  className="text-left"
                 >
-                  {/* Small absolute bullet on the timeline border */}
-                  <div className="absolute -left-[31px] top-7 h-2 w-2 rounded-full bg-slate-800 border border-slate-950 group-hover:bg-emerald-400 group-hover:scale-125 transition-all duration-300 shadow-md shadow-emerald-400/20" />
-
-                  <span className="inline-flex items-center gap-1 text-[10px] text-slate-500 font-mono mb-1">
-                    <Calendar className="h-3 w-3" />
+                  {/* Date */}
+                  <div 
+                    style={{
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '11px',
+                      color: 'rgba(255,255,255,0.4)',
+                      marginBottom: '6px'
+                    }}
+                  >
                     {edu.period}
-                  </span>
-                  
-                  <h4 className="text-white text-sm font-semibold font-sans leading-snug flex flex-wrap items-center gap-2 group-hover:text-emerald-300 transition-colors">
+                  </div>
+
+                  {/* Degree title */}
+                  <h4 
+                    style={{
+                      fontSize: '16px',
+                      fontWeight: 600,
+                      color: '#FFFFFF',
+                      marginBottom: '4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      flexWrap: 'wrap'
+                    }}
+                    className="font-sans"
+                  >
                     {edu.degree}
                     {edu.degree.includes("MSc") && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold tracking-wide">
-                        🏆 First Class Distinction
+                      <span 
+                        style={{
+                          background: 'rgba(0,204,136,0.12)',
+                          border: '0.5px solid rgba(0,204,136,0.35)',
+                          color: '#00CC88',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          padding: '3px 10px',
+                          borderRadius: '20px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px',
+                          marginLeft: '8px'
+                        }}
+                      >
+                        First Class Distinction
                       </span>
                     )}
                   </h4>
-                  
-                  <span className="text-emerald-400 font-mono text-xs block mt-0.5">
-                    {edu.institution}
-                  </span>
 
+                  {/* Institution */}
+                  <div 
+                    style={{
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '12px',
+                      color: '#00CC88',
+                      marginBottom: '8px'
+                    }}
+                  >
+                    {edu.institution}
+                  </div>
+
+                  {/* Specialisation text */}
                   {edu.specialization && (
-                    <span className="text-slate-400 text-xs block mt-1 font-sans">
+                    <div 
+                      style={{
+                        fontSize: '13px',
+                        color: 'rgba(255,255,255,0.5)',
+                        marginBottom: '12px'
+                      }}
+                      className="font-sans"
+                    >
                       Specialization: {edu.specialization}
-                    </span>
+                    </div>
                   )}
 
+                  {/* Highlights Bullet points */}
                   {edu.highlights && edu.highlights.length > 0 && (
-                    <ul className="mt-4 space-y-2">
+                    <div style={{ marginTop: '8px' }}>
                       {edu.highlights.map((highlight, hIdx) => (
-                        <li key={hIdx} className="text-[12px] text-slate-400 font-sans leading-relaxed flex gap-2">
-                          <span className="text-emerald-500/60 font-bold font-mono shrink-0">&middot;</span>
-                          <span>{highlight}</span>
-                        </li>
+                        <div 
+                          key={hIdx} 
+                          className="font-sans"
+                          style={{
+                            fontSize: '14px',
+                            lineHeight: '1.7',
+                            color: 'rgba(255,255,255,0.7)',
+                            paddingLeft: '14px',
+                            position: 'relative',
+                            marginBottom: '8px'
+                          }}
+                        >
+                          <span 
+                            style={{
+                              position: 'absolute',
+                              left: 0,
+                              color: '#00CC88'
+                            }}
+                          >
+                            ·
+                          </span>
+                          {highlight}
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   )}
                 </div>
               ))}
@@ -360,7 +539,7 @@ export default function Certifications() {
                   </div>
                 </div>
 
-                <p className="text-slate-400 text-xs font-sans font-light leading-relaxed mb-4">
+                <p className="text-slate-400 text-xs font-sans font-normal leading-relaxed mb-4">
                   {getCertDetails(selectedCert.id).description}
                 </p>
 

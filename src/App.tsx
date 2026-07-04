@@ -1,15 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion } from 'motion/react';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Hero from './components/sections/Hero';
-import Projects from './components/sections/Projects';
-import Experience from './components/sections/Experience';
-import Skills from './components/sections/Skills';
-import Certifications from './components/sections/Certifications';
-import Contact from './components/sections/Contact';
-import FlagshipCaseStudy from './components/sections/FlagshipCaseStudy';
-import ResumeModal from './components/sections/ResumeModal';
+
+// Lazy load non-critical below-the-fold elements to optimize initial load times
+const Projects = lazy(() => import('./components/sections/Projects'));
+const Skills = lazy(() => import('./components/sections/Skills'));
+const Experience = lazy(() => import('./components/sections/Experience'));
+const Certifications = lazy(() => import('./components/sections/Certifications'));
+const Contact = lazy(() => import('./components/sections/Contact'));
+const FlagshipCaseStudy = lazy(() => import('./components/sections/FlagshipCaseStudy'));
+const ResumeModal = lazy(() => import('./components/sections/ResumeModal'));
+
+const SectionLoader = () => (
+  <div className="w-full min-h-[300px] flex flex-col items-center justify-center py-24 px-5 animate-pulse bg-[#080B11]/50">
+    <div className="h-2.5 w-32 bg-slate-800 rounded-full mb-4" />
+    <div className="h-4 w-64 bg-slate-800 rounded-full mb-6" />
+    <div className="max-w-md w-full flex flex-col gap-2">
+      <div className="h-2 w-full bg-slate-800/60 rounded" />
+      <div className="h-2 w-3/4 bg-slate-800/60 rounded" />
+      <div className="h-2 w-1/2 bg-slate-800/60 rounded" />
+    </div>
+  </div>
+);
 
 export default function App() {
   const [activeCaseStudyId, setActiveCaseStudyId] = useState<string | null>(null);
@@ -70,7 +84,9 @@ export default function App() {
       {/* Main Narrative Sequence */}
       <main id="main-content">
         {activeCaseStudyId === 'teradata-migration' ? (
-          <FlagshipCaseStudy onBack={handleBackToHome} />
+          <Suspense fallback={<SectionLoader />}>
+            <FlagshipCaseStudy onBack={handleBackToHome} />
+          </Suspense>
         ) : (
           <>
             <Hero onOpenResume={() => setIsResumeOpen(true)} />
@@ -82,10 +98,12 @@ export default function App() {
               viewport={{ once: true, margin: "-100px 0px" }}
               variants={sectionVariants}
             >
-              <Projects onSelectFlagship={() => {
-                setActiveCaseStudyId('teradata-migration');
-                window.scrollTo({ top: 0 });
-              }} />
+              <Suspense fallback={<SectionLoader />}>
+                <Projects onSelectFlagship={() => {
+                  setActiveCaseStudyId('teradata-migration');
+                  window.scrollTo({ top: 0 });
+                }} />
+              </Suspense>
             </motion.div>
 
             <div className="border-t border-slate-900/60 w-full" />
@@ -95,7 +113,9 @@ export default function App() {
               viewport={{ once: true, margin: "-100px 0px" }}
               variants={sectionVariants}
             >
-              <Skills />
+              <Suspense fallback={<SectionLoader />}>
+                <Skills />
+              </Suspense>
             </motion.div>
 
             <div className="border-t border-slate-900/60 w-full" />
@@ -105,7 +125,9 @@ export default function App() {
               viewport={{ once: true, margin: "-100px 0px" }}
               variants={sectionVariants}
             >
-              <Experience />
+              <Suspense fallback={<SectionLoader />}>
+                <Experience />
+              </Suspense>
             </motion.div>
 
             <div className="border-t border-slate-900/60 w-full" />
@@ -115,7 +137,9 @@ export default function App() {
               viewport={{ once: true, margin: "-100px 0px" }}
               variants={sectionVariants}
             >
-              <Certifications />
+              <Suspense fallback={<SectionLoader />}>
+                <Certifications />
+              </Suspense>
             </motion.div>
 
             <div className="border-t border-slate-900/60 w-full" />
@@ -125,14 +149,18 @@ export default function App() {
               viewport={{ once: true, margin: "-100px 0px" }}
               variants={sectionVariants}
             >
-              <Contact />
+              <Suspense fallback={<SectionLoader />}>
+                <Contact />
+              </Suspense>
             </motion.div>
           </>
         )}
       </main>
 
       {/* Resume ATS Document Modal */}
-      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+      <Suspense fallback={null}>
+        <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+      </Suspense>
 
       {/* Footer Branding & Social Channels */}
       <Footer />

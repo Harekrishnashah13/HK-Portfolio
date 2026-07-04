@@ -1,6 +1,7 @@
 import { X, Copy, Check, Printer, FileText, Download } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PERSONAL_INFO, EXPERIENCE_DATA, EDUCATION_DATA, CERTIFICATIONS_DATA } from '../../data';
+import { trackEvent } from '../../lib/analytics';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -9,6 +10,12 @@ interface ResumeModalProps {
 
 export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      trackEvent('resume_modal_open');
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -40,10 +47,12 @@ ${CERTIFICATIONS_DATA.map(cert => `• ${cert.name} - ${cert.issuer} (${cert.dat
 
     navigator.clipboard.writeText(resumeText);
     setCopied(true);
+    trackEvent('resume_copy_text');
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handlePrint = () => {
+    trackEvent('resume_print');
     const printContent = document.getElementById('resume-document-content')?.innerHTML;
     const printWindow = window.open('', '_blank');
     if (printWindow) {
@@ -122,6 +131,7 @@ ${CERTIFICATIONS_DATA.map(cert => `• ${cert.name} - ${cert.issuer} (${cert.dat
   };
 
   const handleDownloadTxt = () => {
+    trackEvent('resume_download_txt');
     const resumeText = `
 HAREKRISHNA SHAH
 Dublin, Ireland

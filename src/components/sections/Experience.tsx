@@ -3,162 +3,233 @@ import { Calendar, MapPin, Briefcase, Award, Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { EXPERIENCE_DATA } from '../../data';
 
+const sidebarVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1]
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, x: 30 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1]
+    }
+  }
+};
+
 export default function Experience() {
   const [activeRoleIndex, setActiveRoleIndex] = useState<number>(0);
 
   return (
     <section
       id="experience"
-      className="bg-[#080B11] py-24 md:py-32 relative overflow-hidden border-t border-slate-900/40"
+      className="bg-[#080B11] py-[48px] md:py-[80px] relative overflow-hidden border-t border-slate-900/40"
     >
+      <style>{`
+        @keyframes custom-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.3); }
+        }
+        .custom-pulse-dot {
+          animation: custom-pulse 2s ease-in-out infinite;
+        }
+      `}</style>
       <div className="absolute bottom-0 right-0 w-[450px] h-[450px] bg-emerald-500/5 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 md:px-12 relative z-10">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-16 md:mb-20">
+        <div className="max-w-3xl mb-0">
           <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
             [05] Experience Timeline
           </span>
-          <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-white mb-4 flex items-center gap-3.5">
-            <Briefcase className="h-7 w-7 text-emerald-400/70 shrink-0" />
-            <span>Production Experience &amp; Professional Milestones</span>
+          <h2 className="text-white font-display" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Experience
           </h2>
-          <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-light">
-            An overview of structural contributions across enterprise SaaS and digital platform environments, combining server-side data systems with board-level business intelligence.
+          <p 
+            className="font-sans"
+            style={{ 
+              fontSize: '16px', 
+              lineHeight: '1.7', 
+              color: 'rgba(255,255,255,0.55)', 
+              maxWidth: '520px', 
+              marginBottom: '32px', 
+              fontWeight: 400 
+            }}
+          >
+            2+ years delivering data engineering and analytics across financial services, fintech, and enterprise environments.
           </p>
         </div>
 
         {/* Master Timeline Structure */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start" id="experience-timeline">
+        <div 
+          className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-[32px] items-start" 
+          id="experience-timeline"
+        >
           
           {/* Navigation Sidebar/Timeline nodes (Left) */}
-          <div className="lg:col-span-4 flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible pb-4 lg:pb-0 scrollbar-none sticky top-24 z-10 bg-[#080B11]/80 backdrop-blur-sm lg:bg-transparent lg:border-l lg:border-slate-900/60 lg:pl-6">
+          <div
+            className="flex flex-row md:flex-col gap-2 md:gap-3 overflow-x-auto md:overflow-x-visible pb-[12px] md:pb-0 mb-[16px] md:mb-0 scrollbar-none sticky top-24 z-10 bg-[#080B11]/80 backdrop-blur-sm md:bg-transparent w-full md:w-[280px] shrink-0"
+          >
             {EXPERIENCE_DATA.map((role, idx) => {
               const isActive = activeRoleIndex === idx;
               return (
-                <motion.button
+                <button
                   key={role.id}
                   onClick={() => setActiveRoleIndex(idx)}
-                  whileHover={{ x: isActive ? 0 : 4 }}
-                  className="relative flex flex-col items-start p-4 rounded-2xl transition-all cursor-pointer min-w-[220px] lg:min-w-0 text-left w-full focus:outline-none select-none group"
+                  className={`cursor-pointer focus:outline-none select-none transition-all duration-200 shrink-0 md:shrink-1 md:w-full text-left
+                    ${isActive 
+                      ? 'md:bg-[rgba(0,204,136,0.08)] md:border-[0.5px] md:border-[rgba(0,204,136,0.2)] md:rounded-lg md:p-[10px_12px] md:opacity-100 bg-[#00CC88] text-[#050E09] border-[#00CC88] rounded-[20px] p-[6px_14px] text-[13px] font-medium border-[0.5px]' 
+                      : 'md:p-[10px_12px] md:rounded-lg md:opacity-60 md:hover:opacity-100 md:hover:bg-[rgba(255,255,255,0.04)] text-white/60 bg-transparent border-[rgba(255,255,255,0.15)] rounded-[20px] p-[6px_14px] text-[13px] font-medium border-[0.5px] hover:text-white hover:border-white/30'
+                    }
+                  `}
                 >
-                  {/* Sliding Background Active Highlight */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeExperienceHighlight"
-                      className="absolute inset-0 bg-slate-950/80 border border-emerald-500/15 rounded-2xl shadow-xl shadow-black/30 -z-10"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-
-                  {/* Left Accent Bar on Active */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeExperienceBar"
-                      className="absolute left-[-26px] top-1/2 -translate-y-1/2 w-1 h-12 bg-emerald-400 rounded-r-full hidden lg:block"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-
-                  <div className="flex items-center gap-2.5 mb-1.5 z-10">
-                    <span className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
-                      isActive ? 'bg-emerald-400 scale-125 shadow-sm shadow-emerald-400' : 'bg-slate-700 group-hover:bg-slate-500'
-                    }`} />
-                    <span className={`text-xs font-mono font-medium tracking-wide transition-colors duration-300 ${
-                      isActive ? 'text-emerald-400' : 'text-slate-500 group-hover:text-slate-400'
-                    }`}>
-                      {role.period}
-                    </span>
-                  </div>
-
-                  <span className={`font-display font-bold text-sm sm:text-base tracking-tight leading-tight transition-colors duration-300 z-10 ${
-                    isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'
-                  }`}>
+                  {/* On Mobile: just show role.role */}
+                  <span className="md:hidden whitespace-nowrap">
                     {role.role}
                   </span>
 
-                  <span className={`font-mono text-xs mt-1 transition-colors duration-300 z-10 ${
-                    isActive ? 'text-emerald-500/80' : 'text-slate-500 group-hover:text-slate-400'
-                  }`}>
-                    {role.company}
-                  </span>
-                </motion.button>
+                  {/* On Desktop: show structured card */}
+                  <div className="hidden md:flex flex-col w-full">
+                    {/* Date text */}
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span 
+                        className={`rounded-full transition-all duration-300 shrink-0 ${
+                          isActive ? 'custom-pulse-dot' : ''
+                        }`}
+                        style={{
+                          width: '8px',
+                          height: '8px',
+                          backgroundColor: isActive ? '#00CC88' : '#334155'
+                        }}
+                      />
+                      <span 
+                        className="font-mono text-[11px] font-normal"
+                        style={{ color: isActive ? '#00CC88' : 'rgba(255,255,255,0.45)' }}
+                      >
+                        {role.period}
+                      </span>
+                    </div>
+
+                    {/* Role Title */}
+                    <span 
+                      className="font-sans font-semibold tracking-tight leading-[1.3] mb-[2px]"
+                      style={{ 
+                        fontSize: '14px', 
+                        color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.6)' 
+                      }}
+                    >
+                      {role.role}
+                    </span>
+
+                    {/* Company name */}
+                    <span 
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: 400,
+                        color: '#00CC88',
+                        marginBottom: 0
+                      }}
+                    >
+                      {role.company}
+                    </span>
+                  </div>
+                </button>
               );
             })}
           </div>
 
           {/* Active Milestone Card (Right) */}
-          <div className="lg:col-span-8">
+          <div className="w-full">
             {EXPERIENCE_DATA.map((role, idx) => {
               if (idx !== activeRoleIndex) return null;
               return (
                 <div
                   key={role.id}
-                  className="bg-slate-950/40 p-6 md:p-10 rounded-3xl border border-slate-900/80 backdrop-blur-md shadow-xl shadow-black/35 animate-fadeIn"
+                  className="w-full bg-transparent md:bg-slate-950/40 p-0 md:p-10 rounded-3xl md:border border-transparent md:border-slate-900/80 backdrop-blur-md shadow-none md:shadow-xl md:shadow-black/35 animate-fadeIn"
                   id={`milestone-${role.id}`}
                 >
                   {/* Job Metadata Header */}
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-900 pb-6 mb-6">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-slate-900 rounded-2xl border border-slate-850 text-slate-400 shrink-0">
-                        <Briefcase className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h3 className="text-white font-sans font-extrabold text-lg sm:text-xl leading-snug">
-                          {role.role}
-                        </h3>
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 font-mono mt-1">
-                          <span className="text-emerald-400 font-medium">@{role.company}</span>
-                          <span className="text-slate-700">•</span>
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-3.5 w-3.5" />
-                            {role.location}
-                          </span>
-                          <span className="text-slate-700">•</span>
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3.5 w-3.5" />
-                            {role.period}
-                          </span>
-                        </div>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/[0.06] pb-6 mb-6">
+                    <div className="flex flex-col">
+                      <h3 className="text-white font-sans" style={{ fontSize: 'clamp(22px, 3vw, 28px)', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '8px' }}>
+                        {role.role}
+                      </h3>
+                      <div style={{
+                        fontSize: '14px',
+                        fontWeight: 500,
+                        color: '#00CC88',
+                        fontFamily: 'JetBrains Mono, monospace'
+                      }}>
+                        {role.company} · {role.location}
                       </div>
                     </div>
 
                     {/* Metric Spotlight Pill */}
-                    {role.highlightMetric && (
-                      <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/5 border border-emerald-500/15 rounded-2xl self-start md:self-auto shrink-0 shadow-inner">
-                        <Award className="h-4.5 w-4.5 text-emerald-400" />
-                        <div className="flex flex-col">
-                          <span className="text-emerald-300 font-mono text-xs font-bold leading-none">
-                            {role.highlightMetric.value}
-                          </span>
-                          <span className="text-[8px] text-slate-500 font-mono uppercase tracking-wider mt-0.5 leading-none">
-                            {role.highlightMetric.label}
-                          </span>
-                        </div>
+                    {role.period && (
+                      <div className="flex items-center px-4 py-1.5 bg-emerald-500/5 border border-emerald-500/15 rounded-full self-start md:self-auto shrink-0">
+                        <span className="text-emerald-400 font-mono text-xs font-medium">
+                          {role.period}
+                        </span>
                       </div>
                     )}
                   </div>
 
                   {/* Duties Bullet points */}
-                  <div className="space-y-4 mb-8">
-                    <h4 className="text-slate-400 font-mono text-[10px] sm:text-[11px] uppercase tracking-widest font-semibold">
+                  <div className="mb-8">
+                    <h4 
+                      style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '10px',
+                        fontWeight: 500,
+                        letterSpacing: '0.12em',
+                        color: 'rgba(255,255,255,0.4)',
+                        textTransform: 'uppercase',
+                        marginBottom: '14px',
+                        marginTop: '20px'
+                      }}
+                    >
                       Key Deliverables &amp; Outcomes
                     </h4>
-                    <ul className="space-y-3.5">
+                    <div>
                       {role.description.map((bullet, bIdx) => (
-                        <li key={bIdx} className="flex gap-3.5 text-slate-300 text-sm md:text-[15px] leading-relaxed font-sans font-light">
-                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-emerald-500/10 border border-emerald-500/15 text-emerald-400 mt-0.5">
-                            <Check className="h-3.5 w-3.5" />
-                          </div>
-                          <span className="text-slate-300/90">{bullet}</span>
-                        </li>
+                        <div 
+                          key={bIdx} 
+                          style={{
+                            display: 'flex',
+                            gap: '12px',
+                            alignItems: 'flex-start',
+                            marginBottom: '12px'
+                          }}
+                        >
+                          <Check className="h-4 w-4 shrink-0" style={{ color: '#00CC88', marginTop: '2px' }} />
+                          <span 
+                            style={{
+                              fontSize: '14px',
+                              lineHeight: '1.7',
+                              color: 'rgba(255,255,255,0.75)',
+                              fontWeight: 400
+                            }}
+                          >
+                            {bullet}
+                          </span>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
 
                   {/* Skills Tagged block */}
-                  <div className="pt-6 border-t border-slate-900">
+                  <div className="pt-6 border-t border-white/[0.06]">
                     <h4 className="text-slate-400 font-mono text-[10px] uppercase tracking-widest font-semibold mb-3">
                       Core Tooling Applied
                     </h4>

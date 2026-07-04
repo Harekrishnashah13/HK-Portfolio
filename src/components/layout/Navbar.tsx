@@ -100,9 +100,9 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
           : 'bg-transparent py-5'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-5 md:px-12 flex items-center justify-between">
         
-        {/* Brand Initial Logo "HS" */}
+        {/* Left Side: Brand Logo */}
         <div 
           onClick={() => {
             if (activeCaseStudyId) {
@@ -117,13 +117,13 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
           <span className="font-sans font-extrabold text-lg md:text-xl tracking-tight text-white group-hover:text-emerald-400 transition-colors">
             HK<span className="text-emerald-500">.</span>
           </span>
-          <span className="hidden sm:inline-block h-4 w-px bg-slate-800" />
-          <span className="hidden sm:inline-block text-[10px] text-slate-500 font-mono uppercase tracking-widest leading-none mt-0.5">
+          <span className="h-4 w-px bg-slate-800" />
+          <span className="text-[10px] text-slate-500 font-mono uppercase tracking-widest leading-none mt-0.5">
             Portfolio
           </span>
         </div>
 
-        {/* Dynamic Nav: Case Study Back Button vs Redesigned Header Menu */}
+        {/* Dynamic Nav: Case Study Back Button vs Gorgeous Capsule Nav */}
         {activeCaseStudyId ? (
           <div className="flex items-center gap-4">
             <button
@@ -136,95 +136,60 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
           </div>
         ) : (
           <>
-            {/* Redesigned TOP NAVIGATION: Standard Desktop (lg and up) */}
-            <div className="hidden lg:flex items-center gap-5" id="desktop-nav-redesign">
+            {/* Redesigned TOP NAVIGATION: Standard Desktop (md and up) */}
+            <div className="hidden md:flex items-center gap-4 xl:gap-5" id="desktop-nav-redesign">
               
-              {/* Left Nav links group */}
-              <nav className="flex items-center gap-4 bg-slate-950/40 p-1 rounded-full border border-slate-900/40">
+              {/* Navigation Pill Container */}
+              <nav className="flex items-center gap-1 bg-[#0b1220]/50 border border-slate-900/50 p-1.5 rounded-full shadow-inner backdrop-blur-md">
                 <button
                   onClick={() => scrollToSection('hero')}
-                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
-                    activeSection === 'hero' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
+                  className={`px-3 py-1.5 rounded-full font-mono text-[10px] xl:text-[11px] font-semibold tracking-[0.05em] transition-all cursor-pointer relative after:absolute after:inset-y-[-8px] after:inset-x-0 after:content-[""] ${
+                    activeSection === 'hero' ? 'bg-[#131d31] text-emerald-400 shadow-inner border border-white/[0.03]' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  ABOUT
+                  About
                 </button>
                 <button
                   onClick={() => scrollToSection('projects')}
-                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
-                    activeSection === 'projects' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
+                  className={`px-3 py-1.5 rounded-full font-mono text-[10px] xl:text-[11px] font-semibold tracking-[0.05em] transition-all cursor-pointer relative after:absolute after:inset-y-[-8px] after:inset-x-0 after:content-[""] ${
+                    activeSection === 'projects' ? 'bg-[#131d31] text-emerald-400 shadow-inner border border-white/[0.03]' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  PROJECTS
+                  Projects
                 </button>
                 <button
                   onClick={() => scrollToSection('skills')}
-                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
-                    activeSection === 'skills' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
+                  className={`px-3 py-1.5 rounded-full font-mono text-[10px] xl:text-[11px] font-semibold tracking-[0.05em] transition-all cursor-pointer relative after:absolute after:inset-y-[-8px] after:inset-x-0 after:content-[""] ${
+                    activeSection === 'skills' ? 'bg-[#131d31] text-emerald-400 shadow-inner border border-white/[0.03]' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  SKILLS
+                  Skills
                 </button>
                 <button
                   onClick={() => scrollToSection('experience')}
-                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
-                    activeSection === 'experience' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
+                  className={`px-3 py-1.5 rounded-full font-mono text-[10px] xl:text-[11px] font-semibold tracking-[0.05em] transition-all cursor-pointer relative after:absolute after:inset-y-[-8px] after:inset-x-0 after:content-[""] ${
+                    activeSection === 'experience' ? 'bg-[#131d31] text-emerald-400 shadow-inner border border-white/[0.03]' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  EXPERIENCE
+                  Experience
                 </button>
                 <button
                   onClick={() => scrollToSection('credentials')}
-                  className={`px-3 py-1.5 rounded-full font-mono text-[11px] font-medium tracking-[0.05em] uppercase transition-all ${
-                    activeSection === 'credentials' ? 'bg-slate-900 text-emerald-400 shadow-inner' : 'text-slate-400 hover:text-white'
+                  className={`px-3 py-1.5 rounded-full font-mono text-[10px] xl:text-[11px] font-semibold tracking-[0.05em] transition-all cursor-pointer relative after:absolute after:inset-y-[-8px] after:inset-x-0 after:content-[""] ${
+                    activeSection === 'credentials' ? 'bg-[#131d31] text-emerald-400 shadow-inner border border-white/[0.03]' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  CREDENTIALS
+                  Credentials
                 </button>
               </nav>
 
               {/* Separator */}
-              <span className="text-slate-800 text-sm font-light select-none">│</span>
-
-              {/* Social Channels group */}
-              <div className="flex items-center gap-3.5 text-[11px] font-mono text-slate-400">
-                <a
-                  href={PERSONAL_INFO.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-400 transition-colors flex items-center gap-1"
-                >
-                  <Linkedin className="h-3 w-3 text-[#0A66C2]" />
-                  LinkedIn
-                </a>
-                <a
-                  href={PERSONAL_INFO.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-400 transition-colors flex items-center gap-1"
-                >
-                  <Github className="h-3 w-3 text-white" />
-                  GitHub
-                </a>
-                <a
-                  href={`mailto:${PERSONAL_INFO.email}`}
-                  className="hover:text-emerald-400 transition-colors flex items-center gap-1"
-                >
-                  <Mail className="h-3 w-3 text-emerald-400" />
-                  Email
-                </a>
-              </div>
-
-              {/* Separator */}
-              <span className="text-slate-800 text-sm font-light select-none">│</span>
+              <span className="text-slate-800 text-xs font-light select-none">│</span>
 
               {/* Theme Toggle Button */}
               <button
                 onClick={toggleTheme}
-                className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-slate-900/40 rounded-xl transition-all duration-300 cursor-pointer flex items-center justify-center"
-                aria-label="Toggle theme accessibility option"
-                title="Toggle High Contrast Light Theme"
-                id="desktop-theme-toggle"
+                className="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-[#0b1220]/50 rounded-lg transition-all cursor-pointer flex items-center justify-center"
               >
                 {theme === 'light' ? (
                   <Moon className="h-4 w-4 text-emerald-400" />
@@ -234,35 +199,27 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
               </button>
 
               {/* Separator */}
-              <span className="text-slate-800 text-sm font-light select-none">│</span>
+              <span className="text-slate-800 text-xs font-light select-none">│</span>
 
               {/* Download Resume Action */}
               <button
                 onClick={onOpenResume}
-                className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-xl transition-all shadow-md active:scale-95 cursor-pointer"
+                className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-full transition-all shadow-md active:scale-95 cursor-pointer hover:shadow-emerald-500/20"
               >
                 Download Resume
               </button>
             </div>
 
-            {/* Mobile Actions with Theme Toggle */}
-            <div className="flex items-center gap-2 lg:hidden">
+            {/* Mobile Actions with Theme Toggle & Drawer Button */}
+            <div className="flex items-center gap-3 md:hidden">
               <button
                 onClick={toggleTheme}
-                className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-slate-900/40 rounded-xl transition-all duration-300 cursor-pointer flex items-center justify-center"
-                aria-label="Toggle theme accessibility option"
-                title="Toggle High Contrast Light Theme"
-                id="mobile-theme-toggle"
+                className="p-1.5 text-slate-400 hover:text-emerald-400"
               >
-                {theme === 'light' ? (
-                  <Moon className="h-5 w-5 text-emerald-400" />
-                ) : (
-                  <Sun className="h-5 w-5 text-amber-400" />
-                )}
+                {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
               </button>
-
               <button
-                className="text-slate-400 hover:text-white p-1"
+                className="w-11 h-11 bg-transparent border border-white/15 rounded-lg text-white flex items-center justify-center cursor-pointer hover:text-emerald-400 transition-colors"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
                 id="mobile-menu-toggle"
@@ -274,102 +231,93 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
         )}
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Full-Screen Overlay Menu */}
       <AnimatePresence>
         {mobileMenuOpen && !activeCaseStudyId && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="lg:hidden bg-[#0a0f19] border-b border-slate-900 px-6 py-6"
-            id="mobile-drawer"
+            className="fixed inset-0 z-[999] bg-[rgba(5,14,9,0.98)] backdrop-blur-[20px] flex flex-col items-center justify-center gap-8"
+            id="mobile-nav-overlay"
           >
-            <div className="flex flex-col gap-4">
-              <button
-                onClick={() => scrollToSection('hero')}
-                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
-                  activeSection === 'hero' ? 'text-emerald-400 font-medium' : 'text-slate-400'
-                }`}
-              >
-                ABOUT
-              </button>
-              <button
-                onClick={() => scrollToSection('projects')}
-                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
-                  activeSection === 'projects' ? 'text-emerald-400 font-medium' : 'text-slate-400'
-                }`}
-              >
-                PROJECTS
-              </button>
-              <button
-                onClick={() => scrollToSection('skills')}
-                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
-                  activeSection === 'skills' ? 'text-emerald-400 font-medium' : 'text-slate-400'
-                }`}
-              >
-                SKILLS
-              </button>
-              <button
-                onClick={() => scrollToSection('experience')}
-                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
-                  activeSection === 'experience' ? 'text-emerald-400 font-medium' : 'text-slate-400'
-                }`}
-              >
-                EXPERIENCE
-              </button>
-              <button
-                onClick={() => scrollToSection('credentials')}
-                className={`text-left py-2 font-mono text-[11px] font-medium tracking-[0.05em] uppercase cursor-pointer hover:text-white transition-colors ${
-                  activeSection === 'credentials' ? 'text-emerald-400 font-medium' : 'text-slate-400'
-                }`}
-              >
-                CREDENTIALS
-              </button>
-              
-              <div className="h-px bg-slate-900 my-2" />
+            {/* X Close Button at Top-Right of Overlay */}
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="absolute top-6 right-6 w-11 h-11 flex items-center justify-center bg-transparent border border-white/15 rounded-lg text-white hover:text-emerald-400 transition-colors cursor-pointer"
+              aria-label="Close menu"
+            >
+              <X className="h-6 w-6" />
+            </button>
 
-              {/* Social Channels in Drawer */}
-              <div className="flex items-center gap-4 text-xs font-mono text-slate-400 py-1">
-                <a
-                  href={PERSONAL_INFO.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-400 transition-colors flex items-center gap-1"
-                >
-                  <Linkedin className="h-3 w-3 text-[#0A66C2]" />
-                  LinkedIn
-                </a>
-                <a
-                  href={PERSONAL_INFO.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-400 transition-colors flex items-center gap-1"
-                >
-                  <Github className="h-3 w-3 text-white" />
-                  GitHub
-                </a>
-                <a
-                  href={`mailto:${PERSONAL_INFO.email}`}
-                  className="hover:text-emerald-400 transition-colors flex items-center gap-1"
-                >
-                  <Mail className="h-3 w-3 text-emerald-400" />
-                  Email
-                </a>
-              </div>
+            {/* Nav Links in Overlay */}
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                scrollToSection('hero');
+              }}
+              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+            >
+              About
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                scrollToSection('projects');
+              }}
+              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+            >
+              Projects
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                scrollToSection('skills');
+              }}
+              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+            >
+              Skills
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                scrollToSection('experience');
+              }}
+              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+            >
+              Experience
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                scrollToSection('credentials');
+              }}
+              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+            >
+              Credentials
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                scrollToSection('contact');
+              }}
+              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+            >
+              Contact
+            </button>
 
-              <div className="h-px bg-slate-900 my-2" />
-              
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  if (onOpenResume) onOpenResume();
-                }}
-                className="w-full text-center py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-lg transition-colors shadow-lg"
-              >
-                Download Resume
-              </button>
-            </div>
+            <div className="h-px w-24 bg-white/10 my-2" />
+
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (onOpenResume) onOpenResume();
+              }}
+              className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-sm rounded-xl transition-colors shadow-lg cursor-pointer"
+            >
+              Download Resume
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

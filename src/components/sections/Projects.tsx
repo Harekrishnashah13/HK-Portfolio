@@ -1,4 +1,4 @@
-import { useState, useRef, HTMLAttributes, ReactNode, MouseEvent } from 'react';
+import { useState, useRef, HTMLAttributes, ReactNode, MouseEvent, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PROJECTS_DATA } from '../../data';
 import { Project } from '../../types';
@@ -21,7 +21,10 @@ import {
   Activity,
   Code,
   CodeXml,
-  FolderGit2
+  FolderGit2,
+  Play,
+  Sliders,
+  RefreshCw
 } from 'lucide-react';
 
 interface SpotlightCardProps extends HTMLAttributes<HTMLDivElement> {
@@ -29,6 +32,7 @@ interface SpotlightCardProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
   id?: string;
   key?: string | number;
+  style?: any;
 }
 
 function SpotlightCard({ children, className = '', ...props }: SpotlightCardProps) {
@@ -66,9 +70,10 @@ interface ProjectsProps {
 }
 
 export default function Projects({ onSelectFlagship }: ProjectsProps) {
-  const [filter, setFilter] = useState<'all' | 'professional' | 'academic' | 'personal'>('all');
+  const [filter, setFilter] = useState<'all' | 'engineering' | 'bi' | 'analytics'>('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const toggleShowAll = () => setShowAll(!showAll);
 
   const pinnedIds = ['project-1', 'project-7', 'project-4'];
 
@@ -81,24 +86,46 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
   const [transitRoute, setTransitRoute] = useState<'46A' | '39A' | '14'>('46A');
   const [financeRisk, setFinanceRisk] = useState<'conservative' | 'moderate' | 'aggressive'>('moderate');
 
-  // Filter based on project type
+  // Expanded high-fidelity simulator states
+  const [selectedMigTemplate, setSelectedMigTemplate] = useState<number>(0);
+  const [isMigTranslating, setIsMigTranslating] = useState<boolean>(false);
+  const [migTranslationLogs, setMigTranslationLogs] = useState<string[]>([]);
+  const [selectedDiagError, setSelectedDiagError] = useState<'db' | 'rate' | 'schema'>('db');
+  const [selectedAibDept, setSelectedAibDept] = useState<'retail' | 'wealth' | 'corporate'>('retail');
+  const [isAibAuditing, setIsAibAuditing] = useState<boolean>(false);
+  const [aibAuditLogs, setAibAuditLogs] = useState<string[]>([]);
+  const [isHealthcareSpiked, setIsHealthcareSpiked] = useState<boolean>(false);
+  const [yoloActiveScene, setYoloActiveScene] = useState<'dublin' | 'motorway' | 'junction'>('dublin');
+  const [financePrincipal, setFinancePrincipal] = useState<string>('10000');
+  const [transitPoints, setTransitPoints] = useState<number[]>([18, 19, 18, 17, 18, 20, 18, 17, 18, 19]);
+
+  // Real-time flowing graph ticker for Irish Transit Congestion Monitor
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTransitPoints(prev => {
+        const routeSpeeds = { '46A': 18, '39A': 29, '14': 42 };
+        const baseSpeed = routeSpeeds[transitRoute] || 18;
+        const noise = Math.sin(Date.now() / 1000) * 3 + (Math.random() - 0.5) * 4;
+        const nextSpeed = Math.max(5, Math.min(60, Math.round(baseSpeed + noise)));
+        return [...prev.slice(1), nextSpeed];
+      });
+    }, 1200);
+    return () => clearInterval(timer);
+  }, [transitRoute]);
+
+  // Filter based on project category (Data Engineering, Business Intelligence, Machine Learning)
   const filteredProjects = PROJECTS_DATA.filter((p) => {
     if (filter === 'all') return true;
-    if (filter === 'professional') {
-      return p.id === 'project-1' || p.id === 'project-3';
-    }
-    if (filter === 'academic') {
-      return p.id === 'project-4';
-    }
-    if (filter === 'personal') {
-      return p.id === 'project-5' || p.id === 'project-6' || p.id === 'project-7';
-    }
-    return p.projectType === filter;
+    return p.category === filter;
   });
 
-  const projectsToRender = filteredProjects.filter((p) => {
+  const projectsToRender = filteredProjects.filter((p, index) => {
     if (showAll) return true;
-    return pinnedIds.includes(p.id);
+    if (filter === 'all') {
+      return pinnedIds.includes(p.id);
+    } else {
+      return index < 3;
+    }
   });
 
   // Supporting projects are mapped to projectsToRender
@@ -111,23 +138,52 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
     switch (type) {
       case 'professional':
         return (
-          <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider font-mono font-semibold px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded">
+          <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.06em] font-mono font-medium py-[3px] px-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-[4px]">
             <Layers className="h-3 w-3" />
             Professional Work
           </span>
         );
       case 'academic':
         return (
-          <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider font-mono font-semibold px-2 py-0.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded">
+          <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.06em] font-mono font-medium py-[3px] px-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-[4px]">
             <BookOpen className="h-3 w-3" />
             Academic Research
           </span>
         );
       case 'personal':
         return (
-          <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider font-mono font-semibold px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded">
+          <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.06em] font-mono font-medium py-[3px] px-[10px] bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded-[4px]">
             <Code className="h-3 w-3" />
             Personal Projects
+          </span>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // Badge mapping for project categories
+  const getProjectCategoryBadge = (category: 'engineering' | 'bi' | 'analytics') => {
+    switch (category) {
+      case 'engineering':
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.06em] font-mono font-medium py-[3px] px-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-[4px]">
+            <Database className="h-3 w-3" />
+            Data Engineering
+          </span>
+        );
+      case 'bi':
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.06em] font-mono font-medium py-[3px] px-[10px] bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded-[4px]">
+            <BarChart3 className="h-3 w-3" />
+            Business Intelligence
+          </span>
+        );
+      case 'analytics':
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.06em] font-mono font-medium py-[3px] px-[10px] bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded-[4px]">
+            <TrendingUp className="h-3 w-3" />
+            Machine Learning
           </span>
         );
       default:
@@ -139,16 +195,86 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
   // INTERACTIVE CODE & BI ARTIFACT SIMULATIONS
   // ----------------------------------------------------
 
-  const runDiagnostics = () => {
+  const migrationTemplates = [
+    {
+      id: 'qualify',
+      title: 'QUALIFY',
+      sql: `SELECT emp_id, dept_id, salary,\n  QUALIFY ROW_NUMBER() \n  OVER (PARTITION BY dept_id \n        ORDER BY salary DESC) = 1\nFROM raw.employee_billing;`,
+      pyspark: `windowSpec = Window.partitionBy("dept_id") \\\n  .orderBy(col("salary").desc())\n\ndf = raw_df.withColumn("rn", \n  row_number().over(windowSpec)) \\\n  .filter(col("rn") == 1) \\\n  .drop("rn")`,
+      desc: 'QUALIFY ➔ Window function'
+    },
+    {
+      id: 'coalesce',
+      title: 'COALESCE',
+      sql: `SELECT cust_id,\n  COALESCE(total_amount, 0.00) AS rev_usd,\n  CAST(txn_date AS DATE) AS day_id\nFROM core.customers;`,
+      pyspark: `from pyspark.sql.functions import col, coalesce, lit, to_date\n\ndf = customers_df.withColumn("rev_usd", \n  coalesce(col("total_amount"), lit(0.00))) \\\n  .withColumn("day_id", to_date(col("txn_date")))`,
+      desc: 'COALESCE & CAST ➔ Spark functions'
+    },
+    {
+      id: 'groupby',
+      title: 'GROUP BY',
+      sql: `SELECT dept_id, SUM(salary) AS total\nFROM raw.employee_billing\nGROUP BY dept_id\nHAVING total > 100000;`,
+      pyspark: `df = raw_df.groupBy("dept_id") \\\n  .agg(sum("salary").alias("total")) \\\n  .filter(col("total") > 100000)`,
+      desc: 'GROUP BY ➔ Spark Aggregation'
+    }
+  ];
+
+  const handleMigrationTranspile = () => {
+    setIsMigTranslating(true);
+    setMigTranslationLogs([]);
+    const logs = [
+      "Analyzing AST from legacy Teradata dialect...",
+      "Identifying Dialect-specific clauses...",
+      "Generating equivalent PySpark execution plan...",
+      "Optimizing partition footprints...",
+      "Compilation succeeded with 100% parity."
+    ];
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < logs.length) {
+        setMigTranslationLogs(prev => [...prev, logs[i]]);
+        i++;
+      } else {
+        clearInterval(interval);
+        setIsMigTranslating(false);
+      }
+    }, 200);
+  };
+
+  const diagErrorsList = {
+    db: {
+      name: "Database Timeout",
+      log: "psycopg2.OperationalError: connection to 'db.internal' (10.0.1.42) failed: Connection refused",
+      diagnosis: "Target DB container is offline due to ungraceful heap overflow. Spark task failed.",
+      heal: "docker restart dev_postgresql_db_1 && python3 verify_migrations.py",
+      success: "Container restarted successfully. Connection handshake verified. Spark session recovered."
+    },
+    rate: {
+      name: "API Rate Limit",
+      log: "requests.exceptions.HTTPError: 429 Client Error: Too Many Requests for v1/jobs",
+      diagnosis: "API gateway is rate-limiting the job scraper due to thread concurrency peaks.",
+      heal: "sed -i 's/CONCURRENCY=10/CONCURRENCY=2/g' .env && docker-compose restart scraper",
+      success: "Throttling resolved. Backoff policy injected. Latency recovered to normal SLA parameters."
+    },
+    schema: {
+      name: "Schema Drift",
+      log: "ValueError: Column count mismatch. Expected 14 columns, received 16 columns at line 4381",
+      diagnosis: "Upstream transactional table changed schema. Appended 2 unmapped audit tags.",
+      heal: "python3 apply_schema_evolution.py --table billing_records",
+      success: "Delta schema evolved automatically. Partition schema matched. Records ingested."
+    }
+  };
+
+  const runSelectedDiagnostics = () => {
     setDiagState('running');
     setDiagLogs([]);
+    const selectedError = diagErrorsList[selectedDiagError];
     const logs = [
-      "Intercepting exception traceback...",
-      "Analyzing logs: Connection timeout with api.hicounselor.com...",
-      "Matching exception against pre-approved recovery signatures...",
-      "Signature matched: HTTPS Connection Retries Exceeded.",
-      "Dispatching auto-heal script: docker restart pipeline_worker_1",
-      "Validating heartbeat handshake..."
+      "Intercepting traceback log...",
+      `Parsing signature: "${selectedError.name}"`,
+      `Root cause: ${selectedError.diagnosis}`,
+      `Executing autonomic recovery command: \`${selectedError.heal}\``,
+      "Performing health check ping..."
     ];
     let i = 0;
     const interval = setInterval(() => {
@@ -159,310 +285,494 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
         clearInterval(interval);
         setDiagState('healed');
       }
+    }, 250);
+  };
+
+  const runAibAudit = () => {
+    setIsAibAuditing(true);
+    setAibAuditLogs([]);
+    const logs = [
+      "✔ Verified 2,240 financial ledger checks.",
+      "✔ Absolute Parity Certificate issued dec-2024.",
+      "✔ No compliance discrepancies detected."
+    ];
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < logs.length) {
+        setAibAuditLogs(prev => [...prev, logs[i]]);
+        i++;
+      } else {
+        clearInterval(interval);
+        setIsAibAuditing(false);
+      }
     }, 400);
   };
 
   // 1. Flagship Migration Parser Engine Mockup
-  const renderMigrationMockup = () => (
-    <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-5 font-mono text-[10px] text-slate-400 relative overflow-hidden select-none shadow-inner h-[280px] flex flex-col justify-between">
-      {/* Dashboard Top Navigation bar */}
-      <div className="flex items-center justify-between border-b border-slate-900/80 pb-3 mb-3">
-        <div className="flex items-center gap-2">
-          <Terminal className="h-3.5 w-3.5 text-emerald-400" />
-          <span className="text-[9px] text-slate-400 font-sans font-medium">SQL translation &amp; Parity Parser</span>
-        </div>
-        <span className="text-[8px] bg-slate-900 text-slate-400 border border-slate-800 px-2 py-0.5 rounded">
-          Interactive Pipeline Sandbox
-        </span>
-      </div>
-
-      {/* Code comparison split pane */}
-      <div className="grid grid-cols-2 gap-3 flex-1 overflow-hidden">
-        {/* Teradata Source */}
-        <div className="bg-slate-950/80 border border-slate-900 p-2.5 rounded-lg flex flex-col justify-between">
-          <div>
-            <span className="text-[8px] text-red-400 font-bold block mb-1">SOURCE TERADATA SQL</span>
-            <pre className="text-[7px] text-slate-500 leading-tight font-mono whitespace-pre-wrap">
-{`SELECT emp_id,
-  dept_id,
-  salary,
-  QUALIFY ROW_NUMBER() 
-  OVER (PARTITION BY dept_id 
-        ORDER BY salary DESC) = 1
-FROM raw.employee_billing;`}
-            </pre>
+  const renderMigrationMockup = () => {
+    const currentTpl = migrationTemplates[selectedMigTemplate] || migrationTemplates[0];
+    return (
+      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 relative overflow-hidden select-none shadow-inner h-auto min-h-[290px] flex flex-col justify-between">
+        {/* Dashboard Top Navigation bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-900/80 pb-2.5 mb-2.5 gap-2">
+          <div className="flex items-center gap-1.5">
+            <Terminal className="h-3.5 w-3.5 text-emerald-400" />
+            <span className="text-[8.5px] text-slate-400 font-sans font-medium">SQL Translation &amp; Parity Parser</span>
           </div>
-          <span className="text-[7px] text-slate-600">Regex Tokenizer Input</span>
-        </div>
-
-        {/* PySpark Destination */}
-        <div className="bg-slate-950/80 border border-slate-900 p-2.5 rounded-lg flex flex-col justify-between border-l-emerald-500/20">
-          <div>
-            <span className="text-[8px] text-emerald-400 font-bold block mb-1">TARGET PYSPARK (DATABRICKS)</span>
-            <pre className="text-[7px] text-emerald-300 leading-tight font-mono whitespace-pre-wrap font-medium">
-{`windowSpec = Window.partitionBy("dept_id")\\
-  .orderBy(col("salary").desc())
-
-df = raw_df.withColumn("rn", 
-  row_number().over(windowSpec))\\
-  .filter(col("rn") == 1)\\
-  .drop("rn")`}
-            </pre>
+          <div className="flex gap-1">
+            {migrationTemplates.map((tpl, idx) => (
+              <button
+                key={tpl.id}
+                onClick={() => {
+                  setSelectedMigTemplate(idx);
+                  setMigTranslationLogs([]);
+                }}
+                className={`px-1.5 py-0.5 rounded text-[7px] font-mono cursor-pointer transition-colors ${
+                  selectedMigTemplate === idx ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'text-slate-500 hover:text-slate-300'
+                }`}
+              >
+                {tpl.title}
+              </button>
+            ))}
           </div>
-          <span className="text-[7px] text-emerald-500/70">✔ AST Map Compiled</span>
+        </div>
+
+        {/* Code comparison split pane */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 flex-1 my-1">
+          {/* Teradata Source */}
+          <div className="bg-slate-950/80 border border-slate-900 p-2 rounded-lg flex flex-col justify-between min-h-[80px]">
+            <div>
+              <span className="text-[7.5px] text-red-400 font-bold block mb-1">SOURCE TERADATA SQL</span>
+              <pre className="text-[6.5px] text-slate-500 leading-tight font-mono whitespace-pre-wrap">
+                {currentTpl.sql}
+              </pre>
+            </div>
+            <span className="text-[6.5px] text-slate-600 mt-1">{currentTpl.desc}</span>
+          </div>
+
+          {/* PySpark Destination */}
+          <div className="bg-slate-950/80 border border-slate-900 p-2 rounded-lg flex flex-col justify-between border-l-emerald-500/20 min-h-[80px]">
+            <div>
+              <span className="text-[7.5px] text-emerald-400 font-bold block mb-1">TARGET PYSPARK (DATABRICKS)</span>
+              {isMigTranslating ? (
+                <div className="space-y-1">
+                  {migTranslationLogs.map((log, lIdx) => (
+                    <p key={lIdx} className="text-[6px] text-slate-500 leading-tight font-mono">&gt; {log}</p>
+                  ))}
+                  <p className="text-[6.5px] text-emerald-400 font-bold animate-pulse font-mono">Compiling execution plan...</p>
+                </div>
+              ) : (
+                <pre className="text-[6.5px] text-emerald-300 leading-tight font-mono whitespace-pre-wrap font-medium">
+                  {currentTpl.pyspark}
+                </pre>
+              )}
+            </div>
+            <span className="text-[6.5px] text-emerald-500/70 mt-1 flex items-center justify-between">
+              <span>{isMigTranslating ? "Translating..." : "✔ AST Map Compiled"}</span>
+              <button
+                onClick={handleMigrationTranspile}
+                disabled={isMigTranslating}
+                className="px-1.5 py-0.5 bg-emerald-500 hover:bg-emerald-400 disabled:bg-slate-800 text-slate-950 font-bold text-[6.5px] rounded cursor-pointer transition-colors font-mono"
+              >
+                Run Transpiler
+              </button>
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom checksum row */}
+        <div className="mt-2.5 flex items-center justify-between bg-emerald-950/15 border border-emerald-900/20 px-2 py-1 rounded text-[7.5px] text-emerald-400">
+          <span className="flex items-center gap-1">
+            <Check className="h-3 w-3 shrink-0" />
+            Checksum validation: 100% parity (1.2PB)
+          </span>
+          <span className="font-sans text-[7px] text-slate-500">Migration Completed</span>
         </div>
       </div>
-
-      {/* Bottom checksum row */}
-      <div className="mt-3 flex items-center justify-between bg-emerald-950/15 border border-emerald-900/20 px-2 py-1.5 rounded-lg text-[8px] text-emerald-400">
-        <span className="flex items-center gap-1">
-          <Check className="h-3 w-3 shrink-0" />
-          Checksum validation: 100% row-by-row parity (1.2PB)
-        </span>
-        <span className="font-sans text-[7px] text-slate-500">Migration Completed</span>
-      </div>
-    </div>
-  );
+    );
+  };
 
   // 2. Self-Healing Pipeline Diagnostics (HiCounselor)
-  const renderAIDiagnosticMockup = () => (
-    <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-[210px] flex flex-col justify-between relative overflow-hidden select-none">
-      <div className="flex items-center justify-between border-b border-slate-900/80 pb-2 mb-2">
-        <span className="text-[8px] text-slate-500">JENKINS INTERCEPTOR (GEMINI DIALOGUE)</span>
-        <span className="text-emerald-400 bg-emerald-950/20 border border-emerald-900/20 px-1.5 py-0.2 rounded text-[7px]">
-          Simulated Interactive Terminal
-        </span>
-      </div>
-
-      <div className="space-y-1.5 flex-1 overflow-y-auto pr-1">
-        {diagState === 'idle' && (
-          <div className="space-y-2">
-            <div className="bg-slate-950/80 border border-slate-900 p-2 rounded">
-              <span className="text-red-400 font-bold block text-[7.5px] mb-0.5">❌ Pipeline Crash Trace:</span>
-              <p className="text-[7px] text-slate-500 leading-tight">
-                ConnectionError: HTTPSConnectionPool(host='api.hicounselor.com', port=443): Max retries exceeded
-              </p>
-            </div>
-            <button
-              onClick={runDiagnostics}
-              className="w-full py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono text-[8.5px] font-bold rounded transition-all cursor-pointer"
-            >
-              Run Gemini Diagnostic Agent
-            </button>
-          </div>
-        )}
-
-        {diagState === 'running' && (
-          <div className="space-y-1">
-            {diagLogs.map((log, index) => (
-              <p key={index} className="text-[7px] text-slate-400 leading-normal">
-                <span className="text-emerald-500 mr-1">&gt;</span> {log}
-              </p>
+  const renderAIDiagnosticMockup = () => {
+    const currentError = diagErrorsList[selectedDiagError] || diagErrorsList.db;
+    return (
+      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-auto min-h-[220px] sm:h-[220px] flex flex-col justify-between relative overflow-hidden select-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-900/80 pb-2 mb-2 gap-1.5">
+          <span className="text-[8px] text-slate-500">JENKINS INTERCEPTOR (GEMINI DIALOGUE)</span>
+          <div className="flex gap-1">
+            {(['db', 'rate', 'schema'] as const).map((errKey) => (
+              <button
+                key={errKey}
+                onClick={() => {
+                  setSelectedDiagError(errKey);
+                  setDiagState('idle');
+                  setDiagLogs([]);
+                }}
+                className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono cursor-pointer transition-colors ${
+                  selectedDiagError === errKey ? 'bg-red-500/20 text-red-400 border border-red-500/20' : 'text-slate-500 hover:text-slate-300'
+                }`}
+              >
+                {errKey === 'db' ? 'DB Error' : errKey === 'rate' ? 'Rate Limit' : 'Schema'}
+              </button>
             ))}
-            <p className="text-[7px] text-emerald-400 font-bold animate-pulse">Running heal scripts...</p>
           </div>
-        )}
+        </div>
 
-        {diagState === 'healed' && (
-          <div className="space-y-2">
-            <div className="bg-emerald-950/15 border border-emerald-500/10 p-2 rounded">
-              <span className="text-emerald-400 font-bold block text-[7.5px] mb-0.5">✔ Autonomic Agent Output:</span>
-              <p className="text-[7px] text-slate-300 leading-tight">
-                Connection cleared. Docker container 'worker_1' restarted. Handshake OK. SLA secured under 4 minutes.
-              </p>
+        <div className="space-y-1.5 flex-1 overflow-y-auto pr-1 my-1">
+          {diagState === 'idle' && (
+            <div className="space-y-2">
+              <div className="bg-slate-950/80 border border-slate-900 p-2 rounded">
+                <span className="text-red-400 font-bold block text-[7.5px] mb-0.5">❌ Pipeline Crash Trace:</span>
+                <p className="text-[7px] text-slate-400 leading-tight">
+                  {currentError.log}
+                </p>
+              </div>
+              <button
+                onClick={runSelectedDiagnostics}
+                className="w-full py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono text-[8.5px] font-bold rounded transition-all cursor-pointer flex items-center justify-center gap-1"
+              >
+                <Play className="h-3 w-3 shrink-0" />
+                Run Gemini Diagnostic Agent
+              </button>
             </div>
-            <button
-              onClick={() => setDiagState('idle')}
-              className="w-full py-1 bg-slate-900 hover:bg-slate-850 text-slate-400 hover:text-white font-mono text-[8px] rounded transition-all cursor-pointer"
-            >
-              Reset Simulation State
-            </button>
-          </div>
-        )}
-      </div>
+          )}
 
-      <div className="mt-2 pt-2 border-t border-slate-900/80 text-[7px] text-slate-600 flex justify-between items-center">
-        <span>Failure Resolution: 94%</span>
-        <span>Latency: 14.2h ➔ <span className="text-emerald-400 font-bold">4 mins</span></span>
+          {diagState === 'running' && (
+            <div className="space-y-1">
+              {diagLogs.map((log, index) => (
+                <p key={index} className="text-[7px] text-slate-400 leading-normal">
+                  <span className="text-emerald-500 mr-1">&gt;</span> {log}
+                </p>
+              ))}
+              <p className="text-[7px] text-emerald-400 font-bold animate-pulse">Running autonomic recovery agent...</p>
+            </div>
+          )}
+
+          {diagState === 'healed' && (
+            <div className="space-y-2">
+              <div className="bg-emerald-950/15 border border-emerald-500/10 p-2 rounded">
+                <span className="text-emerald-400 font-bold block text-[7.5px] mb-0.5">✔ Autonomic Recovery Success:</span>
+                <p className="text-[7px] text-slate-300 leading-tight">
+                  {currentError.success}
+                </p>
+              </div>
+              <button
+                onClick={() => setDiagState('idle')}
+                className="w-full py-1 bg-slate-900 hover:bg-slate-850 text-slate-400 hover:text-white font-mono text-[8px] rounded transition-all cursor-pointer flex items-center justify-center gap-1"
+              >
+                <RefreshCw className="h-2.5 w-2.5 shrink-0" />
+                Reset Simulation State
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-2 pt-2 border-t border-slate-900/80 text-[7px] text-slate-600 flex justify-between items-center">
+          <span>Failure Resolution: 94%</span>
+          <span>Latency: 14.2h ➔ <span className="text-emerald-400 font-bold">4 mins</span></span>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // 3. Banking Fraud & Operational SLA Dashboard (AIB)
-  const renderAIBDashboardMockup = () => (
-    <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-[210px] flex flex-col justify-between relative overflow-hidden select-none">
-      <div className="flex items-center justify-between border-b border-slate-900/80 pb-2 mb-2">
-        <span className="text-[8px] text-slate-500">EXECUTIVE FRAUD & SLA DASHBOARD (AIB)</span>
-        <div className="flex gap-1">
-          <button
-            onClick={() => setAibTab('sla')}
-            className={`px-1 rounded text-[6.5px] font-mono ${
-              aibTab === 'sla' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'text-slate-500 hover:text-slate-300'
-            }`}
-          >
-            SLA
-          </button>
-          <button
-            onClick={() => setAibTab('audit')}
-            className={`px-1 rounded text-[6.5px] font-mono ${
-              aibTab === 'audit' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'text-slate-500 hover:text-slate-300'
-            }`}
-          >
-            Audits
-          </button>
+  const renderAIBDashboardMockup = () => {
+    const aibDeptsMap = {
+      retail: { compliance: "100% SLA", cases: "42 Resolved", triage: "18m Triage", color: "text-emerald-400" },
+      wealth: { compliance: "98.9% SLA", cases: "12 Resolved", triage: "24m Triage", color: "text-emerald-400" },
+      corporate: { compliance: "100% SLA", cases: "8 Resolved", triage: "11m Triage", color: "text-emerald-400" }
+    };
+    const currentDeptInfo = aibDeptsMap[selectedAibDept] || aibDeptsMap.retail;
+
+    return (
+      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-auto min-h-[220px] sm:h-[220px] flex flex-col justify-between relative overflow-hidden select-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-900/80 pb-2 mb-2 gap-1.5">
+          <span className="text-[8px] text-slate-500">EXECUTIVE FRAUD &amp; SLA DASHBOARD (AIB)</span>
+          <div className="flex gap-1">
+            <button
+              onClick={() => setAibTab('sla')}
+              className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono cursor-pointer transition-colors ${
+                aibTab === 'sla' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'text-slate-500 hover:text-slate-300'
+              }`}
+            >
+              SLA Tracker
+            </button>
+            <button
+              onClick={() => setAibTab('audit')}
+              className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono cursor-pointer transition-colors ${
+                aibTab === 'audit' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'text-slate-500 hover:text-slate-300'
+              }`}
+            >
+              Compliance Audits
+            </button>
+          </div>
+        </div>
+
+        {/* Mock metric indicators */}
+        <div className="flex-1 flex flex-col justify-center my-1.5">
+          {aibTab === 'sla' ? (
+            <div className="space-y-2 text-left">
+              {/* Department Selector */}
+              <div className="flex gap-1 mb-1">
+                {(['retail', 'wealth', 'corporate'] as const).map(d => (
+                  <button
+                    key={d}
+                    onClick={() => setSelectedAibDept(d)}
+                    className={`px-1 py-0.2 rounded text-[6px] tracking-tight font-mono ${
+                      selectedAibDept === d ? 'bg-slate-850 text-emerald-400 border border-slate-800' : 'text-slate-600 hover:text-slate-400'
+                    }`}
+                  >
+                    {d.charAt(0).toUpperCase() + d.slice(1)}
+                  </button>
+                ))}
+              </div>
+              <div className="grid grid-cols-3 gap-1.5">
+                <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
+                  <span className="text-slate-500 text-[6px] block uppercase">Compliance</span>
+                  <span className="text-emerald-400 text-[10px] font-sans font-bold">{currentDeptInfo.compliance}</span>
+                </div>
+                <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
+                  <span className="text-slate-500 text-[6px] block uppercase">Triage Vol</span>
+                  <span className="text-white text-[10px] font-sans font-bold">{currentDeptInfo.cases}</span>
+                </div>
+                <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
+                  <span className="text-slate-500 text-[6px] block uppercase">Avg Speed</span>
+                  <span className="text-emerald-400 text-[10px] font-sans font-bold">{currentDeptInfo.triage}</span>
+                </div>
+              </div>
+              {/* Small SVG Sparkline of fraud triage status */}
+              <div className="h-6 w-full bg-slate-950 rounded border border-slate-900 flex items-center justify-between px-2 text-[6.5px] text-slate-500">
+                <span>Central Bank SLA Standard: 100%</span>
+                <span className="text-emerald-400 font-bold">✔ Target Safe</span>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-slate-950/80 border border-slate-900 p-2 rounded space-y-1.5 text-left">
+              <div className="flex justify-between items-center border-b border-slate-900 pb-1 mb-1">
+                <span className="text-slate-400 text-[7px] font-bold block uppercase">
+                  Central Bank Parity Logs
+                </span>
+                <button
+                  onClick={runAibAudit}
+                  disabled={isAibAuditing}
+                  className="px-1.5 py-0.5 bg-emerald-500 hover:bg-emerald-400 disabled:bg-slate-800 text-slate-950 font-bold text-[6px] rounded transition-colors"
+                >
+                  {isAibAuditing ? 'Auditing...' : 'Run Audit'}
+                </button>
+              </div>
+              {isAibAuditing ? (
+                <div className="space-y-0.5">
+                  <p className="text-[6px] text-slate-500 font-mono animate-pulse">Running transactional reconciliation...</p>
+                  <p className="text-[6.5px] text-emerald-400 font-mono">&gt; Verified 2,240 digital checks.</p>
+                </div>
+              ) : aibAuditLogs.length > 0 ? (
+                <div className="space-y-0.5">
+                  {aibAuditLogs.map((log, idx) => (
+                    <p key={idx} className="text-[6.5px] text-emerald-400 leading-normal font-mono">{log}</p>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[7px] text-slate-500 leading-normal font-mono italic">
+                  Reconciliation logs are offline. Click 'Run Audit' to verify real-time Central Bank parity.
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="mt-2 pt-2 border-t border-slate-900/80 text-[7px] text-slate-600 flex justify-between items-center">
+          <span>Mainframe / Arcot Gateway Synced</span>
+          <span>Secure Gateway</span>
         </div>
       </div>
-
-      {/* Mock metric indicators */}
-      <div className="flex-1 flex flex-col justify-center my-1.5">
-        {aibTab === 'sla' ? (
-          <div className="grid grid-cols-2 gap-2">
-            <div className="bg-slate-950/80 border border-slate-900 p-2 rounded">
-              <span className="text-slate-500 text-[7px] block">KYC/AML Review SLA</span>
-              <span className="text-emerald-400 text-xs font-sans font-bold">100% Compliance</span>
-              <span className="text-[6.5px] text-slate-500 block mt-0.5">Audit-Ready</span>
-            </div>
-
-            <div className="bg-slate-950/80 border border-slate-900 p-2 rounded">
-              <span className="text-slate-500 text-[7px] block">Daily Case Triage</span>
-              <span className="text-white text-xs font-sans font-bold">20+ Resolved</span>
-              <span className="text-[6.5px] text-emerald-400 block mt-0.5">Slashed Lag by 30%</span>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-slate-950/80 border border-slate-900 p-2 rounded space-y-1 text-left">
-            <span className="text-slate-400 text-[7.5px] font-bold block uppercase border-b border-slate-900 pb-1 mb-1">
-              Central Bank Parity Logs (Audit Suite)
-            </span>
-            <p className="text-[6.5px] text-emerald-400 leading-normal">
-              ✔ 2,240 financial ledger checks completed successfully.
-            </p>
-            <p className="text-[6.5px] text-emerald-400 leading-normal">
-              ✔ Absolute Parity Certificate issued dec-2024.
-            </p>
-            <p className="text-[6.5px] text-slate-500 leading-normal">
-              ✔ No regulatory or compliance discrepancies detected.
-            </p>
-          </div>
-        )}
-      </div>
-
-      <div className="mt-2 pt-2 border-t border-slate-900/80 text-[7px] text-slate-600 flex justify-between items-center">
-        <span>Mainframe / Arcot Gateway Synced</span>
-        <span>Secure Gateway</span>
-      </div>
-    </div>
-  );
+    );
+  };
 
   // 4. YOLOv9 Spatial Localization Mockup (MSc Dissertation)
-  const renderYOLOMockup = () => (
-    <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-[210px] flex flex-col justify-between relative overflow-hidden select-none">
-      <div className="flex items-center justify-between border-b border-slate-900/80 pb-2 mb-2">
-        <span className="text-[8px] text-slate-500">YOLOV9 DEEP LEARNING WORKBOOK</span>
-        <span className="text-purple-400 bg-purple-950/20 border border-purple-900/20 px-1.5 py-0.2 rounded text-[7px]">
-          Interactive Model Testing
-        </span>
-      </div>
+  const renderYOLOMockup = () => {
+    const yoloScenes = {
+      dublin: {
+        name: "Dublin L301 (Day)",
+        bg: "bg-slate-900/60",
+        objects: [
+          { label: "License Plate", confidence: 0.94, bbox: "top-[40%] left-[20%] w-[35%] h-[18%] border-emerald-500 bg-emerald-500/10 text-emerald-400" },
+          { label: "Vehicle ID", confidence: 0.78, bbox: "top-[10%] left-[5%] w-[85%] h-[80%] border-blue-500 bg-blue-500/10 text-blue-400" },
+          { label: "Roadsign/Glare", confidence: 0.38, bbox: "top-[5%] left-[70%] w-[12%] h-[15%] border-red-500 bg-red-500/10 text-red-400" }
+        ]
+      },
+      motorway: {
+        name: "M50 Toll (Night)",
+        bg: "bg-slate-950",
+        objects: [
+          { label: "License Plate", confidence: 0.91, bbox: "top-[45%] left-[25%] w-[25%] h-[15%] border-emerald-500 bg-emerald-500/10 text-emerald-400" },
+          { label: "HGV/Truck", confidence: 0.82, bbox: "top-[15%] left-[15%] w-[65%] h-[75%] border-blue-500 bg-blue-500/10 text-blue-400" },
+          { label: "Rain Artifact", confidence: 0.25, bbox: "top-[55%] left-[78%] w-[10%] h-[10%] border-red-500 bg-red-500/10 text-red-400" }
+        ]
+      },
+      junction: {
+        name: "Grafton St (Dusk)",
+        bg: "bg-neutral-900/80",
+        objects: [
+          { label: "License Plate", confidence: 0.89, bbox: "top-[35%] left-[15%] w-[30%] h-[20%] border-emerald-500 bg-emerald-500/10 text-emerald-400" },
+          { label: "Transit Van", confidence: 0.74, bbox: "top-[10%] left-[8%] w-[82%] h-[78%] border-blue-500 bg-blue-500/10 text-blue-400" },
+          { label: "Distant Post", confidence: 0.32, bbox: "top-[50%] left-[85%] w-[8%] h-[18%] border-red-500 bg-red-500/10 text-red-400" }
+        ]
+      }
+    };
+    const scene = yoloScenes[yoloActiveScene] || yoloScenes.dublin;
 
-      {/* Visual representation of detection bounding box overlay */}
-      <div className="flex-1 bg-slate-950 border border-slate-900/70 rounded-lg p-2.5 flex flex-col justify-between relative items-stretch my-1">
-        <div className="flex-1 flex flex-col justify-center items-center border border-dashed border-slate-800 rounded mb-2 bg-slate-900/20">
-          <div className="w-4/5 h-10 border border-emerald-500 relative flex items-start p-1 bg-emerald-500/5 rounded">
-            <span className="absolute top-[-7px] left-1 bg-emerald-500 text-slate-950 text-[5.5px] font-bold px-1 rounded">
-              Class: Active Object [{(yoloThreshold * 100).toFixed(1)}% Match]
-            </span>
-            <span className="text-[6.5px] text-slate-500 font-mono mt-2 leading-none">
-              {yoloThreshold < 0.40 
-                ? "Multiple detections: [active, shadow, artifact]" 
-                : yoloThreshold >= 0.40 && yoloThreshold <= 0.85 
-                ? "Primary classification: [active, target]" 
-                : "Singular confident match: [active]"}
-            </span>
+    return (
+      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-auto min-h-[220px] sm:h-[220px] flex flex-col justify-between relative overflow-hidden select-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-900/80 pb-2 mb-2 gap-1.5">
+          <span className="text-[8px] text-slate-500">YOLOV9 LIVE DETECTION WORKBOOK</span>
+          <div className="flex gap-1">
+            {(['dublin', 'motorway', 'junction'] as const).map(sc => (
+              <button
+                key={sc}
+                onClick={() => setYoloActiveScene(sc)}
+                className={`px-1.5 py-0.5 rounded text-[6.5px] font-mono cursor-pointer transition-colors ${
+                  yoloActiveScene === sc ? 'bg-purple-500/20 text-purple-400 border border-purple-500/20' : 'text-slate-500 hover:text-slate-300'
+                }`}
+              >
+                {sc === 'dublin' ? 'Dublin L301' : sc === 'motorway' ? 'M50 Night' : 'Grafton St'}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Confidence interactive threshold slider */}
-        <div className="space-y-1">
-          <div className="flex justify-between items-center text-[7px] text-slate-500">
-            <span>Confidence Threshold</span>
-            <span className="text-emerald-400 font-bold font-mono">{(yoloThreshold).toFixed(2)}</span>
+        {/* Visual representation of detection bounding box overlay */}
+        <div className="flex-1 flex flex-col justify-between my-1">
+          {/* Simulated Active Frame Canvas */}
+          <div className={`h-24 rounded-lg relative overflow-hidden border border-slate-900/80 ${scene.bg} flex items-center justify-center`}>
+            {/* Dotted Lane Line */}
+            <div className="absolute left-0 right-0 h-0.5 border-t border-dashed border-slate-800/60 top-1/2" />
+            {scene.objects.map((obj, i) => {
+              const isVisible = yoloThreshold <= obj.confidence;
+              if (!isVisible) return null;
+              return (
+                <div key={i} className={`absolute border rounded text-[6px] font-mono p-1 transition-all duration-300 ${obj.bbox}`}>
+                  <span className="absolute -top-3 left-0 bg-slate-950 text-[5px] font-bold border border-slate-900 px-1 py-0.2 rounded scale-75 origin-left shadow-lg">
+                    {obj.label} ({(obj.confidence * 100).toFixed(0)}%)
+                  </span>
+                </div>
+              );
+            })}
+            {scene.objects.filter(o => yoloThreshold <= o.confidence).length === 0 && (
+              <span className="text-[8px] text-slate-600 font-mono italic z-10">All objects filtered by threshold</span>
+            )}
           </div>
-          <input
-            type="range"
-            min="0.10"
-            max="1.00"
-            step="0.05"
-            value={yoloThreshold}
-            onChange={(e) => setYoloThreshold(parseFloat(e.target.value))}
-            className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-          />
+
+          {/* Confidence interactive threshold slider */}
+          <div className="space-y-1 mt-2">
+            <div className="flex justify-between items-center text-[7.5px] text-slate-500">
+              <span className="flex items-center gap-1">
+                <Sliders className="h-3 w-3 text-purple-400" />
+                Confidence Filter Limit
+              </span>
+              <span className="text-emerald-400 font-bold font-mono">{(yoloThreshold).toFixed(2)}</span>
+            </div>
+            <input
+              type="range"
+              min="0.10"
+              max="1.00"
+              step="0.05"
+              value={yoloThreshold}
+              onChange={(e) => setYoloThreshold(parseFloat(e.target.value))}
+              className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+            />
+          </div>
+        </div>
+
+        <div className="mt-2 pt-2 border-t border-slate-900/80 text-[7px] text-slate-600 flex justify-between items-center">
+          <span>Dataset Scale: 8,800+ frames</span>
+          <span>Validation mAP: 94.3%</span>
         </div>
       </div>
-
-      <div className="mt-2 pt-2 border-t border-slate-900/80 text-[7px] text-slate-600 flex justify-between items-center">
-        <span>Dataset Scale: 8,800+ frames</span>
-        <span>Validation mAP: 94.3%</span>
-      </div>
-    </div>
-  );
+    );
+  };
 
   // 5. Healthcare Operations / NHS A&E Medallion Pipeline Mockup
   const renderHealthcareMockup = () => {
-    // Data based on selected department
+    // Data based on selected department and surge toggle
     const metricsMap = {
-      all: { wait: "3.4h", breach: "18.5%", capacity: "88%", state: "Normal" },
-      ae: { wait: "4.8h", breach: "31.2%", capacity: "114%", state: "Critical" },
-      pediatric: { wait: "1.9h", breach: "4.8%", capacity: "62%", state: "Stable" },
-      cardiology: { wait: "2.5h", breach: "12.0%", capacity: "78%", state: "Stable" }
+      normal: {
+        all: { wait: "2.4h", breach: "8.5%", capacity: "82%", state: "Stable" },
+        ae: { wait: "3.6h", breach: "14.2%", capacity: "98%", state: "Critical" },
+        pediatric: { wait: "1.4h", breach: "2.1%", capacity: "54%", state: "Stable" },
+        cardiology: { wait: "1.8h", breach: "4.0%", capacity: "70%", state: "Stable" }
+      },
+      surge: {
+        all: { wait: "4.5h", breach: "28.5%", capacity: "110%", state: "Critical" },
+        ae: { wait: "5.8h", breach: "44.8%", capacity: "128%", state: "Critical" },
+        pediatric: { wait: "2.9h", breach: "11.5%", capacity: "85%", state: "Stable" },
+        cardiology: { wait: "3.4h", breach: "18.0%", capacity: "94%", state: "Stable" }
+      }
     };
-    const current = metricsMap[healthDept];
+    const activeMetricsGroup = isHealthcareSpiked ? metricsMap.surge : metricsMap.normal;
+    const current = activeMetricsGroup[healthDept] || activeMetricsGroup.all;
 
     return (
-      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-[210px] flex flex-col justify-between relative overflow-hidden select-none">
-        <div className="flex items-center justify-between border-b border-slate-900/80 pb-2 mb-2">
+      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-auto min-h-[220px] sm:h-[220px] flex flex-col justify-between relative overflow-hidden select-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-900/80 pb-2 mb-2 gap-1.5">
           <span className="text-[8px] text-slate-500">EXECUTIVE HSE/NHS CONGESTION HUB</span>
           <div className="flex gap-1">
             {(['all', 'ae', 'pediatric', 'cardiology'] as const).map((d) => (
               <button
                 key={d}
                 onClick={() => setHealthDept(d)}
-                className={`px-1 rounded text-[6px] font-mono uppercase tracking-tight ${
+                className={`px-1.5 py-0.5 rounded text-[6px] font-mono tracking-tight cursor-pointer ${
                   healthDept === d ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'text-slate-500 hover:text-slate-300'
                 }`}
               >
-                {d === 'ae' ? 'A&E' : d}
+                {d === 'ae' ? 'A&E' : d.charAt(0).toUpperCase() + d.slice(1)}
               </button>
             ))}
           </div>
         </div>
 
         {/* Dashboard visuals with real HSE KPIs */}
-        <div className="flex-1 flex flex-col justify-center my-1.5 space-y-2">
+        <div className="flex-1 flex flex-col justify-center my-1.5 space-y-2 text-left">
+          {/* Simulation Toggle control */}
+          <div className="flex justify-between items-center bg-slate-950 p-1.5 rounded border border-slate-900/80">
+            <span className="text-[7.5px] text-slate-500 flex items-center gap-1">
+              <Activity className="h-3 w-3 text-red-500" />
+              Surge Model: {isHealthcareSpiked ? 'Winter Inflow Surge' : 'Normal Capacity'}
+            </span>
+            <button
+              onClick={() => setIsHealthcareSpiked(!isHealthcareSpiked)}
+              className={`px-2 py-0.5 text-[6.5px] font-bold rounded cursor-pointer transition-all ${
+                isHealthcareSpiked ? 'bg-red-500 text-slate-950' : 'bg-slate-800 text-slate-400 hover:text-white'
+              }`}
+            >
+              Toggle Surge
+            </button>
+          </div>
+
           <div className="grid grid-cols-3 gap-1.5">
             <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
-              <span className="text-slate-500 text-[6.5px] block uppercase">Avg Waiting Time</span>
-              <span className={`text-[11px] font-sans font-bold ${current.state === 'Critical' ? 'text-red-400' : 'text-white'}`}>{current.wait}</span>
-              <span className="text-[5.5px] text-slate-500 block">NHS Target: &lt;4h</span>
+              <span className="text-slate-500 text-[6px] block uppercase">Avg Waiting Time</span>
+              <span className={`text-[10px] font-sans font-bold ${current.state === 'Critical' ? 'text-red-400' : 'text-white'}`}>{current.wait}</span>
+              <span className="text-[5px] text-slate-500 block">NHS Goal &lt;4h</span>
             </div>
 
             <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
-              <span className="text-slate-500 text-[6.5px] block uppercase">Breach Rate (&gt;4h)</span>
-              <span className={`text-[11px] font-sans font-bold ${current.state === 'Critical' ? 'text-red-400' : current.state === 'Normal' ? 'text-amber-400' : 'text-emerald-400'}`}>{current.breach}</span>
-              <span className="text-[5.5px] text-slate-500 block">HSE SLA Limit: 15%</span>
+              <span className="text-slate-500 text-[6px] block uppercase">Breach Rate (&gt;4h)</span>
+              <span className={`text-[10px] font-sans font-bold ${current.state === 'Critical' ? 'text-red-400' : 'text-emerald-400'}`}>{current.breach}</span>
+              <span className="text-[5px] text-slate-500 block">SLA Limit 15%</span>
             </div>
 
             <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
-              <span className="text-slate-500 text-[6.5px] block uppercase">Ward Capacity</span>
-              <span className={`text-[11px] font-sans font-bold ${current.state === 'Critical' ? 'text-red-400' : 'text-white'}`}>{current.capacity}</span>
-              <span className="text-[5.5px] text-slate-500 block">Active Beds</span>
+              <span className="text-slate-500 text-[6px] block uppercase">Ward Capacity</span>
+              <span className={`text-[10px] font-sans font-bold ${current.state === 'Critical' ? 'text-red-400' : 'text-white'}`}>{current.capacity}</span>
+              <span className="text-[5px] text-slate-500 block">Active Beds</span>
             </div>
           </div>
 
           {/* Medallion pipeline validation status check */}
           <div className="bg-slate-950/40 border border-slate-900/60 px-2 py-1 rounded flex items-center justify-between text-[6.5px]">
             <span className="text-slate-400 flex items-center gap-1">
-              <span className={`h-1.5 w-1.5 rounded-full ${current.state === 'Critical' ? 'bg-red-500 animate-ping' : 'bg-emerald-400'}`} />
-              Silver Layer: Cleaned admissions &amp; formatting
+              <span className={`h-1.5 w-1.5 rounded-full ${current.state === 'Critical' ? 'bg-red-500 animate-pulse' : 'bg-emerald-400'}`} />
+              Silver Layer: Format Normalization
             </span>
             <span className="text-emerald-400 font-bold font-mono">✔ Gold KPI Models Synced</span>
           </div>
@@ -481,22 +791,22 @@ df = raw_df.withColumn("rn",
   // 6. Real-Time Irish Transit Congestion Analytics Pipeline Mockup
   const renderTransitMockup = () => {
     const routeMap = {
-      '46A': { speed: "18 km/h", status: "Heavy Delay", index: "0.82", color: "text-red-400", active: 14 },
-      '39A': { speed: "29 km/h", status: "Moderate Delay", index: "0.45", color: "text-amber-400", active: 18 },
-      '14': { speed: "42 km/h", status: "On Time", index: "0.15", color: "text-emerald-400", active: 8 }
+      '46A': { speed: "18 km/h", status: "Heavy Delay", index: "0.82", color: "text-red-400", active: 14, trackColor: "border-red-500/30" },
+      '39A': { speed: "29 km/h", status: "Moderate Delay", index: "0.45", color: "text-amber-400", active: 18, trackColor: "border-amber-500/30" },
+      '14': { speed: "42 km/h", status: "On Time", index: "0.15", color: "text-emerald-400", active: 8, trackColor: "border-emerald-500/30" }
     };
-    const current = routeMap[transitRoute];
+    const current = routeMap[transitRoute] || routeMap['46A'];
 
     return (
-      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-[210px] flex flex-col justify-between relative overflow-hidden select-none">
-        <div className="flex items-center justify-between border-b border-slate-900/80 pb-2 mb-2">
+      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-auto min-h-[220px] sm:h-[220px] flex flex-col justify-between relative overflow-hidden select-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-900/80 pb-2 mb-2 gap-1.5">
           <span className="text-[8px] text-slate-500 font-sans tracking-wide">LIVE DUBLIN BUS GTFS-RT MONITOR</span>
           <div className="flex gap-1">
             {(['46A', '39A', '14'] as const).map((r) => (
               <button
                 key={r}
                 onClick={() => setTransitRoute(r)}
-                className={`px-1.5 py-0.5 rounded text-[6px] font-mono tracking-tight cursor-pointer ${
+                className={`px-1.5 py-0.5 rounded text-[6px] font-mono tracking-tight cursor-pointer transition-colors ${
                   transitRoute === r ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'text-slate-500 hover:text-slate-300'
                 }`}
               >
@@ -506,33 +816,46 @@ df = raw_df.withColumn("rn",
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col justify-center my-1.5 space-y-2">
+        <div className="flex-1 flex flex-col justify-center my-1.5 space-y-2 text-left">
+          {/* Visual track with flowing bus dot indicator */}
+          <div className={`h-8 rounded-lg relative overflow-hidden border border-dashed flex items-center px-4 bg-slate-950 ${current.trackColor}`}>
+            <span className="text-[7px] text-slate-600 font-mono select-none">Route {transitRoute} Route Lane</span>
+            {/* Pulsing animated bus indicator */}
+            <motion.div
+              animate={{ x: [0, 160, 0] }}
+              transition={{ repeat: Infinity, duration: transitRoute === '14' ? 4 : transitRoute === '39A' ? 7 : 12, ease: "linear" }}
+              className="absolute h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]"
+            />
+          </div>
+
           <div className="grid grid-cols-3 gap-1.5">
             <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
-              <span className="text-slate-500 text-[6.5px] block uppercase">Average Speed</span>
-              <span className="text-[11px] font-sans font-bold text-white">{current.speed}</span>
-              <span className="text-[5.5px] text-slate-500 block">GPS Stream</span>
+              <span className="text-slate-500 text-[6px] block uppercase">Live Speed</span>
+              <span className="text-[10px] font-sans font-bold text-white">{current.speed}</span>
             </div>
 
             <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
-              <span className="text-slate-500 text-[6.5px] block uppercase">Delay Index</span>
-              <span className={`text-[11px] font-sans font-bold ${current.color}`}>{current.index}</span>
-              <span className="text-[5.5px] text-slate-500 block">SLA Target &lt; 0.3</span>
+              <span className="text-slate-500 text-[6px] block uppercase">Delay Index</span>
+              <span className={`text-[10px] font-sans font-bold ${current.color}`}>{current.index}</span>
             </div>
 
             <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
-              <span className="text-slate-500 text-[6.5px] block uppercase">Active Buses</span>
-              <span className="text-[11px] font-sans font-bold text-white">{current.active}</span>
-              <span className="text-[5.5px] text-slate-500 block">Active Kafka Ingestion</span>
+              <span className="text-slate-500 text-[6px] block uppercase">Active Buses</span>
+              <span className="text-[10px] font-sans font-bold text-white">{current.active}</span>
             </div>
           </div>
 
-          <div className="bg-slate-950/40 border border-slate-900/60 px-2 py-1 rounded flex items-center justify-between text-[6.5px]">
-            <span className="text-slate-400 flex items-center gap-1">
-              <span className={`h-1.5 w-1.5 rounded-full ${transitRoute === '46A' ? 'bg-red-500 animate-ping' : 'bg-emerald-400'}`} />
-              Kafka Queue: {transitRoute === '46A' ? 'Accumulating lag' : 'Processing healthy'}
-            </span>
-            <span className="text-emerald-400 font-bold font-mono">✔ 500 msg/sec Ingested</span>
+          {/* Spark streaming flowing graph visualizer */}
+          <div className="space-y-1">
+            <span className="text-[6.5px] text-slate-500 uppercase tracking-widest block font-bold">Spark Ingestion Speed (1.2s Poll Rate)</span>
+            <svg className="w-full h-8 bg-slate-950 rounded border border-slate-900 p-1" viewBox="0 0 100 20">
+              <polyline
+                fill="none"
+                stroke="#10b981"
+                strokeWidth="1.2"
+                points={transitPoints.map((val, idx) => `${idx * 11},${20 - (val / 60) * 16}`).join(' ')}
+              />
+            </svg>
           </div>
         </div>
 
@@ -548,23 +871,25 @@ df = raw_df.withColumn("rn",
 
   // 7. Automated Financial Portfolio Optimization Engine Mockup
   const renderFinanceMockup = () => {
-    const riskMap = {
-      conservative: { bonds: "50%", bluechip: "30%", cash: "15%", crypto: "5%", sharpe: "1.24", expected: "6.2%" },
-      moderate: { bonds: "25%", bluechip: "45%", cash: "10%", crypto: "20%", sharpe: "1.98", expected: "12.5%" },
-      aggressive: { bonds: "5%", bluechip: "35%", cash: "5%", crypto: "55%", sharpe: "2.42", expected: "24.8%" }
+    const currentRiskObj = {
+      conservative: { bonds: "50%", bluechip: "30%", cash: "15%", crypto: "5%", sharpe: "1.24", expected: 0.062 },
+      moderate: { bonds: "25%", bluechip: "45%", cash: "10%", crypto: "20%", sharpe: "1.98", expected: 0.125 },
+      aggressive: { bonds: "5%", bluechip: "35%", cash: "5%", crypto: "55%", sharpe: "2.42", expected: 0.248 }
     };
-    const current = riskMap[financeRisk];
+    const current = currentRiskObj[financeRisk] || currentRiskObj.moderate;
+    const numPrincipal = parseFloat(financePrincipal) || 10000;
+    const projected10Yr = Math.round(numPrincipal * Math.pow(1 + current.expected, 10));
 
     return (
-      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-[210px] flex flex-col justify-between relative overflow-hidden select-none">
-        <div className="flex items-center justify-between border-b border-slate-900/80 pb-2 mb-2">
+      <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-auto min-h-[220px] sm:h-[220px] flex flex-col justify-between relative overflow-hidden select-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-900/80 pb-2 mb-2 gap-1.5">
           <span className="text-[8px] text-slate-500 font-sans tracking-wide font-medium">MARKOWITZ PORTFOLIO ALLOCATOR</span>
           <div className="flex gap-1">
             {(['conservative', 'moderate', 'aggressive'] as const).map((r) => (
               <button
                 key={r}
                 onClick={() => setFinanceRisk(r)}
-                className={`px-1 py-0.5 rounded text-[6px] font-mono uppercase tracking-tight cursor-pointer ${
+                className={`px-1 py-0.5 rounded text-[6px] font-mono tracking-tight cursor-pointer transition-all ${
                   financeRisk === r ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'text-slate-500 hover:text-slate-300'
                 }`}
               >
@@ -574,30 +899,43 @@ df = raw_df.withColumn("rn",
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col justify-center my-1.5 space-y-2">
-          <div className="grid grid-cols-3 gap-1.5">
+        <div className="flex-1 flex flex-col justify-center my-1.5 space-y-2 text-left">
+          {/* Principal interactive input field */}
+          <div className="flex items-center justify-between bg-slate-950 border border-slate-900 p-1.5 rounded">
+            <span className="text-[7px] text-slate-500">Principal Investment:</span>
+            <div className="flex items-center gap-1">
+              <span className="text-[7.5px] text-emerald-400 font-bold">€</span>
+              <input
+                type="number"
+                value={financePrincipal}
+                onChange={(e) => setFinancePrincipal(e.target.value)}
+                className="w-16 bg-transparent border-none text-right font-mono text-white text-[7.5px] outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                placeholder="10000"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-1.5">
             <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
-              <span className="text-slate-500 text-[6.5px] block uppercase">Sharpe Ratio</span>
-              <span className="text-[11px] font-sans font-bold text-emerald-400">{current.sharpe}</span>
-              <span className="text-[5.5px] text-slate-500 block">Risk-Adjusted</span>
+              <span className="text-slate-500 text-[6px] block uppercase">Est Sharpe Ratio</span>
+              <span className="text-[10px] font-sans font-bold text-emerald-400">{current.sharpe}</span>
             </div>
 
             <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
-              <span className="text-slate-500 text-[6.5px] block uppercase">Est. Annual Return</span>
-              <span className="text-[11px] font-sans font-bold text-white">{current.expected}</span>
-              <span className="text-[5.5px] text-slate-500 block">Log return model</span>
+              <span className="text-slate-500 text-[6px] block uppercase">Expected Return</span>
+              <span className="text-[10px] font-sans font-bold text-white">+{(current.expected * 100).toFixed(1)}% / yr</span>
             </div>
+          </div>
 
-            <div className="bg-slate-950/80 border border-slate-900 p-1.5 rounded text-center">
-              <span className="text-slate-500 text-[6.5px] block uppercase">Rebalance Trigger</span>
-              <span className="text-[11px] font-sans font-bold text-white">Monthly</span>
-              <span className="text-[5.5px] text-slate-500 block">Automated CRON</span>
-            </div>
+          {/* Projected Growth calculation */}
+          <div className="bg-emerald-950/10 border border-emerald-950/30 p-1.5 rounded text-[7px] text-emerald-400/90 flex justify-between items-center">
+            <span>Projected Value (10 Years):</span>
+            <span className="font-bold">€{projected10Yr.toLocaleString()}</span>
           </div>
 
           {/* Allocation Weights Bar */}
           <div className="space-y-1">
-            <div className="flex justify-between text-[5.5px] text-slate-500">
+            <div className="flex justify-between text-[5px] text-slate-500 leading-none">
               <span>Bonds ({current.bonds})</span>
               <span>Blue-Chip ({current.bluechip})</span>
               <span>Cash ({current.cash})</span>
@@ -615,7 +953,7 @@ df = raw_df.withColumn("rn",
         <div className="mt-1 pt-1 border-t border-slate-900/80 text-[7px] text-slate-600 flex justify-between items-center">
           <span>FastAPI Monte Carlo (10k Sim Runs)</span>
           <span className="text-[6.5px] text-emerald-400 font-mono font-bold">
-            ✔ Optimal Weights Found
+            ✔ Weights Found
           </span>
         </div>
       </div>
@@ -642,65 +980,66 @@ df = raw_df.withColumn("rn",
     }
   };
 
+  const getFilterDisplayName = (f: 'all' | 'engineering' | 'bi' | 'analytics') => {
+    switch (f) {
+      case 'engineering': return 'Data Engineering';
+      case 'bi': return 'Business Intelligence';
+      case 'analytics': return 'Machine Learning';
+      default: return 'All Projects';
+    }
+  };
+
   return (
     <section
       id="projects"
-      className="bg-[#05080c] py-24 md:py-32 relative overflow-hidden border-t border-slate-900/40"
+      className="bg-[#05080c] py-[48px] md:py-[80px] relative overflow-hidden border-t border-slate-900/40"
     >
       {/* Background radial soft light */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 md:px-12 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-          <div className="max-w-2xl">
-            <motion.span
-              whileHover={{ scale: 1.05, x: 2 }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold inline-block mb-3 cursor-default origin-left"
-            >
-              [03] Featured Projects
-            </motion.span>
-            <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-white mb-4 flex items-center gap-3.5">
-              <FolderGit2 className="h-7 w-7 text-emerald-400/70 shrink-0" />
-              <span>Real Impact, Proven Architecture</span>
-            </h2>
-            <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-light">
-              Each study represents an active system addressing real-world operational blocks, highlighting technical architecture paired with clear business value.
-            </p>
-          </div>
+        <div className="max-w-2xl">
+          <motion.span
+            whileHover={{ scale: 1.05, x: 2 }}
+            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+            className="font-mono text-[11px] font-medium tracking-[0.12em] text-[#00CC88] uppercase mb-3 block cursor-default origin-left"
+          >
+            [03] Featured Projects
+          </motion.span>
+          <h2 className="text-white font-display" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            Real Impact, Proven Architecture
+          </h2>
+          <p className="font-sans" style={{ fontSize: '16px', lineHeight: '1.7', color: 'rgba(255,255,255,0.55)', maxWidth: '560px', marginBottom: '32px', fontWeight: 400 }}>
+            Each study represents an active system addressing real-world operational blocks, highlighting technical architecture paired with clear business value.
+          </p>
+        </div>
 
-          {/* Filtering Tabs (Clearly Distinguishing Types) */}
-          <div className="flex flex-col items-start md:items-end gap-2 self-start md:self-auto">
-            <div className="flex flex-wrap gap-1 bg-slate-900/40 p-1.5 rounded-xl border border-slate-900/80">
-              {(['all', 'professional', 'personal', 'academic'] as const).map((cat) => (
-                <button
-                   key={cat}
-                  onClick={() => {
-                    setFilter(cat);
-                    setShowAll(false);
-                  }}
-                  className={`px-4 py-2 rounded-lg text-xs font-mono capitalize transition-all cursor-pointer ${
-                    filter === cat
-                      ? 'bg-slate-800 text-emerald-400 shadow-md'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {cat === 'all' 
-                    ? 'All Case Studies' 
-                    : cat === 'professional' 
-                      ? 'Professional Work' 
-                      : cat === 'personal' 
-                        ? 'Personal Projects' 
-                        : 'Academic Research'}
-                </button>
-              ))}
-            </div>
-            <p className="text-[13px] text-[rgba(255,255,255,0.4)] mt-2 md:text-right max-w-sm md:max-w-md">
-              Professional work reflects real client deliveries. Personal projects use public datasets and are built for learning and portfolio demonstration.
-            </p>
-          </div>
+        {/* Filtering Tabs (Single Left-Aligned Row) */}
+        <div className="flex flex-wrap gap-1.5 md:gap-2 mb-7 justify-start items-center">
+          {(['all', 'engineering', 'bi', 'analytics'] as const).map((cat) => (
+            <button
+              key={cat}
+              onClick={() => {
+                setFilter(cat);
+                setShowAll(false);
+              }}
+              className={`font-sans tracking-normal capitalize transition-all duration-200 cursor-pointer text-xs md:text-[13px] py-[5px] px-[12px] md:py-[7px] md:px-[16px] rounded-full border-[0.5px] ${
+                filter === cat
+                  ? 'bg-[#00CC88] text-[#050E09] border-[#00CC88] font-semibold'
+                  : 'border-[rgba(255,255,255,0.15)] text-[rgba(255,255,255,0.6)] bg-transparent font-medium hover:border-[#00CC88]/40 hover:text-[rgba(255,255,255,0.9)]'
+              }`}
+            >
+              {cat === 'all' 
+                ? 'All Areas' 
+                : cat === 'engineering' 
+                  ? 'Data Engineering' 
+                  : cat === 'bi' 
+                    ? 'Business Intelligence' 
+                    : 'Machine Learning'}
+            </button>
+          ))}
         </div>
 
         {/* ----------------------------------------------------
@@ -757,7 +1096,7 @@ df = raw_df.withColumn("rn",
                     <h3 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight mb-2">
                       {flagshipProject.title}
                     </h3>
-                    <p className="text-slate-400 text-sm font-sans font-light leading-relaxed mb-6">
+                    <p className="text-slate-400 text-sm font-sans font-normal leading-relaxed mb-6">
                       {flagshipProject.description}
                     </p>
 
@@ -890,7 +1229,7 @@ df = raw_df.withColumn("rn",
                       href={flagshipProject.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-5 py-2.5 bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-white font-sans font-light text-xs rounded-xl border border-slate-900 transition-all flex items-center justify-center gap-1.5 w-full sm:w-auto"
+                      className="px-5 py-2.5 bg-slate-950 hover:bg-slate-900 text-slate-400 hover:text-white font-sans font-normal text-xs rounded-xl border border-slate-900 transition-all flex items-center justify-center gap-1.5 w-full sm:w-auto"
                     >
                       <Github className="h-3.5 w-3.5" />
                       View Schema Code
@@ -919,46 +1258,64 @@ df = raw_df.withColumn("rn",
             ---------------------------------------------------- */}
         {filteredProjects.length > 0 ? (
           <div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-3 gap-[14px] md:gap-[20px] mt-2"
             id="project-grid"
           >
             {supportingProjects.map((project) => (
               <SpotlightCard
                 key={project.id}
                 id={`project-card-${project.id}`}
-                className="group relative flex flex-col justify-between bg-slate-950/40 rounded-3xl border border-slate-900/80 hover:border-slate-800/80 backdrop-blur-md p-6 hover:shadow-xl hover:shadow-black/45 hover:-translate-y-1 transition-all duration-300"
+                className="group relative flex flex-col justify-between bg-slate-950/40 rounded-3xl border-[0.5px] border-[rgba(255,255,255,0.08)] hover:border-[#00CC88]/35 backdrop-blur-md p-4 md:p-6 hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)] hover:-translate-y-[3px] transition-all duration-200 ease-out"
+                style={{
+                  height: '100%',
+                  minHeight: '320px'
+                }}
               >
-                <div>
+                <div className="flex-1 flex flex-col">
                   {/* Badges Strip */}
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <div className="flex flex-row gap-[6px] flex-wrap">
+                      {getProjectCategoryBadge(project.category)}
                       {getProjectTypeBadge(project.projectType)}
-                      {pinnedIds.includes(project.id) && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] uppercase tracking-wider font-mono font-bold px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded">
-                          ★ FEATURED
-                        </span>
-                      )}
                     </div>
                     <span className="text-[9px] text-slate-500 font-mono">Completed</span>
                   </div>
 
-                  {project.projectType === 'personal' && (
-                    <span className="text-[10px] text-purple-400 font-mono font-bold tracking-wider block mb-2">
-                      PERSONAL PROJECT &middot; OPEN SOURCE
-                    </span>
-                  )}
-
                   {/* Title & Short Desc */}
-                  <h3 className="text-white text-lg font-bold font-sans tracking-tight mb-2 group-hover:text-emerald-400 transition-colors">
+                  <h3 className="text-white font-sans tracking-tight" style={{ fontSize: '20px', fontWeight: 600, lineHeight: '1.3', letterSpacing: '-0.01em', marginBottom: '10px' }}>
                     {project.title}
                   </h3>
-                  <p className="text-slate-400 text-xs font-sans font-light leading-relaxed mb-4">
+                  <p 
+                    className="font-sans"
+                    style={{
+                      fontSize: '14px',
+                      lineHeight: '1.65',
+                      color: 'rgba(255,255,255,0.6)',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      flex: '1',
+                      marginBottom: '16px'
+                    }}
+                  >
                     {project.description}
                   </p>
 
                   {/* Interactive visual mockup in card */}
-                  <div className="mb-4">
+                  <div className="hidden md:block mb-4">
                     {getProjectMockup(project.id)}
+                  </div>
+
+                  {/* Mobile-only Simulation & Details Banner */}
+                  <div className="block md:hidden mb-4 p-2.5 bg-slate-900/50 border border-slate-800/60 rounded-xl text-center">
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="text-[10px] text-emerald-400 font-mono font-medium inline-flex items-center gap-1.5 cursor-pointer w-full justify-center h-10 min-h-[40px]"
+                    >
+                      <Activity className="h-3.5 w-3.5 text-emerald-400" />
+                      Tap to View Case Study &amp; Interactive Demo
+                    </button>
                   </div>
 
                   {project.id === 'project-5' && (
@@ -987,7 +1344,7 @@ df = raw_df.withColumn("rn",
                 </div>
 
                 {/* Interaction row */}
-                <div className="flex flex-col gap-3 mt-auto pt-2 border-t border-slate-900/40">
+                <div className="flex flex-col gap-3 pt-2 border-t border-slate-900/40">
                   <div className="flex flex-col gap-1.5">
                     <div className="flex flex-wrap gap-1">
                       {project.tags.slice(0, 3).map((tag) => (
@@ -1037,25 +1394,36 @@ df = raw_df.withColumn("rn",
             <Layers className="h-8 w-8 text-slate-600 mx-auto mb-4 animate-pulse relative z-10" />
             <h4 className="text-white text-sm font-semibold font-sans relative z-10">No Case Studies Found</h4>
             <p className="text-slate-400 text-xs font-sans mt-2 leading-relaxed relative z-10">
-              There are currently no active case studies categorized under <strong className="text-emerald-400 font-mono font-medium">"{filter}"</strong>. I prioritize showcasing high-impact enterprise and dissertation work.
+              There are currently no active case studies categorized under <strong className="text-emerald-400 font-mono font-medium">"{getFilterDisplayName(filter)}"</strong>. I prioritize showcasing high-impact enterprise and dissertation work.
             </p>
             <button
               onClick={() => setFilter('all')}
               className="mt-5 px-4 py-2 bg-slate-900 hover:bg-slate-850 text-emerald-400 text-[11px] font-mono rounded-lg border border-slate-800 transition-all cursor-pointer relative z-10 hover:border-emerald-500/20 active:scale-95"
             >
-              Reset to All Case Studies
+              Reset to All Areas
             </button>
           </div>
         )}
 
-        {/* View all projects button */}
-        {!showAll && filteredProjects.length > projectsToRender.length && (
-          <div className="flex justify-center mt-12">
+        {/* View all projects CTA */}
+        {filteredProjects.length > 3 && (
+          <div style={{textAlign:'center', marginTop:'32px'}}>
             <button
-              onClick={() => setShowAll(true)}
-              className="px-6 py-3 bg-[#080b11] hover:bg-slate-900 text-emerald-400 hover:text-emerald-300 font-mono text-xs rounded-xl border border-slate-900 hover:border-emerald-500/20 transition-all cursor-pointer flex items-center gap-2 group/all"
+              onClick={toggleShowAll}
+              className="hover:border-[#00CC88]/50 hover:text-white"
+              style={{
+                background: 'transparent',
+                border: '0.5px solid rgba(255,255,255,0.2)',
+                color: 'rgba(255,255,255,0.7)',
+                padding: '10px 28px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
             >
-              View all projects &rarr;
+              {showAll ? 'Show less ↑' : 'View all projects ↓'}
             </button>
           </div>
         )}
@@ -1131,6 +1499,14 @@ df = raw_df.withColumn("rn",
                     ))}
                   </div>
 
+                  {/* Embedded Interactive Mockup / Simulation inside Deep Dive */}
+                  <div className="p-4 bg-slate-950/80 rounded-2xl border border-slate-900">
+                    <span className="text-slate-500 text-[9px] font-mono block mb-2.5 uppercase tracking-widest font-semibold">
+                      Interactive Visual Simulation
+                    </span>
+                    {getProjectMockup(selectedProject.id)}
+                  </div>
+
                   {/* Section 1: BUSINESS OUTCOMES */}
                   <div className="bg-emerald-500/5 p-5 rounded-xl border border-emerald-500/15">
                     <h4 className="text-emerald-400 font-sans font-bold text-sm uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
@@ -1192,10 +1568,8 @@ df = raw_df.withColumn("rn",
                     </div>
                   </div>
 
-                </div>
-
-                {/* Call to Action Footer */}
-                <div className="flex items-center gap-4 pt-6 border-t border-slate-900/60 mt-8">
+                  {/* Call to Action Footer */}
+                <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-900/60 mt-8">
                   <button
                     onClick={() => {
                       setSelectedProject(null);
@@ -1207,17 +1581,18 @@ df = raw_df.withColumn("rn",
                         });
                       }
                     }}
-                    className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-xl transition-all shadow-md active:scale-95 cursor-pointer"
+                    className="h-12 min-h-[48px] px-6 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-xl transition-all shadow-md active:scale-95 cursor-pointer w-full sm:w-auto text-center flex items-center justify-center"
                   >
                     Discuss this Case Study
                   </button>
                   <button
                     onClick={() => setSelectedProject(null)}
-                    className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-sans font-medium text-xs rounded-xl border border-slate-800 transition-all cursor-pointer"
+                    className="h-12 min-h-[48px] px-6 bg-slate-900 hover:bg-slate-850 text-slate-400 hover:text-white font-sans font-medium text-xs rounded-xl border border-slate-800 transition-all cursor-pointer w-full sm:w-auto text-center flex items-center justify-center"
                   >
                     Close Review
                   </button>
                 </div>
+              </div>
 
               </div>
             </motion.div>

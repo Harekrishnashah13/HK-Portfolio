@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { db } from "./src/db/index.ts";
-import { messages, users } from "./src/db/schema.ts";
+import { messages, users, analyticsEvents } from "./src/db/schema.ts";
 import { requireAuth, AuthRequest } from "./src/middleware/auth.ts";
 import { desc } from "drizzle-orm";
 
@@ -11,6 +11,52 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
+
+  // Analytics Routes
+  app.post("/api/analytics", async (req, res) => {
+    try {
+      const { eventType, metadata } = req.body;
+      if (!eventType) {
+        return res.status(400).json({ error: "Missing eventType" });
+      }
+
+      const result = await db.insert(analyticsEvents)
+        .values({
+          eventType,
+          metadata: metadata || ""
+        })
+        .returning();
+
+      res.status(201).json(result[0]);
+    } catch (error) {
+      console.error("Failed to insert analytics event:", error);
+      res.status(500).json({ error: "Analytics ingestion failed" });
+    }
+  });
+
+  app.get("/api/analytics", async (req, res) => {
+    try {
+      const allEvents = await db.select().from(analyticsEvents).orderBy(desc(analyticsEvents.timestamp));
+      
+      // Calculate summary statistics
+      const summary = {
+        totalEvents: allEvents.length,
+        resumeDownloads: allEvents.filter(e => e.eventType === 'resume_download_txt').length,
+        resumePrints: allEvents.filter(e => e.eventType === 'resume_print').length,
+        resumeCopies: allEvents.filter(e => e.eventType === 'resume_copy_text').length,
+        resumeOpens: allEvents.filter(e => e.eventType === 'resume_modal_open').length,
+        linkedinClicks: allEvents.filter(e => e.eventType === 'linkedin_click').length,
+        emailClicks: allEvents.filter(e => e.eventType === 'email_click').length,
+        contactSubmissions: allEvents.filter(e => e.eventType === 'contact_form_submit').length,
+        recentEvents: allEvents,
+      };
+
+      res.json(summary);
+    } catch (error) {
+      console.error("Failed to fetch analytics:", error);
+      res.status(500).json({ error: "Analytics query failed" });
+    }
+  });
 
   // API Routes
   app.post("/api/messages", async (req, res) => {

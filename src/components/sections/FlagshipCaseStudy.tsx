@@ -80,7 +80,7 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
       <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
 
       {/* Main Container */}
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-6xl mx-auto px-5 md:px-12 relative z-10">
         
         {/* Navigation back header */}
         <div className="mb-10 flex items-center justify-between">
@@ -106,12 +106,12 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
             Enterprise Cloud Data Warehouse Migration &amp; Automated Code Translation Engine
           </h1>
           
-          <p className="text-slate-400 text-base md:text-lg font-sans font-light leading-relaxed max-w-3xl mb-8">
+          <p className="text-slate-400 text-base md:text-lg font-sans font-normal max-w-3xl mb-8">
             An in-depth review of how we migrated a legacy, high-volume on-premise Teradata SQL infrastructure to Azure Synapse and Databricks with absolute numerical parity, 40% performance gains, and zero downtime.
           </p>
 
           {/* Quick Metrics Strip */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-950/60 border border-slate-900/60 p-6 rounded-2xl">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-950/60 border border-slate-900/60 p-6 rounded-2xl">
             <div className="flex flex-col">
               <span className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-1">Migrated Footprint</span>
               <span className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">1.2 PB</span>
