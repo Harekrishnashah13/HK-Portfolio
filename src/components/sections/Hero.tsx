@@ -1,8 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Linkedin, Github, Mail, ChevronDown } from 'lucide-react';
+import { Linkedin, Github, Mail, ChevronDown, FileText, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
 import WaveCanvas from '../layout/WaveCanvas';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.16, 1, 0.3, 1]
+    }
+  }
+};
 
 interface HeroProps {
   onOpenResume?: () => void;
@@ -84,7 +107,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
   return (
     <section
-      id="hero"
+      id="about"
       className="relative min-h-screen flex items-center justify-center overflow-hidden transition-colors duration-500 bg-[#020408]"
     >
       <style>{`
@@ -176,7 +199,8 @@ export default function Hero({ onOpenResume }: HeroProps) {
               <img
                 src="/profile.jpg"
                 alt="Harekrishna Shah Portrait"
-                loading="lazy"
+                loading="eager"
+                decoding="async"
                 width={200}
                 height={200}
                 style={{
@@ -221,23 +245,26 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
         {/* Brand Information & Social Group (Right column) */}
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
           id="hero-text-col"
         >
           {/* Eyebrow status pill */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            background: 'rgba(0,204,136,0.08)',
-            border: '0.5px solid rgba(0,204,136,0.25)',
-            borderRadius: '20px',
-            padding: '4px 12px',
-            marginBottom: '14px',
-            width: 'fit-content'
-          }}>
+          <motion.div 
+            variants={itemVariants}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: 'rgba(0,204,136,0.08)',
+              border: '0.5px solid rgba(0,204,136,0.25)',
+              borderRadius: '20px',
+              padding: '4px 12px',
+              marginBottom: '14px',
+              width: 'fit-content'
+            }}
+          >
             <span style={{
               width: '6px', height: '6px',
               borderRadius: '50%',
@@ -253,10 +280,11 @@ export default function Hero({ onOpenResume }: HeroProps) {
             }}>
               DUBLIN, IRELAND · AVAILABLE NOW
             </span>
-          </div>
+          </motion.div>
 
           {/* Large Name Headline */}
-          <h1 
+          <motion.h1 
+            variants={itemVariants}
             id="hero-name"
             className="font-sans"
             style={{
@@ -269,10 +297,11 @@ export default function Hero({ onOpenResume }: HeroProps) {
             }}
           >
             Harekrishna Shah
-          </h1>
+          </motion.h1>
 
           {/* Main Tagline with Typewriter Effect */}
-          <div 
+          <motion.div 
+            variants={itemVariants}
             className="font-sans" 
             style={{
               fontSize: 'clamp(24px, 3.5vw, 36px)',
@@ -291,10 +320,10 @@ export default function Hero({ onOpenResume }: HeroProps) {
               {typewriterText || "\u00A0"}
               <span className="inline-block w-[2px] h-[1.1em] bg-[#00CC88] ml-1 animate-pulse shrink-0" style={{ animationDuration: '0.9s' }} />
             </span>
-          </div>
+          </motion.div>
 
           {/* Subtitle / Professional Role Designation with Cycling Slide-Up Effect */}
-          <div className="relative overflow-hidden w-full h-7 mb-3">
+          <motion.div variants={itemVariants} className="relative overflow-hidden w-full h-7 mb-3">
             <AnimatePresence mode="wait">
               <motion.span
                 key={currentRole}
@@ -307,17 +336,20 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 {roles[currentRole]}
               </motion.span>
             </AnimatePresence>
-          </div>
+          </motion.div>
 
           {/* Styled MSc badge */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginBottom: '16px',
-            marginTop: '8px',
-            flexWrap: 'wrap'
-          }}>
+          <motion.div 
+            variants={itemVariants}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '16px',
+              marginTop: '8px',
+              flexWrap: 'wrap'
+            }}
+          >
             <span style={{
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '12px',
@@ -348,10 +380,11 @@ export default function Hero({ onOpenResume }: HeroProps) {
             }}>
               · Dublin Business School
             </span>
-          </div>
+          </motion.div>
 
           {/* Professional Bio Paragraph */}
-          <p 
+          <motion.p 
+            variants={itemVariants}
             className="font-sans"
             style={{
               fontSize: '16px',
@@ -363,62 +396,42 @@ export default function Hero({ onOpenResume }: HeroProps) {
             }}
           >
             I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 2+ years of professional experience in financial services and enterprise analytics.
-          </p>
+          </motion.p>
 
-          <p className="font-sans font-normal text-slate-500 tracking-wide text-xs sm:text-sm mb-6 max-w-xl">
+          <motion.p 
+            variants={itemVariants}
+            className="font-sans font-normal text-slate-500 tracking-wide text-xs sm:text-sm mb-6 max-w-xl"
+          >
             Dublin, Ireland &middot; Stamp 1G
-          </p>
+          </motion.p>
 
           {/* CTA Buttons Row */}
-          <div id="hero-cta-buttons" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '24px' }}>
+          <motion.div 
+            variants={itemVariants}
+            id="hero-cta-buttons" 
+            className="flex flex-wrap items-center gap-3 mb-6"
+          >
             <button
               onClick={onOpenResume}
-              style={{
-                height: '48px',
-                padding: '0 24px',
-                background: '#00CC88',
-                color: '#050E09',
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: 700,
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                transition: 'all 0.2s',
-              }}
-              className="hover:bg-[#00E699] hover:-translate-y-[1px]"
+              className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-sm rounded-xl transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-2 hover:shadow-emerald-500/20"
             >
-              <span>Download Resume</span>
+              <FileText className="h-4 w-4" />
+              <span>Review Resume</span>
             </button>
             <a
               href="#projects"
-              style={{
-                height: '48px',
-                padding: '0 24px',
-                background: 'transparent',
-                color: 'rgba(255,255,255,0.8)',
-                border: '0.5px solid rgba(255,255,255,0.2)',
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: 500,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all 0.2s',
-                textDecoration: 'none'
-              }}
-              className="hover:border-white/50"
+              className="px-6 py-3 bg-transparent hover:bg-white/5 text-white border border-white/15 font-sans font-medium text-sm rounded-xl transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-2 hover:border-white/45 no-underline"
             >
-              View Projects
+              <span>View Projects</span>
+              <ArrowRight className="h-4 w-4" />
             </a>
-          </div>
+          </motion.div>
 
           {/* Social Links Row */}
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <motion.div 
+            variants={itemVariants}
+            style={{ display: 'flex', gap: '16px', alignItems: 'center' }}
+          >
             <a
               href={PERSONAL_INFO.github}
               target="_blank"
@@ -483,7 +496,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
             >
               <Mail className="h-4 w-4" />
             </a>
-          </div>
+          </motion.div>
 
         </motion.div>
 

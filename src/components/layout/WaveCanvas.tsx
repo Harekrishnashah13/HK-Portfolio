@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 interface WaveCanvasProps {
   theme: 'light' | 'dark';
@@ -6,8 +6,20 @@ interface WaveCanvasProps {
 
 export default function WaveCanvas({ theme }: WaveCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -83,6 +95,20 @@ export default function WaveCanvas({ theme }: WaveCanvasProps) {
       cancelAnimationFrame(animationFrameId);
     };
   }, [theme]);
+
+  if (isMobile) {
+    return (
+      <div 
+        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        style={{
+          background: theme === 'dark' 
+            ? 'radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.12) 0%, rgba(0, 0, 0, 0) 70%)'
+            : 'radial-gradient(circle at 50% 50%, rgba(100, 116, 139, 0.06) 0%, rgba(0, 0, 0, 0) 70%)',
+          opacity: 0.8
+        }}
+      />
+    );
+  }
 
   return (
     <canvas

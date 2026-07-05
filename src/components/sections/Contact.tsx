@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Linkedin, Github, MapPin, Send, CheckCircle, RefreshCw, Clock, Terminal, Trash2, Shield, Eye, Copy, Check, Info, ArrowUpRight, HelpCircle } from 'lucide-react';
+import { Mail, Linkedin, Github, MapPin, Send, CheckCircle, RefreshCw, Clock, Terminal, Trash2, Shield, Eye, Copy, Check, Info, ArrowUpRight, HelpCircle, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
 import { auth, googleAuthProvider } from '../../lib/firebase';
 import { trackEvent } from '../../lib/analytics';
 import { signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import AnimatedHeading from './AnimatedHeading';
 
 interface Message {
   id: string | number;
@@ -318,12 +319,7 @@ export default function Contact() {
         
         {/* Section Header */}
         <div className="max-w-3xl mb-8">
-          <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
-            [07] Contact
-          </span>
-          <h2 className="text-white font-display" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-            Get in Touch
-          </h2>
+          <AnimatedHeading eyebrow="[06] CONTACT" title="Get in Touch" />
           <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-normal max-w-2xl">
             I'm open to Data Analytics and Engineering roles in Dublin — reach out and I'll reply within 4 hours.
           </p>
@@ -467,22 +463,19 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Developer & Recruiter Inbox Hub Callout */}
+              {/* Standard Direct Contact Trigger */}
               <div className="pt-6 border-t border-slate-900/60">
                 <span className="text-slate-500 text-xs font-mono block mb-3">
-                  Developer &amp; Recruiter Sandbox
+                  Direct Inquiries &amp; Collaboration
                 </span>
                 <button
                   onClick={() => {
                     setIsInboxOpen(true);
-                    if (messages.length > 0 && !selectedMessage) {
-                      setSelectedMessage(messages[0]);
-                    }
                   }}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/25 rounded-xl transition-all font-mono text-xs cursor-pointer active:scale-95"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/25 rounded-xl transition-all font-sans font-bold text-xs cursor-pointer active:scale-95 hover:shadow-md hover:border-emerald-500/40"
                 >
-                  <Terminal className="h-3.5 w-3.5" />
-                  Open Secure Message Hub ({messages.filter(m => !m.isDemo).length} Real)
+                  <Mail className="h-3.5 w-3.5" />
+                  Open Contact Form
                 </button>
               </div>
 
@@ -634,25 +627,15 @@ export default function Contact() {
                   <div className="flex flex-col items-center justify-center text-center h-full py-12" id="form-success-container">
                     <CheckCircle className="h-16 w-16 text-emerald-400 mb-6" />
                     <h3 className="text-white text-xl font-bold font-sans tracking-tight mb-2">
-                      Message Ingested Successfully!
+                      Message Sent Successfully!
                     </h3>
                     <p className="text-slate-400 text-sm max-w-sm mb-8 font-sans font-normal leading-relaxed">
-                      Thank you. Your message has been saved to the secure local message store (Option 2). You can view it immediately by opening the Secure Message Hub.
+                      Thank you. Your message has been transmitted successfully. I will review your inquiry and get in touch shortly.
                     </p>
                     <div className="flex flex-wrap gap-4 justify-center">
                       <button
-                        onClick={() => {
-                          setIsInboxOpen(true);
-                          handleReset();
-                        }}
-                        className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl transition-all font-sans font-bold text-xs cursor-pointer flex items-center gap-1.5"
-                      >
-                        <Terminal className="h-3.5 w-3.5" />
-                        Open Message Hub
-                      </button>
-                      <button
                         onClick={handleReset}
-                        className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl border border-slate-800 transition-all font-mono text-xs cursor-pointer"
+                        className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl transition-all font-sans font-bold text-xs cursor-pointer flex items-center gap-1.5"
                       >
                         Send another message
                       </button>
@@ -668,7 +651,7 @@ export default function Contact() {
 
       </div>
 
-      {/* SECURE MESSAGE HUB DIALOG (OPTION 2 & 3 INTEGRATION VIEW) */}
+      {/* QUICK CONTACT MODAL */}
       <AnimatePresence>
         {isInboxOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
@@ -677,369 +660,137 @@ export default function Contact() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="w-full max-w-5xl h-[85vh] sm:h-[80vh] bg-[#070b12] rounded-3xl border border-slate-900 shadow-2xl overflow-hidden flex flex-col"
+              className="w-full max-w-md bg-[#070b12] rounded-3xl border border-slate-900 shadow-2xl p-6 md:p-8 flex flex-col relative"
             >
-              {/* Header */}
-              <div className="px-6 py-4 bg-slate-950 border-b border-slate-900/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-emerald-500/15 rounded-lg border border-emerald-500/20">
-                    <Terminal className="h-5 w-5 text-emerald-400 animate-pulse" />
-                  </div>
-                  <div>
-                    <h3 className="text-white text-base font-bold font-sans tracking-tight flex items-center gap-2">
-                      Secure Message Hub Console
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[9px] font-mono uppercase tracking-wider">
-                        Active Monitoring
-                      </span>
-                    </h3>
-                    <p className="text-slate-500 text-xs font-mono mt-0.5">
-                      Ingested Records: {messages.length} total &middot; {messages.filter(m => !m.isDemo).length} user-submitted
-                    </p>
-                  </div>
-                </div>
+              {/* Close Button */}
+              <button
+                onClick={() => setIsInboxOpen(false)}
+                className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors cursor-pointer animate-none"
+                aria-label="Close"
+              >
+                <X className="h-5 w-5" />
+              </button>
 
-                {/* Tab Toggle buttons */}
-                <div className="flex bg-slate-900 border border-slate-850 rounded-xl p-0.5 shrink-0">
+              <div className="mb-6">
+                <h3 className="text-white text-lg font-bold font-sans tracking-tight text-left">
+                  Send a Direct Message
+                </h3>
+                <p className="text-slate-500 text-xs font-mono mt-1 text-left">
+                  Submit this standard contact form to establish a secure connection.
+                </p>
+              </div>
+
+              {isSuccess ? (
+                <div className="text-center py-8">
+                  <CheckCircle className="h-12 w-12 text-emerald-400 mx-auto mb-4 animate-bounce" />
+                  <h4 className="text-white font-sans font-bold text-base mb-2">Message Ingested Successfully!</h4>
+                  <p className="text-slate-400 text-xs font-light mb-6">Thank you for reaching out. I will respond to your inquiry within 4 business hours.</p>
                   <button
-                    onClick={() => setActiveTab('messages')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer ${
-                      activeTab === 'messages'
-                        ? 'bg-emerald-500 text-slate-950 font-semibold shadow-md'
-                        : 'text-slate-400 hover:text-white'
-                    }`}
+                    onClick={handleReset}
+                    className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-xl transition-all shadow-md active:scale-95 cursor-pointer mx-auto block"
                   >
-                    Messages
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('analytics')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer ${
-                      activeTab === 'analytics'
-                        ? 'bg-emerald-500 text-slate-950 font-semibold shadow-md'
-                        : 'text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    Analytics
+                    Send Another Message
                   </button>
                 </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4 text-left">
+                  <div className="flex flex-col">
+                    <label htmlFor="modal-name" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                      Your Name*
+                    </label>
+                    <input
+                      type="text"
+                      id="modal-name"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="Jane Doe"
+                      className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[10px] text-[15px] font-sans text-white placeholder-white/[0.25] w-full transition-colors focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none"
+                    />
+                  </div>
 
-                <div className="flex items-center gap-2">
-                  {user ? (
-                    <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5">
-                      {user.photoURL && <img src={user.photoURL} alt="" loading="lazy" className="h-4 w-4 rounded-full referrerpolicy=no-referrer" referrerPolicy="no-referrer" />}
-                      <span className="text-slate-300 text-xs font-mono truncate max-w-[120px]">{user.displayName || user.email}</span>
-                      <button onClick={handleSignOut} className="text-red-400 hover:text-red-300 text-[10px] font-mono border-l border-slate-800 pl-2 ml-1 cursor-pointer">
-                        Sign Out
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={handleSignIn}
-                      className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition-all text-xs cursor-pointer flex items-center gap-1"
+                  <div className="flex flex-col">
+                    <label htmlFor="modal-email" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                      Business Email*
+                    </label>
+                    <input
+                      type="email"
+                      id="modal-email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="jane@company.com"
+                      className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[10px] text-[15px] font-sans text-white placeholder-white/[0.25] w-full transition-colors focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label htmlFor="modal-company" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                      Company / Organization
+                    </label>
+                    <input
+                      type="text"
+                      id="modal-company"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      placeholder="Stripe, Databricks, etc."
+                      className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[10px] text-[15px] font-sans text-white placeholder-white/[0.25] w-full transition-colors focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label htmlFor="modal-topic" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                      Primary Topic*
+                    </label>
+                    <select
+                      id="modal-topic"
+                      value={formData.topic}
+                      onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
+                      className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[10px] text-[15px] text-white w-full focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none appearance-none font-sans"
                     >
-                      Sign In with Google
-                    </button>
-                  )}
+                      <option value="permanent" className="bg-slate-950 text-white font-sans">Full-Time Hiring Pipeline</option>
+                      <option value="consulting" className="bg-slate-950 text-white font-sans">Analytics Consulting</option>
+                      <option value="technical" className="bg-slate-950 text-white font-sans">Pipeline &amp; ETL Auditing</option>
+                      <option value="general" className="bg-slate-950 text-white font-sans">General Connect</option>
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label htmlFor="modal-message" className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase text-white/[0.45] mb-[6px] block">
+                      Message Body*
+                    </label>
+                    <textarea
+                      id="modal-message"
+                      required
+                      rows={4}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      placeholder="Hi Harekrishna, I'd love to connect and talk about..."
+                      className="bg-white/[0.04] border-[0.5px] border-white/[0.15] rounded-[8px] px-[14px] py-[10px] text-[15px] font-sans text-white placeholder-white/[0.25] w-full transition-colors focus:border-[#00CC88]/50 focus:bg-white/[0.06] focus:outline-none resize-none"
+                    />
+                  </div>
+
                   <button
-                    onClick={() => setIsInboxOpen(false)}
-                    className="px-3 py-1.5 bg-slate-900 hover:bg-slate-850 text-slate-400 hover:text-white rounded-xl transition-all border border-slate-800 text-xs font-mono cursor-pointer"
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 disabled:bg-slate-800 text-slate-950 font-sans font-bold text-sm rounded-xl transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-2 hover:shadow-emerald-500/20"
                   >
-                    Esc / Close
+                    {isSubmitting ? (
+                      <>
+                        <RefreshCw className="h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4" />
+                        Send Message
+                      </>
+                    )}
                   </button>
-                </div>
-              </div>
+                </form>
+              )}
 
-              {/* Main Content Pane */}
-              <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-                {activeTab === 'analytics' ? (
-                  <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 bg-[#080d16]" id="analytics-view">
-                    {/* Title */}
-                    <div className="border-b border-slate-900/60 pb-5 flex items-center justify-between">
-                      <div>
-                        <h4 className="text-white text-lg font-bold font-sans">Visitor Engagement Intelligence</h4>
-                        <p className="text-slate-500 text-xs font-mono mt-1">Real-time telemetry of document accesses, social engagements, and contact submissions.</p>
-                      </div>
-                      <button onClick={fetchAnalytics} className="p-2 text-slate-400 hover:text-emerald-400 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono" title="Refresh analytics">
-                        <RefreshCw className="h-3.5 w-3.5" />
-                        Refresh
-                      </button>
-                    </div>
 
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                      <div className="bg-[#0b1320] border border-slate-900/50 rounded-2xl p-4 flex flex-col justify-between">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Total Telemetry Events</span>
-                        <div className="mt-4 flex items-baseline gap-2">
-                          <span className="text-2xl font-bold text-white font-mono">{analyticsData?.totalEvents ?? 0}</span>
-                          <span className="text-xs text-emerald-400 font-mono">records</span>
-                        </div>
-                      </div>
-                      <div className="bg-[#0b1320] border border-slate-900/50 rounded-2xl p-4 flex flex-col justify-between">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Resume Views (Modal)</span>
-                        <div className="mt-4 flex items-baseline gap-2">
-                          <span className="text-2xl font-bold text-emerald-400 font-mono">{analyticsData?.resumeOpens ?? 0}</span>
-                          <span className="text-xs text-slate-500 font-mono">opens</span>
-                        </div>
-                      </div>
-                      <div className="bg-[#0b1320] border border-slate-900/50 rounded-2xl p-4 flex flex-col justify-between">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Resume Downloads</span>
-                        <div className="mt-4 flex items-baseline gap-2">
-                          <span className="text-2xl font-bold text-white font-mono">
-                            {(analyticsData?.resumeDownloads ?? 0) + (analyticsData?.resumeCopies ?? 0) + (analyticsData?.resumePrints ?? 0)}
-                          </span>
-                          <span className="text-xs text-slate-500 font-mono">actions</span>
-                        </div>
-                        <span className="text-[9px] text-slate-600 font-mono block mt-1">
-                          TXT: {analyticsData?.resumeDownloads ?? 0} &middot; Copy: {analyticsData?.resumeCopies ?? 0} &middot; Print: {analyticsData?.resumePrints ?? 0}
-                        </span>
-                      </div>
-                      <div className="bg-[#0b1320] border border-slate-900/50 rounded-2xl p-4 flex flex-col justify-between">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Social &amp; Lead Clicks</span>
-                        <div className="mt-4 flex items-baseline gap-2">
-                          <span className="text-2xl font-bold text-white font-mono">
-                            {(analyticsData?.linkedinClicks ?? 0) + (analyticsData?.emailClicks ?? 0) + (analyticsData?.contactSubmissions ?? 0)}
-                          </span>
-                          <span className="text-xs text-slate-500 font-mono">clicks</span>
-                        </div>
-                        <span className="text-[9px] text-slate-600 font-mono block mt-1">
-                          LinkedIn: {analyticsData?.linkedinClicks ?? 0} &middot; Email: {analyticsData?.emailClicks ?? 0} &middot; Submit: {analyticsData?.contactSubmissions ?? 0}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Table of events */}
-                    <div className="bg-[#0b1320] border border-slate-900 rounded-2xl overflow-hidden">
-                      <div className="px-4 py-3 bg-slate-950 border-b border-slate-900/60 flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-300 font-mono uppercase tracking-wider">Recent Activity Logs</span>
-                      </div>
-                      <div className="overflow-x-auto max-h-[40vh] overflow-y-auto">
-                        <table className="w-full text-left text-xs text-slate-400">
-                          <thead className="bg-[#0c1626] text-slate-500 uppercase font-mono text-[9px] tracking-wider border-b border-slate-900/40 sticky top-0">
-                            <tr>
-                              <th className="px-4 py-2.5">Event Type</th>
-                              <th className="px-4 py-2.5">Metadata</th>
-                              <th className="px-4 py-2.5">Timestamp</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-900/40 font-mono text-[11px]">
-                            {!analyticsData?.recentEvents || analyticsData.recentEvents.length === 0 ? (
-                              <tr>
-                                <td colSpan={3} className="px-4 py-8 text-center text-slate-600">No telemetry events logged yet. Try clicking resume or social links, then refresh!</td>
-                              </tr>
-                            ) : (
-                              analyticsData.recentEvents.map((e: any) => (
-                                <tr key={e.id} className="hover:bg-slate-950/40">
-                                  <td className="px-4 py-2 text-emerald-400 font-semibold">{e.eventType}</td>
-                                  <td className="px-4 py-2 text-slate-300 max-w-xs truncate" title={e.metadata}>{e.metadata || 'N/A'}</td>
-                                  <td className="px-4 py-2 text-slate-500">{new Date(e.timestamp).toLocaleString()}</td>
-                                </tr>
-                              ))
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {/* Left Sidebar: Message List */}
-                    <div className="w-full md:w-2/5 border-r border-slate-900/60 bg-[#080d16] overflow-y-auto flex flex-col">
-                  <div className="p-4 border-b border-slate-900/40 bg-slate-950/40 flex items-center justify-between gap-2">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider">
-                      Message Ingestion Feed
-                    </span>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={handleLoadDemos}
-                        disabled={messages.length > 0}
-                        className="text-[10px] font-mono text-slate-400 hover:text-white bg-slate-900 px-2 py-1 rounded border border-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
-                        title="Load demo recruiter messages if feed is empty"
-                      >
-                        Reset Demos
-                      </button>
-                      <button
-                        onClick={handleClearInbox}
-                        className="text-[10px] font-mono text-red-400 hover:text-red-300 bg-red-950/20 px-2 py-1 rounded border border-red-900/30 flex items-center gap-1 cursor-pointer"
-                      >
-                        <Trash2 className="h-3 w-3" />
-                        Clear All
-                      </button>
-                    </div>
-                  </div>
-
-                  {messages.length === 0 ? (
-                    <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-                      <Clock className="h-10 w-10 text-slate-600 mb-3 animate-spin" style={{ animationDuration: '6s' }} />
-                      <p className="text-slate-400 text-xs font-mono">No telemetry records ingested.</p>
-                      <p className="text-slate-600 text-[10px] mt-1">Submit a test message via the contact form to trigger record logging!</p>
-                    </div>
-                  ) : (
-                    <div className="flex-1 divide-y divide-slate-900/40">
-                      {messages.map((msg) => {
-                        const isSelected = selectedMessage?.id === msg.id;
-                        return (
-                          <button
-                            key={msg.id}
-                            onClick={() => setSelectedMessage(msg)}
-                            className={`w-full text-left p-4 transition-all flex flex-col gap-1.5 border-l-2 relative cursor-pointer ${
-                              isSelected 
-                                ? 'bg-slate-900/45 border-l-emerald-400 bg-gradient-to-r from-emerald-500/5 to-transparent' 
-                                : 'border-l-transparent hover:bg-slate-900/20'
-                            }`}
-                          >
-                            <div className="flex items-center justify-between gap-2">
-                              <span className={`text-xs font-sans font-bold ${isSelected ? 'text-white' : 'text-slate-300'}`}>
-                                {msg.name}
-                              </span>
-                              <span className="text-[9px] font-mono text-slate-500">
-                                {msg.isDemo ? 'Demo' : 'Real-time'}
-                              </span>
-                            </div>
-
-                            <div className="flex items-center justify-between gap-1.5 text-[10px] font-mono text-slate-400">
-                              <span className="truncate max-w-[140px]">{msg.company || 'No Company'}</span>
-                              <span className="text-slate-600">&middot;</span>
-                              <span>{msg.timestamp.split(',')[0]}</span>
-                            </div>
-
-                            <p className="text-xs text-slate-400 truncate font-sans leading-normal">
-                              {msg.message}
-                            </p>
-
-                            <div className="flex items-center gap-1.5 mt-1">
-                              <span className={`text-[9px] font-mono px-1.5 py-0.25 rounded-full border ${
-                                msg.status === 'Relayed to Email API'
-                                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                                  : msg.status === 'Failed to Relay (Stored Locally)'
-                                  ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-                                  : 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-                              }`}>
-                                {msg.status}
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-
-                {/* Right Detail Pane */}
-                <div className="flex-1 bg-slate-950/20 overflow-y-auto p-6 flex flex-col justify-between">
-                  {selectedMessage ? (
-                    <div className="space-y-6">
-                      
-                      {/* Sender Bio Block */}
-                      <div className="p-4 bg-slate-950/60 rounded-2xl border border-slate-900/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h4 className="text-white text-base font-bold font-sans">
-                              {selectedMessage.name}
-                            </h4>
-                            {selectedMessage.isDemo && (
-                              <span className="px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[8px] font-mono uppercase">
-                                Pre-Loaded
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-emerald-400 text-xs font-mono mt-1">
-                            {selectedMessage.email}
-                          </p>
-                          <div className="flex items-center gap-2 text-slate-500 text-xs mt-1.5">
-                            <span>{selectedMessage.company}</span>
-                            <span>&middot;</span>
-                            <span>{selectedMessage.topic}</span>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-row sm:flex-col items-start sm:items-end gap-2 shrink-0">
-                          <button
-                            onClick={() => copyToClipboard(selectedMessage.email, 'email')}
-                            className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-lg border border-slate-800 transition-colors text-xs flex items-center gap-1 cursor-pointer"
-                            title="Copy email address"
-                          >
-                            {copiedId === 'email' ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
-                            <span className="font-mono text-[10px]">Copy Contact</span>
-                          </button>
-                          <span className="text-[10px] font-mono text-slate-600 self-center sm:self-auto">
-                            Logged: {selectedMessage.timestamp}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Message Content */}
-                      <div className="space-y-2">
-                        <span className="text-slate-500 font-mono text-[10px] uppercase tracking-widest font-semibold block">
-                          Message Body
-                        </span>
-                        <div className="p-5 bg-slate-950/30 rounded-2xl border border-slate-900/40 text-slate-300 text-sm leading-relaxed font-sans font-light whitespace-pre-wrap">
-                          {selectedMessage.message}
-                        </div>
-                      </div>
-
-                      {/* Technical Audit Trace / Ingestion Metadata */}
-                      <div className="space-y-2">
-                        <span className="text-slate-500 font-mono text-[10px] uppercase tracking-widest font-semibold block">
-                          System Ingestion Metadata (Cloud SQL Relational Database Status)
-                        </span>
-                        <div className="p-4 bg-[#0a0f19] rounded-2xl border border-slate-900 text-xs font-mono space-y-2.5">
-                          <div className="flex items-center justify-between text-slate-400 border-b border-slate-900/50 pb-2">
-                            <span>RECORD_PRIMARY_KEY:</span>
-                            <span className="text-slate-300">{selectedMessage.id}</span>
-                          </div>
-                          <div className="flex items-center justify-between text-slate-400 border-b border-slate-900/50 pb-2">
-                            <span>INGESTION_TYPE:</span>
-                            <span className="text-emerald-400 flex items-center gap-1">
-                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                              🛢️ Cloud SQL PostgreSQL (Object Connection Pool)
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between text-slate-400 border-b border-slate-900/50 pb-2">
-                            <span>DELIVERY_STATUS:</span>
-                            <span className={`font-bold ${
-                              selectedMessage.status === 'Relayed to Email API' 
-                                ? 'text-emerald-400' 
-                                : selectedMessage.status === 'Failed to Relay (Stored Locally)' 
-                                ? 'text-amber-400' 
-                                : 'text-blue-400'
-                            }`}>
-                              {selectedMessage.status}
-                            </span>
-                          </div>
-                          <div className="flex items-start justify-between text-slate-400 gap-4 pt-1">
-                            <span>EMAIL_INTEGRATION:</span>
-                            <span className="text-slate-500 text-right max-w-xs leading-normal">
-                              {(import.meta as any).env?.VITE_WEB3FORMS_ACCESS_KEY 
-                                ? '✅ Web3Forms actively configured inside environment variables. Submissions successfully forwarded to owner email inbox.' 
-                                : '⚠️ Sandbox fallback. Complete Option 3 by adding VITE_WEB3FORMS_ACCESS_KEY to your AI Studio application environment variables.'}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  ) : (
-                    <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
-                      <Terminal className="h-12 w-12 text-slate-700 mb-3" />
-                      <p className="text-slate-400 font-mono text-sm">Select an ingested message block from the ingestion feed to analyze.</p>
-                    </div>
-                  )}
-
-                  {/* Integration Tutorial Footer */}
-                  <div className="mt-8 p-4 bg-slate-950 border border-slate-900 rounded-2xl flex items-start gap-3">
-                    <Info className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <div className="space-y-1">
-                      <h5 className="text-white text-[11px] font-bold font-sans">
-                        How Web3Forms Works (Option 3 Integration)
-                      </h5>
-                      <p className="text-slate-500 text-[10px] leading-relaxed">
-                        To receive these message submissions directly to your email inbox (e.g., <strong className="text-emerald-400">harekrishnashah13@gmail.com</strong>), get a free access key from <a href="https://web3forms.com" target="_blank" rel="noopener noreferrer" className="text-emerald-400 underline hover:text-emerald-300 inline-flex items-center gap-0.5">web3forms.com <ArrowUpRight className="h-2 w-2" /></a>, and add it under the key <code className="text-slate-300">VITE_WEB3FORMS_ACCESS_KEY</code> in the AI Studio Settings &rarr; Secrets menu.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                  </>
-                )}
-              </div>
             </motion.div>
           </div>
         )}

@@ -268,18 +268,18 @@ ${CERTIFICATIONS_DATA.map(cert => `* ${cert.name} - Issued by ${cert.issuer} (${
               <h2 className="text-xs font-bold font-mono tracking-widest text-slate-900 uppercase border-b border-slate-200 pb-1">
                 Technical Expertise Stack
               </h2>
-              <div className="grid grid-cols-3 gap-4 text-[11px] text-slate-600 font-sans">
+              <div className="grid grid-cols-3 gap-4 text-xs text-slate-600 font-sans">
                 <div>
                   <strong className="text-slate-900 block font-semibold mb-1">Data Engineering</strong>
-                  <p>Databricks, PySpark, Azure ADF, Synapse Analytics, Delta Lake, Teradata SQL, Python</p>
+                  <p className="font-light leading-relaxed">Databricks, PySpark, Azure ADF, Synapse Analytics, Delta Lake, Teradata SQL, Python</p>
                 </div>
                 <div>
                   <strong className="text-slate-900 block font-semibold mb-1">BI &amp; Visualization</strong>
-                  <p>Power BI (DAX, PowerQuery), Dimensional Modeling, Incremental Data Refresh, Excel Modeling</p>
+                  <p className="font-light leading-relaxed">Power BI (DAX, PowerQuery), Dimensional Modeling, Incremental Data Refresh, Excel Modeling</p>
                 </div>
                 <div>
                   <strong className="text-slate-900 block font-semibold mb-1">AI, Cloud &amp; QA</strong>
-                  <p>Gemini API, Selenium, Jenkins CI/CD, Terraform, Postman, Oracle SQL, AML/KYC Audits</p>
+                  <p className="font-light leading-relaxed">Gemini API, Selenium, Jenkins CI/CD, Terraform, Postman, Oracle SQL, AML/KYC Audits</p>
                 </div>
               </div>
             </div>
@@ -297,15 +297,15 @@ ${CERTIFICATIONS_DATA.map(cert => `* ${cert.name} - Issued by ${cert.issuer} (${
                         <h3 className="text-xs font-bold text-slate-900 font-sans">
                           {exp.role}
                         </h3>
-                        <span className="text-[11px] text-emerald-600 font-medium font-sans">
+                        <span className="text-xs text-emerald-600 font-medium font-sans">
                           {exp.company} &mdash; {exp.location}
                         </span>
                       </div>
-                      <span className="text-[10px] text-slate-500 font-mono font-medium shrink-0">
+                      <span className="text-[11px] text-slate-500 font-mono font-medium shrink-0">
                         {exp.period}
                       </span>
                     </div>
-                    <ul className="list-disc pl-4 space-y-1 text-[11px] text-slate-600 font-sans leading-relaxed">
+                    <ul className="list-disc pl-4 space-y-1 text-xs text-slate-600 font-sans font-light leading-relaxed">
                       {exp.description.map((bullet, bIdx) => (
                         <li key={bIdx}>{bullet}</li>
                       ))}
@@ -328,15 +328,15 @@ ${CERTIFICATIONS_DATA.map(cert => `* ${cert.name} - Issued by ${cert.issuer} (${
                         <h3 className="text-xs font-bold text-slate-900 font-sans">
                           {edu.degree} in {edu.specialization}
                         </h3>
-                        <span className="text-[11px] text-emerald-600 font-medium font-sans">
+                        <span className="text-xs text-emerald-600 font-medium font-sans">
                           {edu.institution}
                         </span>
                       </div>
-                      <span className="text-[10px] text-slate-500 font-mono font-medium shrink-0">
+                      <span className="text-[11px] text-slate-500 font-mono font-medium shrink-0">
                         {edu.period}
                       </span>
                     </div>
-                    <ul className="list-disc pl-4 space-y-0.5 text-[11px] text-slate-600 font-sans leading-relaxed">
+                    <ul className="list-disc pl-4 space-y-0.5 text-xs text-slate-600 font-sans font-light leading-relaxed">
                       {edu.highlights.map((h, hIdx) => (
                         <li key={hIdx}>{h}</li>
                       ))}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { BarChart3, Database, Brain, Cloud, CodeXml, Info, HelpCircle } from 'lucide-react';
+import AnimatedHeading from './AnimatedHeading';
 
 // Unified details dictionary for every single technical tool and framework
 const TOOL_DETAILS: Record<string, { desc: string; level: string; exp: string }> = {
@@ -309,12 +310,7 @@ export default function Skills() {
         
         {/* Section Header */}
         <div className="max-w-3xl mb-0">
-          <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
-            [04] Technical Skills
-          </span>
-          <h2 className="text-white font-display" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-            Skills &amp; Expertise
-          </h2>
+          <AnimatedHeading eyebrow="[03] TECHNICAL SKILLS" title="Skills &amp; Expertise" />
           <p className="text-slate-400 text-sm md:text-base leading-relaxed font-sans font-normal max-w-2xl">
             A working toolkit built through real enterprise delivery — not tutorials. Every skill below is demonstrated in at least one case study.
           </p>

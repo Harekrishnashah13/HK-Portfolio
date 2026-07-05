@@ -10,7 +10,7 @@ interface NavbarProps {
   onOpenResume?: () => void;
 }
 
-const SECTIONS = ['hero', 'projects', 'skills', 'experience', 'credentials', 'contact'];
+const SECTIONS = ['about', 'projects', 'skills', 'experience', 'credentials', 'contact'];
 
 export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: NavbarProps) {
   const activeSection = useActiveSection(SECTIONS);
@@ -108,7 +108,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
             if (activeCaseStudyId) {
               onBackHome();
             } else {
-              scrollToSection('hero');
+              scrollToSection('about');
             }
           }}
           className="flex items-center gap-2.5 cursor-pointer group select-none"
@@ -142,9 +142,9 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
               {/* Navigation Pill Container */}
               <nav className="flex items-center gap-1 bg-[#0b1220]/50 border border-slate-900/50 p-1.5 rounded-full shadow-inner backdrop-blur-md">
                 <button
-                  onClick={() => scrollToSection('hero')}
+                  onClick={() => scrollToSection('about')}
                   className={`px-3 py-1.5 rounded-full font-mono text-[10px] xl:text-[11px] font-semibold tracking-[0.05em] transition-all cursor-pointer relative after:absolute after:inset-y-[-8px] after:inset-x-0 after:content-[""] ${
-                    activeSection === 'hero' ? 'bg-[#131d31] text-emerald-400 shadow-inner border border-white/[0.03]' : 'text-slate-400 hover:text-white'
+                    activeSection === 'about' ? 'bg-[#131d31] text-emerald-400 shadow-inner border border-white/[0.03]' : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   About
@@ -181,6 +181,14 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                 >
                   Credentials
                 </button>
+                <button
+                  onClick={() => scrollToSection('contact')}
+                  className={`px-3 py-1.5 rounded-full font-mono text-[10px] xl:text-[11px] font-semibold tracking-[0.05em] transition-all cursor-pointer relative after:absolute after:inset-y-[-8px] after:inset-x-0 after:content-[""] ${
+                    activeSection === 'contact' ? 'bg-[#131d31] text-emerald-400 shadow-inner border border-white/[0.03]' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Contact
+                </button>
               </nav>
 
               {/* Separator */}
@@ -206,7 +214,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                 onClick={onOpenResume}
                 className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-full transition-all shadow-md active:scale-95 cursor-pointer hover:shadow-emerald-500/20"
               >
-                Download Resume
+                Review Resume
               </button>
             </div>
 
@@ -255,7 +263,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                scrollToSection('hero');
+                scrollToSection('about');
               }}
               className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
             >
@@ -316,7 +324,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
               }}
               className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-sm rounded-xl transition-colors shadow-lg cursor-pointer"
             >
-              Download Resume
+              Review Resume
             </button>
           </motion.div>
         )}

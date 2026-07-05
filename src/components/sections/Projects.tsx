@@ -2,6 +2,8 @@ import { useState, useRef, HTMLAttributes, ReactNode, MouseEvent, useEffect } fr
 import { motion, AnimatePresence } from 'motion/react';
 import { PROJECTS_DATA } from '../../data';
 import { Project } from '../../types';
+import HealthcareDashboard from './HealthcareDashboard';
+import AnimatedHeading from './AnimatedHeading';
 import { 
   ExternalLink, 
   Github, 
@@ -65,6 +67,78 @@ function SpotlightCard({ children, className = '', ...props }: SpotlightCardProp
   );
 }
 
+function AePerformanceDashboard({ compact }: { compact?: boolean }) {
+  return (
+    <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 select-none">
+      {/* Header */}
+      <div className="flex justify-between items-center border-b border-white/[0.04] pb-2 mb-3">
+        <span className="text-white font-sans font-bold text-xs flex items-center gap-1.5">
+          A&E Performance Dashboard
+          <span className="flex h-1.5 w-1.5 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+          </span>
+        </span>
+      </div>
+
+      {/* 4 metrics in 2x2 grid */}
+      <div className="grid grid-cols-2 gap-2 mb-3">
+        <div className="bg-slate-950/80 border border-white/[0.02] p-2 rounded">
+          <span className="text-slate-500 text-[7px] block uppercase">Avg wait time</span>
+          <span className="text-white text-[12px] font-sans font-bold">3.4hrs</span>
+        </div>
+        <div className="bg-slate-950/80 border border-white/[0.02] p-2 rounded">
+          <span className="text-slate-500 text-[7px] block uppercase">Breach rate</span>
+          <span className="text-red-400 text-[12px] font-sans font-bold">18.5%</span>
+        </div>
+        <div className="bg-slate-950/80 border border-white/[0.02] p-2 rounded">
+          <span className="text-slate-500 text-[7px] block uppercase">Bed occupancy</span>
+          <span className="text-cyan-400 text-[12px] font-sans font-bold">88%</span>
+        </div>
+        <div className="bg-slate-950/80 border border-white/[0.02] p-2 rounded">
+          <span className="text-slate-500 text-[7px] block uppercase">QA pass rate</span>
+          <span className="text-emerald-400 text-[12px] font-sans font-bold">99.8%</span>
+        </div>
+      </div>
+
+      {/* Horizontal Bar Chart (hidden if compact) */}
+      {!compact && (
+        <div className="space-y-1.5 mb-3">
+          <span className="text-slate-500 text-[7px] uppercase block mb-1">Bed Occupancy by Ward</span>
+          {[
+            { name: "Emergency", percentage: 88, color: "#A32D2D" },
+            { name: "ICU", percentage: 91, color: "#A32D2D" },
+            { name: "Oncology", percentage: 72, color: "#BA7517" },
+            { name: "Pediatrics", percentage: 64, color: "#1AAF69" },
+            { name: "Cardiology", percentage: 78, color: "#BA7517" }
+          ].map(ward => (
+            <div key={ward.name} className="flex items-center text-[8px]">
+              <span className="w-16 text-slate-400 truncate text-right pr-2">{ward.name}</span>
+              <div className="flex-1 bg-white/[0.04] h-2 rounded overflow-hidden">
+                <div style={{ width: `${ward.percentage}%`, backgroundColor: ward.color }} className="h-full rounded" />
+              </div>
+              <span className="w-8 text-slate-400 pl-2 font-bold">{ward.percentage}%</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Pipeline Strip at bottom */}
+      <div className="grid grid-cols-5 gap-1 items-center bg-slate-950 p-1.5 rounded border border-white/[0.02] text-[7px] text-center font-mono">
+        <div className="bg-red-500/10 text-red-400 border border-red-500/15 py-0.5 rounded text-[7px] font-bold">HSE Logs</div>
+        <div className="text-slate-600 text-[8px]">→</div>
+        <div className="bg-amber-500/10 text-amber-400 border border-amber-500/15 py-0.5 rounded text-[7px] font-bold">Bronze</div>
+        <div className="text-slate-600 text-[8px]">→</div>
+        <div className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/15 py-0.5 rounded text-[7px] font-bold">Silver</div>
+        <div className="text-slate-600 text-[8px]">→</div>
+        <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/15 py-0.5 rounded text-[7px] font-bold">Gold</div>
+        <div className="text-slate-600 text-[8px]">→</div>
+        <div className="bg-blue-500/10 text-blue-400 border border-blue-500/15 py-0.5 rounded text-[7px] font-bold">Power BI</div>
+      </div>
+    </div>
+  );
+}
+
 interface ProjectsProps {
   onSelectFlagship?: () => void;
 }
@@ -75,7 +149,39 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
   const [showAll, setShowAll] = useState(false);
   const toggleShowAll = () => setShowAll(!showAll);
 
-  const pinnedIds = ['project-1', 'project-7', 'project-4'];
+  const pinnedIds = ['project-1', 'healthcare-pipeline', 'project-4'];
+
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const featuredProjects = PROJECTS_DATA.filter(p => pinnedIds.includes(p.id));
+  const activeFeatured = featuredProjects.filter(p => {
+    if (filter === 'all') return true;
+    if (filter === 'engineering') return p.category === 'engineering';
+    if (filter === 'analytics') return p.category === 'analytics';
+    if (filter === 'bi') {
+      return p.category === 'bi' || p.tags.includes('Power BI') || p.tags.includes('Tableau BI');
+    }
+    return true;
+  });
+
+  const nonFeaturedProjects = PROJECTS_DATA.filter(p => !pinnedIds.includes(p.id));
+  const activeNonFeatured = nonFeaturedProjects.filter(p => {
+    if (filter === 'all') return true;
+    if (filter === 'engineering') return p.category === 'engineering';
+    if (filter === 'analytics') return p.category === 'analytics';
+    if (filter === 'bi') {
+      return p.category === 'bi' || p.tags.includes('Power BI') || p.tags.includes('Tableau BI');
+    }
+    return true;
+  });
 
   // Interactive Sandbox states
   const [aibTab, setAibTab] = useState<'sla' | 'audit'>('sla');
@@ -475,8 +581,8 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
     );
   };
 
-  // 3. Banking Fraud & Operational SLA Dashboard (AIB)
-  const renderAIBDashboardMockup = () => {
+  // 3. Banking Fraud & Operational SLA Dashboard
+  const renderBankingDashboardMockup = () => {
     const aibDeptsMap = {
       retail: { compliance: "100% SLA", cases: "42 Resolved", triage: "18m Triage", color: "text-emerald-400" },
       wealth: { compliance: "98.9% SLA", cases: "12 Resolved", triage: "24m Triage", color: "text-emerald-400" },
@@ -487,7 +593,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
     return (
       <div className="w-full bg-[#03060a] border border-slate-900 rounded-2xl p-4 font-mono text-[9px] text-slate-400 h-auto min-h-[220px] sm:h-[220px] flex flex-col justify-between relative overflow-hidden select-none">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-900/80 pb-2 mb-2 gap-1.5">
-          <span className="text-[8px] text-slate-500">EXECUTIVE FRAUD &amp; SLA DASHBOARD (AIB)</span>
+          <span className="text-[8px] text-slate-500">EXECUTIVE FRAUD &amp; SLA DASHBOARD</span>
           <div className="flex gap-1">
             <button
               onClick={() => setAibTab('sla')}
@@ -960,21 +1066,446 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
     );
   };
 
+  const renderWideProjectCard = (project: Project) => {
+    if (project.id === 'healthcare-pipeline') {
+      const desc = "Designed a secure Databricks Lakehouse pipeline to ingest NHS A&E performance reports, standardizing patient waiting metrics. Deployed an automated Executive Power BI Dashboard to track HSE breach rates in real-time.";
+      return (
+        <SpotlightCard
+          key={project.id}
+          id={`project-card-${project.id}`}
+          className="group relative bg-[#ffffff]/[0.03] rounded-[14px] border border-[#00cc88]/15 backdrop-blur-md p-7 md:p-8 hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)] transition-all duration-300 ease-out"
+          style={{ minHeight: '320px' }}
+        >
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '45% 55%',
+            gap: '32px',
+            alignItems: 'start'
+          }}>
+            {/* LEFT Column */}
+            <div className="flex flex-col justify-between h-full">
+              <div>
+                {/* Badges row (Fix 5) */}
+                <div className="flex flex-row items-center gap-[6px] flex-wrap mb-3 w-full">
+                  {getProjectCategoryBadge(project.category)}
+                  {getProjectTypeBadge(project.projectType)}
+                  <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginLeft: 'auto' }}>
+                    Completed
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-white font-sans tracking-tight" style={{ fontSize: '22px', fontWeight: 600, lineHeight: '1.3', letterSpacing: '-0.01em', marginBottom: '10px' }}>
+                  {project.title}
+                </h3>
+
+                {/* Description */}
+                <p className="font-sans text-sm leading-[1.65] text-white/60 mb-4">
+                  {desc}
+                </p>
+
+                {/* 3 metric chips in a row */}
+                <div className="flex flex-row items-center gap-2.5 text-xs text-emerald-400 font-mono mt-3 mb-5">
+                  <span>99.8% accuracy</span>
+                  <span className="text-slate-700 font-bold">·</span>
+                  <span>&lt;15min latency</span>
+                  <span className="text-slate-700 font-bold">·</span>
+                  <span>100% parity</span>
+                </div>
+
+                {/* Tech stack tags */}
+                <div className="flex flex-wrap gap-1 mb-6">
+                  {project.tags.slice(0, 6).map((tag) => (
+                    <span key={tag} className="text-[10px] text-slate-400 font-mono bg-slate-900/60 border border-slate-800/40 px-2 py-0.5 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Actions Bar */}
+              <div className="flex items-center gap-4 pt-4 border-t border-white/[0.06] mt-4">
+                <button
+                  onClick={() => setSelectedProject(project)}
+                  className="px-4 py-2 bg-transparent hover:bg-white/[0.04] border border-white/10 rounded-lg text-xs font-semibold text-white/80 hover:text-white transition-all cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  Open Case Study &rarr;
+                </button>
+                
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-[6px] border border-white/10 bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-[#00CC88] hover:border-[#00CC88]/30 transition-all cursor-pointer"
+                  title="View Source Code"
+                >
+                  <Github className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* RIGHT Column */}
+            <div className={`${isMobile ? 'h-[220px] overflow-hidden' : ''} w-full`}>
+              <AePerformanceDashboard compact={isMobile} />
+            </div>
+          </div>
+        </SpotlightCard>
+      );
+    }
+
+    // Generic wide card
+    return (
+      <SpotlightCard
+        key={project.id}
+        id={`project-card-${project.id}`}
+        className="group relative bg-[#ffffff]/[0.03] rounded-[14px] border border-white/10 backdrop-blur-md p-7 md:p-8 hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)] transition-all duration-300 ease-out"
+        style={{ minHeight: '320px' }}
+      >
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '45% 55%',
+          gap: '32px',
+          alignItems: 'start'
+        }}>
+          {/* LEFT Column */}
+          <div className="flex flex-col justify-between h-full">
+            <div>
+              {/* Badges row (Fix 5) */}
+              <div className="flex flex-row items-center gap-[6px] flex-wrap mb-3 w-full">
+                {getProjectCategoryBadge(project.category)}
+                {getProjectTypeBadge(project.projectType)}
+                <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginLeft: 'auto' }}>
+                  Completed
+                </span>
+              </div>
+
+              {/* Title */}
+              <h3 className="text-white font-sans tracking-tight" style={{ fontSize: '22px', fontWeight: 600, lineHeight: '1.3', letterSpacing: '-0.01em', marginBottom: '10px' }}>
+                {project.title}
+              </h3>
+
+              {/* Description */}
+              <p className="font-sans text-sm leading-[1.65] text-white/60 mb-4">
+                {project.description}
+              </p>
+
+              {/* Metrics or outcomes block */}
+              {project.id === 'project-1' ? (
+                /* Enterprise Cloud Migration outcome accent (Fix 3) */
+                <div style={{
+                  borderLeft: '2px solid #00CC88',
+                  paddingLeft: '14px',
+                  marginTop: '14px',
+                  marginBottom: '14px'
+                }}>
+                  <p style={{
+                    fontSize: '13px',
+                    color: 'rgba(255,255,255,0.65)',
+                    lineHeight: '1.65',
+                    margin: 0
+                  }}>
+                    100% data parity with zero operational downtime. Automated translation saved 9 months of manual work.
+                  </p>
+                </div>
+              ) : (
+                /* Improved metrics row for other wide cards */
+                <div className="grid grid-cols-3 gap-2 border-t border-b border-white/[0.04] py-3 mb-4 text-center">
+                  {project.metrics.map((m, mIdx) => (
+                    <div key={mIdx} className="flex flex-col text-center">
+                      <span style={{
+                        fontSize: '20px',
+                        fontWeight: 700,
+                        fontFamily: 'JetBrains Mono, monospace',
+                        color: '#FFFFFF',
+                        display: 'block'
+                      }}>
+                        {m.value}
+                      </span>
+                      <span style={{
+                        fontSize: '10px',
+                        fontWeight: 500,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        color: 'rgba(255,255,255,0.4)',
+                        marginTop: '3px'
+                      }}>
+                        {m.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Outcome pattern below (Fix 6) - only if not project-1 since project-1 outcome is already displayed above */}
+              {project.id !== 'project-1' && (
+                <div style={{
+                  borderLeft: '2px solid rgba(0,204,136,0.5)',
+                  paddingLeft: '14px',
+                  marginTop: '14px',
+                  marginBottom: '14px'
+                }}>
+                  <span style={{
+                    fontSize: '11px',
+                    fontWeight: '600',
+                    color: '#00CC88',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.06em',
+                    display: 'block',
+                    marginBottom: '4px'
+                  }}>Outcome</span>
+                  <p style={{
+                    fontSize: '13px',
+                    lineHeight: '1.65',
+                    color: 'rgba(255,255,255,0.65)',
+                    margin: 0
+                  }}>
+                    {project.impact}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Actions Bar */}
+            <div className="flex items-center gap-4 pt-4 border-t border-white/[0.06] mt-4">
+              <button
+                onClick={() => setSelectedProject(project)}
+                className="px-4 py-2 bg-transparent hover:bg-white/[0.04] border border-white/10 rounded-lg text-xs font-semibold text-white/80 hover:text-white transition-all cursor-pointer inline-flex items-center gap-1.5"
+              >
+                Open Case Study &rarr;
+              </button>
+              
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-[6px] border border-white/10 bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-[#00CC88] hover:border-[#00CC88]/30 transition-all cursor-pointer"
+                title="View Source Code"
+              >
+                <Github className="h-3.5 w-3.5" />
+              </a>
+            </div>
+          </div>
+
+          {/* RIGHT Column (Preview/Mockup) */}
+          <div className={`${isMobile ? 'h-[200px] overflow-hidden' : ''} w-full`}>
+            {getProjectMockup(project.id)}
+          </div>
+        </div>
+      </SpotlightCard>
+    );
+  };
+
+  const renderStandardProjectCard = (project: Project) => {
+    const isProject1 = project.id === 'project-1';
+
+    return (
+      <SpotlightCard
+        key={project.id}
+        id={`project-card-${project.id}`}
+        className="group relative flex flex-col justify-between bg-slate-950/40 rounded-3xl border-[0.5px] border-[rgba(255,255,255,0.08)] hover:border-[#00CC88]/35 backdrop-blur-md p-4 md:p-6 hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)] hover:-translate-y-[3px] transition-all duration-200 ease-out h-full"
+        style={{ minHeight: '320px' }}
+      >
+        <div className="flex-1 flex flex-col">
+          {/* Badges row (Fix 5) */}
+          <div className="flex flex-row items-center gap-[6px] flex-wrap mb-3 w-full">
+            {getProjectCategoryBadge(project.category)}
+            {getProjectTypeBadge(project.projectType)}
+            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginLeft: 'auto' }}>
+              Completed
+            </span>
+          </div>
+
+          {/* Title & Short Desc */}
+          <h3 className="text-white font-sans tracking-tight" style={{ fontSize: '20px', fontWeight: 600, lineHeight: '1.3', letterSpacing: '-0.01em', marginBottom: '10px' }}>
+            {project.title}
+          </h3>
+          <p 
+            className="font-sans"
+            style={{
+              fontSize: '14px',
+              lineHeight: '1.65',
+              color: 'rgba(255,255,255,0.6)',
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              marginBottom: '16px'
+            }}
+          >
+            {project.description}
+          </p>
+
+          {/* Preview mockup (height: 200px, overflow: hidden) */}
+          <div className="hidden md:block mb-4 h-[200px] overflow-hidden rounded-lg">
+            {getProjectMockup(project.id)}
+          </div>
+
+          {/* Mobile-only Simulation Banner */}
+          <div className="block md:hidden mb-4 p-2.5 bg-slate-900/50 border border-slate-800/60 rounded-xl text-center">
+            <button
+              onClick={() => setSelectedProject(project)}
+              className="text-[10px] text-emerald-400 font-mono font-medium inline-flex items-center gap-1.5 cursor-pointer w-full justify-center h-10 min-h-[40px]"
+            >
+              <Activity className="h-3.5 w-3.5 text-emerald-400" />
+              Tap to View Case Study &amp; Interactive Demo
+            </button>
+          </div>
+
+          {/* Metrics row (OMITTED for project-1) */}
+          {!isProject1 && (
+            <div className="grid grid-cols-3 gap-2 border-t border-b border-white/[0.04] py-3 mb-4 text-center">
+              {project.metrics.map((m, mIdx) => (
+                <div key={mIdx} className="flex flex-col text-center">
+                  <span style={{
+                    fontSize: '20px',
+                    fontWeight: 700,
+                    fontFamily: 'JetBrains Mono, monospace',
+                    color: '#FFFFFF',
+                    display: 'block'
+                  }}>
+                    {m.value}
+                  </span>
+                  <span style={{
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(255,255,255,0.4)',
+                    marginTop: '3px'
+                  }}>
+                    {m.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Outcomes pattern (Fix 6, Fix 3) */}
+          {isProject1 ? (
+            /* Enterprise Cloud Migration outcome style (Fix 3) */
+            <div style={{
+              borderLeft: '2px solid #00CC88',
+              paddingLeft: '14px',
+              marginTop: '14px',
+              marginBottom: '14px'
+            }}>
+              <p style={{
+                fontSize: '13px',
+                color: 'rgba(255,255,255,0.65)',
+                lineHeight: '1.65',
+                margin: 0
+              }}>
+                100% data parity with zero operational downtime. Automated translation saved 9 months of manual work.
+              </p>
+            </div>
+          ) : (
+            /* Global outcome Pattern (Fix 6) */
+            <div style={{
+              borderLeft: '2px solid rgba(0,204,136,0.5)',
+              paddingLeft: '14px',
+              marginTop: '14px',
+              marginBottom: '14px'
+            }}>
+              <span style={{
+                fontSize: '11px',
+                fontWeight: '600',
+                color: '#00CC88',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                display: 'block',
+                marginBottom: '4px'
+              }}>Outcome</span>
+              <p style={{
+                fontSize: '13px',
+                lineHeight: '1.65',
+                color: 'rgba(255,255,255,0.65)',
+                margin: 0
+              }}>
+                {project.impact}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Consistent bottom actions bar (Fix 7) */}
+        <div style={{
+          borderTop: '0.5px solid rgba(255,255,255,0.06)',
+          paddingTop: '14px',
+          marginTop: '14px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          {/* LEFT: Tech tag pills (max 3 visible + "+N more" if overflow) */}
+          <div className="flex flex-row items-center gap-1">
+            {project.tags.slice(0, 3).map((tag) => (
+              <span
+                key={tag}
+                style={{
+                  fontSize: '11px',
+                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: 500,
+                  padding: '3px 10px',
+                  borderRadius: '5px',
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '0.5px solid rgba(255,255,255,0.1)',
+                  color: 'rgba(255,255,255,0.6)'
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+            {project.tags.length > 3 && (
+              <span className="text-[11px] text-slate-500 font-medium pl-1">
+                +{project.tags.length - 3}
+              </span>
+            )}
+          </div>
+
+          {/* RIGHT: Two icon-style links */}
+          <div className="flex items-center gap-2">
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-[6px] border border-white/10 bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-[#00CC88] hover:border-[#00CC88]/30 transition-all cursor-pointer"
+              title="View Source Code"
+            >
+              <Github className="h-3.5 w-3.5" />
+            </a>
+            
+            <button
+              onClick={() => setSelectedProject(project)}
+              className="w-8 h-8 rounded-[6px] border border-white/10 bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-[#00CC88] hover:border-[#00CC88]/30 transition-all cursor-pointer"
+              title="Open Case Study"
+            >
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
+      </SpotlightCard>
+    );
+  };
+
   // Dynamic selector for supporting project mockups
   const getProjectMockup = (projectId: string) => {
     switch (projectId) {
       case 'project-2':
         return renderAIDiagnosticMockup();
       case 'project-3':
-        return renderAIBDashboardMockup();
+        return renderBankingDashboardMockup();
       case 'project-4':
         return renderYOLOMockup();
       case 'project-5':
         return renderHealthcareMockup();
       case 'project-6':
         return renderTransitMockup();
+      case 'project-1':
+        return renderMigrationMockup();
       case 'project-7':
         return renderFinanceMockup();
+      case 'healthcare-pipeline':
+        return <AePerformanceDashboard compact={true} />;
       default:
         return null;
     }
@@ -1001,16 +1532,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
         
         {/* Section Header */}
         <div className="max-w-2xl">
-          <motion.span
-            whileHover={{ scale: 1.05, x: 2 }}
-            transition={{ type: "spring", stiffness: 400, damping: 15 }}
-            className="font-mono text-[11px] font-medium tracking-[0.12em] text-[#00CC88] uppercase mb-3 block cursor-default origin-left"
-          >
-            [03] Featured Projects
-          </motion.span>
-          <h2 className="text-white font-display" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-            Real Impact, Proven Architecture
-          </h2>
+          <AnimatedHeading eyebrow="[02] FEATURED PROJECTS" title="Real Impact, Proven Architecture" />
           <p className="font-sans" style={{ fontSize: '16px', lineHeight: '1.7', color: 'rgba(255,255,255,0.55)', maxWidth: '560px', marginBottom: '32px', fontWeight: 400 }}>
             Each study represents an active system addressing real-world operational blocks, highlighting technical architecture paired with clear business value.
           </p>
@@ -1253,178 +1775,97 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
           </div>
         )}
 
-        {/* ----------------------------------------------------
-            SUPPORTING PROJECTS: LIGHTWEIGHT EDITORIAL CARDS
-            ---------------------------------------------------- */}
-        {filteredProjects.length > 0 ? (
-          <div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-[14px] md:gap-[20px] mt-2"
-            id="project-grid"
-          >
-            {supportingProjects.map((project) => (
-              <SpotlightCard
-                key={project.id}
-                id={`project-card-${project.id}`}
-                className="group relative flex flex-col justify-between bg-slate-950/40 rounded-3xl border-[0.5px] border-[rgba(255,255,255,0.08)] hover:border-[#00CC88]/35 backdrop-blur-md p-4 md:p-6 hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)] hover:-translate-y-[3px] transition-all duration-200 ease-out"
-                style={{
-                  height: '100%',
-                  minHeight: '320px'
-                }}
+        {/* Featured Projects Grid */}
+        <div className="space-y-5 md:space-y-6">
+          {activeFeatured.length === 3 ? (
+            <>
+              {/* Row 1 - Wide Treatment for Healthcare Analytics Pipeline */}
+              {activeFeatured.filter(p => p.id === 'healthcare-pipeline').map((project) => (
+                <div key={project.id}>
+                  {renderWideProjectCard(project)}
+                </div>
+              ))}
+
+              {/* Row 2 - 2 Column Side-by-Side for other featured cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+                {activeFeatured.filter(p => p.id !== 'healthcare-pipeline').map((project) => (
+                  <div key={project.id}>
+                    {renderStandardProjectCard(project)}
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : activeFeatured.length === 2 ? (
+            /* 2 columns layout when 2 results exist */
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+              {activeFeatured.map((project) => (
+                <div key={project.id}>
+                  {renderStandardProjectCard(project)}
+                </div>
+              ))}
+            </div>
+          ) : activeFeatured.length === 1 ? (
+            /* Full-width wide card when single result matches the active filter */
+            <div className="w-full">
+              {activeFeatured.map((project) => (
+                <div key={project.id}>
+                  {renderWideProjectCard(project)}
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* High-End Empty State Container when no projects match the filter */
+            <div className="text-center py-16 px-6 bg-slate-950/20 border border-slate-900 rounded-3xl max-w-md mx-auto relative overflow-hidden">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+              <Layers className="h-8 w-8 text-slate-600 mx-auto mb-4 animate-pulse relative z-10" />
+              <h4 className="text-white text-sm font-semibold font-sans relative z-10">No Case Studies Found</h4>
+              <p className="text-slate-400 text-xs font-sans mt-2 leading-relaxed relative z-10">
+                There are currently no active case studies categorized under <strong className="text-emerald-400 font-mono font-medium">"{getFilterDisplayName(filter)}"</strong>.
+              </p>
+              <button
+                onClick={() => setFilter('all')}
+                className="mt-5 px-4 py-2 bg-slate-900 hover:bg-slate-850 text-emerald-400 text-[11px] font-mono rounded-lg border border-slate-800 transition-all cursor-pointer relative z-10 hover:border-emerald-500/20 active:scale-95"
               >
-                <div className="flex-1 flex flex-col">
-                  {/* Badges Strip */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex flex-row gap-[6px] flex-wrap">
-                      {getProjectCategoryBadge(project.category)}
-                      {getProjectTypeBadge(project.projectType)}
-                    </div>
-                    <span className="text-[9px] text-slate-500 font-mono">Completed</span>
-                  </div>
+                Reset to All Areas
+              </button>
+            </div>
+          )}
+        </div>
 
-                  {/* Title & Short Desc */}
-                  <h3 className="text-white font-sans tracking-tight" style={{ fontSize: '20px', fontWeight: 600, lineHeight: '1.3', letterSpacing: '-0.01em', marginBottom: '10px' }}>
-                    {project.title}
-                  </h3>
-                  <p 
-                    className="font-sans"
-                    style={{
-                      fontSize: '14px',
-                      lineHeight: '1.65',
-                      color: 'rgba(255,255,255,0.6)',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      flex: '1',
-                      marginBottom: '16px'
-                    }}
-                  >
-                    {project.description}
-                  </p>
+        {/* View All Projects and Remaining Projects Slider Grid */}
+        {activeNonFeatured.length > 0 && (
+          <div className="mt-8">
+            <div className="flex justify-center mb-6">
+              <button
+                onClick={toggleShowAll}
+                className="h-10 px-6 border border-white/20 hover:border-[#00CC88]/50 text-white/70 hover:text-white rounded-lg text-sm font-medium transition-all cursor-pointer flex items-center gap-1.5 bg-transparent active:scale-95"
+              >
+                {showAll 
+                  ? 'Show less ↑' 
+                  : `View all ${activeNonFeatured.length} projects ↓`
+                }
+              </button>
+            </div>
 
-                  {/* Interactive visual mockup in card */}
-                  <div className="hidden md:block mb-4">
-                    {getProjectMockup(project.id)}
-                  </div>
-
-                  {/* Mobile-only Simulation & Details Banner */}
-                  <div className="block md:hidden mb-4 p-2.5 bg-slate-900/50 border border-slate-800/60 rounded-xl text-center">
-                    <button
-                      onClick={() => setSelectedProject(project)}
-                      className="text-[10px] text-emerald-400 font-mono font-medium inline-flex items-center gap-1.5 cursor-pointer w-full justify-center h-10 min-h-[40px]"
-                    >
-                      <Activity className="h-3.5 w-3.5 text-emerald-400" />
-                      Tap to View Case Study &amp; Interactive Demo
-                    </button>
-                  </div>
-
-                  {project.id === 'project-5' && (
-                    <p className="text-[10px] text-slate-500 italic mb-4 leading-normal">
-                      Note: Built using publicly available HSE Ireland open datasets and synthetic A&E performance data for demonstration purposes. No real patient data was used.
-                    </p>
-                  )}
-
-                  {/* Quick metrics row */}
-                  <div className="grid grid-cols-3 gap-2 border-t border-b border-slate-900/40 py-3 mb-4 text-center">
-                    {project.metrics.map((m, mIdx) => (
-                      <div key={mIdx} className="flex flex-col">
-                        <span className="text-xs sm:text-sm font-bold text-white font-mono">{m.value}</span>
-                        <span className="text-[8px] text-slate-500 font-mono uppercase tracking-wider mt-0.5">{m.label}</span>
+            <AnimatePresence>
+              {showAll && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 pt-2">
+                    {activeNonFeatured.map((project) => (
+                      <div key={project.id}>
+                        {renderStandardProjectCard(project)}
                       </div>
                     ))}
                   </div>
-
-                  {/* Top outcomes preview */}
-                  <div className="mb-4 flex gap-2 items-start bg-emerald-500/5 p-2.5 rounded-lg border border-emerald-500/10">
-                    <Award className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                    <p className="text-[10px] text-emerald-300 font-mono leading-relaxed">
-                      <strong>Outcomes:</strong> {project.impact}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Interaction row */}
-                <div className="flex flex-col gap-3 pt-2 border-t border-slate-900/40">
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex flex-wrap gap-1">
-                      {project.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className="text-[9px] text-slate-400 font-mono bg-slate-900/40 px-1.5 py-0.5 rounded">
-                          {tag}
-                        </span>
-                      ))}
-                      {project.tags.length > 3 && (
-                        <span className="text-[9px] text-slate-600 font-mono py-0.5">+{project.tags.length - 3}</span>
-                      )}
-                    </div>
-                    {project.projectType === 'personal' && (
-                      <span className="text-[10px] text-slate-500 italic leading-snug mt-1 block">
-                        Built independently using public datasets for learning and portfolio demonstration.
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between mt-2">
-                    <button
-                      onClick={() => setSelectedProject(project)}
-                      className="text-[11px] text-emerald-400 hover:text-emerald-300 font-mono font-medium flex items-center gap-1 group/btn cursor-pointer"
-                    >
-                      Read Structured Case Study
-                      <ArrowRight className="h-3 w-3 group-hover/btn:translate-x-0.5 transition-transform" />
-                    </button>
-
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 text-slate-500 hover:text-white hover:bg-slate-900 rounded transition-colors"
-                      title="View Source Code"
-                    >
-                      <Github className="h-3.5 w-3.5" />
-                    </a>
-                  </div>
-                </div>
-
-              </SpotlightCard>
-            ))}
-          </div>
-        ) : (
-          /* High-End Empty State Container when no projects match the filter */
-          <div className="text-center py-16 px-6 bg-slate-950/20 border border-slate-900 rounded-3xl max-w-md mx-auto relative overflow-hidden">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-            <Layers className="h-8 w-8 text-slate-600 mx-auto mb-4 animate-pulse relative z-10" />
-            <h4 className="text-white text-sm font-semibold font-sans relative z-10">No Case Studies Found</h4>
-            <p className="text-slate-400 text-xs font-sans mt-2 leading-relaxed relative z-10">
-              There are currently no active case studies categorized under <strong className="text-emerald-400 font-mono font-medium">"{getFilterDisplayName(filter)}"</strong>. I prioritize showcasing high-impact enterprise and dissertation work.
-            </p>
-            <button
-              onClick={() => setFilter('all')}
-              className="mt-5 px-4 py-2 bg-slate-900 hover:bg-slate-850 text-emerald-400 text-[11px] font-mono rounded-lg border border-slate-800 transition-all cursor-pointer relative z-10 hover:border-emerald-500/20 active:scale-95"
-            >
-              Reset to All Areas
-            </button>
-          </div>
-        )}
-
-        {/* View all projects CTA */}
-        {filteredProjects.length > 3 && (
-          <div style={{textAlign:'center', marginTop:'32px'}}>
-            <button
-              onClick={toggleShowAll}
-              className="hover:border-[#00CC88]/50 hover:text-white"
-              style={{
-                background: 'transparent',
-                border: '0.5px solid rgba(255,255,255,0.2)',
-                color: 'rgba(255,255,255,0.7)',
-                padding: '10px 28px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
-            >
-              {showAll ? 'Show less ↑' : 'View all projects ↓'}
-            </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
 
@@ -1508,13 +1949,30 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                   </div>
 
                   {/* Section 1: BUSINESS OUTCOMES */}
-                  <div className="bg-emerald-500/5 p-5 rounded-xl border border-emerald-500/15">
-                    <h4 className="text-emerald-400 font-sans font-bold text-sm uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                      <Award className="h-4 w-4 shrink-0" />
-                      Verified Business Outcomes
-                    </h4>
-                    <p className="text-slate-200 text-sm leading-relaxed font-sans font-normal">
-                      {selectedProject.businessOutcomes}
+                  <div style={{
+                    borderLeft: '2px solid rgba(0,204,136,0.5)',
+                    paddingLeft: '14px',
+                    marginTop: '14px',
+                    marginBottom: '14px'
+                  }}>
+                    <span style={{
+                      fontSize: '11px',
+                      fontWeight: '600',
+                      color: '#00CC88',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      display: 'block',
+                      marginBottom: '4px'
+                    }}>Outcome</span>
+                    <p style={{
+                      fontSize: '13px',
+                      lineHeight: '1.65',
+                      color: 'rgba(255,255,255,0.65)',
+                      margin: 0
+                    }}>
+                      {selectedProject.id === 'project-1'
+                        ? '100% data parity with zero operational downtime. Automated translation saved 9 months of manual work.'
+                        : selectedProject.businessOutcomes}
                     </p>
                   </div>
 

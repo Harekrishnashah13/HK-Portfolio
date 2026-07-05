@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import AnimatedHeading from './AnimatedHeading';
 import { 
   Award, 
   GraduationCap, 
@@ -135,12 +136,7 @@ export default function Certifications() {
         
         {/* Section Header */}
         <div className="max-w-3xl mb-0">
-          <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
-            [06] Verified Credentials
-          </span>
-          <h2 className="text-white font-display" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-            Credentials
-          </h2>
+          <AnimatedHeading eyebrow="[05] VERIFIED CREDENTIALS" title="Credentials" />
           <p 
             className="font-sans"
             style={{ 

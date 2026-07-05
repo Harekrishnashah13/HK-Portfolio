@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Calendar, MapPin, Briefcase, Award, Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { EXPERIENCE_DATA } from '../../data';
+import AnimatedHeading from './AnimatedHeading';
 
 const sidebarVariants = {
   hidden: { opacity: 0, x: -30 },
@@ -50,12 +51,7 @@ export default function Experience() {
         
         {/* Section Header */}
         <div className="max-w-3xl mb-0">
-          <span className="text-emerald-400 font-mono text-xs tracking-widest uppercase font-semibold block mb-3">
-            [05] Experience Timeline
-          </span>
-          <h2 className="text-white font-display" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-            Experience
-          </h2>
+          <AnimatedHeading eyebrow="[04] EXPERIENCE TIMELINE" title="Experience" />
           <p 
             className="font-sans"
             style={{ 
