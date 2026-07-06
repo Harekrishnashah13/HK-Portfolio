@@ -154,12 +154,12 @@ export default function Certifications() {
 
         {/* Credentials Split Grid */}
         <div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start" 
+          className="credentials-grid grid grid-cols-1 md:grid-cols-2 gap-10 items-start" 
           id="credentials-grid"
         >
           
           {/* Certifications Column - Shown second on mobile */}
-          <div className="order-2 md:order-1 flex flex-col gap-6">
+          <div className="certs-column order-2 md:order-1 flex flex-col gap-6">
             <h3 
               style={{
                 fontSize: '16px',
@@ -310,7 +310,7 @@ export default function Certifications() {
           </div>
 
           {/* Academic Background Column - Shown first on mobile */}
-          <div className="order-1 md:order-2 flex flex-col gap-6">
+          <div className="academic-column order-1 md:order-2 flex flex-col gap-6">
             <h3 
               style={{
                 fontSize: '16px',
@@ -472,6 +472,7 @@ export default function Certifications() {
 
             {/* Modal Box */}
             <motion.div
+              id="credential-modal"
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}

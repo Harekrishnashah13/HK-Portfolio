@@ -3,6 +3,7 @@ import { Menu, X, ArrowLeft, Linkedin, Github, Mail, Sun, Moon } from 'lucide-re
 import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
 import { useActiveSection } from '../../hooks/useActiveSection';
+import { downloadResumePDF } from '../../lib/downloadResume';
 
 interface NavbarProps {
   activeCaseStudyId: string | null;
@@ -16,6 +17,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
   const activeSection = useActiveSection(SECTIONS);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showTip, setShowTip] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -28,10 +30,10 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'light') {
-      root.classList.add('light');
+      root.classList.add('light', 'light-mode');
       localStorage.setItem('theme', 'light');
     } else {
-      root.classList.remove('light');
+      root.classList.remove('light', 'light-mode');
       localStorage.setItem('theme', 'dark');
     }
   }, [theme]);
@@ -39,6 +41,17 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -195,26 +208,96 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
               <span className="text-slate-800 text-xs font-light select-none">│</span>
 
               {/* Theme Toggle Button */}
-              <button
-                onClick={toggleTheme}
-                className="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-[#0b1220]/50 rounded-lg transition-all cursor-pointer flex items-center justify-center"
-              >
-                {theme === 'light' ? (
-                  <Moon className="h-4 w-4 text-emerald-400" />
-                ) : (
-                  <Sun className="h-4 w-4 text-amber-400" />
+              <div style={{ position: 'relative' }}>
+                <button
+                  onClick={toggleTheme}
+                  aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                  title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                  className="theme-toggle-btn"
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '8px',
+                    border: theme === 'dark' 
+                      ? '0.5px solid rgba(255,255,255,0.12)' 
+                      : '0.5px solid rgba(15,23,42,0.12)',
+                    background: theme === 'dark' 
+                      ? 'rgba(255,255,255,0.04)' 
+                      : 'rgba(15,23,42,0.04)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    color: theme === 'dark' 
+                      ? 'rgba(255,255,255,0.55)' 
+                      : 'rgba(15,23,42,0.55)',
+                    transition: 'all 0.2s ease',
+                    flexShrink: 0,
+                  }}
+                  onMouseEnter={(e) => {
+                    setShowTip(true);
+                    e.currentTarget.style.borderColor = 'rgba(0,204,136,0.35)';
+                    e.currentTarget.style.color = '#00CC88';
+                    e.currentTarget.style.background = 'rgba(0,204,136,0.06)';
+                  }}
+                  onMouseLeave={(e) => {
+                    setShowTip(false);
+                    e.currentTarget.style.borderColor = theme === 'dark' 
+                      ? 'rgba(255,255,255,0.12)' 
+                      : 'rgba(15,23,42,0.12)';
+                    e.currentTarget.style.color = theme === 'dark' 
+                      ? 'rgba(255,255,255,0.55)' 
+                      : 'rgba(15,23,42,0.55)';
+                    e.currentTarget.style.background = theme === 'dark' 
+                      ? 'rgba(255,255,255,0.04)' 
+                      : 'rgba(15,23,42,0.04)';
+                  }}
+                >
+                  <motion.div
+                    key={theme}
+                    initial={{ rotate: -30, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 30, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {theme === 'light' ? (
+                      <Moon size={16} strokeWidth={1.8} />
+                    ) : (
+                      <Sun size={16} strokeWidth={1.8} />
+                    )}
+                  </motion.div>
+                </button>
+                
+                {showTip && (
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '-32px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'rgba(0,0,0,0.8)',
+                    color: '#fff',
+                    fontSize: '11px',
+                    fontWeight: '500',
+                    padding: '4px 8px',
+                    borderRadius: '4px',
+                    whiteSpace: 'nowrap',
+                    pointerEvents: 'none',
+                    zIndex: 100,
+                  }}>
+                    {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+                  </div>
                 )}
-              </button>
+              </div>
 
               {/* Separator */}
               <span className="text-slate-800 text-xs font-light select-none">│</span>
 
               {/* Download Resume Action */}
               <button
-                onClick={onOpenResume}
+                onClick={() => window.open('/resume.html', '_blank')}
                 className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-full transition-all shadow-md active:scale-95 cursor-pointer hover:shadow-emerald-500/20"
               >
-                Review Resume
+                Download Resume
               </button>
             </div>
 
@@ -222,9 +305,43 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
             <div className="flex items-center gap-3 md:hidden">
               <button
                 onClick={toggleTheme}
-                className="p-1.5 text-slate-400 hover:text-emerald-400"
+                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                className="theme-toggle-btn"
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '8px',
+                  border: theme === 'dark' 
+                    ? '0.5px solid rgba(255,255,255,0.12)' 
+                    : '0.5px solid rgba(15,23,42,0.12)',
+                  background: theme === 'dark' 
+                    ? 'rgba(255,255,255,0.04)' 
+                    : 'rgba(15,23,42,0.04)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: theme === 'dark' 
+                    ? 'rgba(255,255,255,0.55)' 
+                    : 'rgba(15,23,42,0.55)',
+                  transition: 'all 0.2s ease',
+                  flexShrink: 0,
+                }}
               >
-                {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                <motion.div
+                  key={theme}
+                  initial={{ rotate: -30, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 30, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {theme === 'light' ? (
+                    <Moon size={16} strokeWidth={1.8} />
+                  ) : (
+                    <Sun size={16} strokeWidth={1.8} />
+                  )}
+                </motion.div>
               </button>
               <button
                 className="w-11 h-11 bg-transparent border border-white/15 rounded-lg text-white flex items-center justify-center cursor-pointer hover:text-emerald-400 transition-colors"
@@ -265,7 +382,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                 setMobileMenuOpen(false);
                 scrollToSection('about');
               }}
-              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+              className="mobile-nav-link text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
             >
               About
             </button>
@@ -274,7 +391,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                 setMobileMenuOpen(false);
                 scrollToSection('projects');
               }}
-              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+              className="mobile-nav-link text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
             >
               Projects
             </button>
@@ -283,7 +400,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                 setMobileMenuOpen(false);
                 scrollToSection('skills');
               }}
-              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+              className="mobile-nav-link text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
             >
               Skills
             </button>
@@ -292,7 +409,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                 setMobileMenuOpen(false);
                 scrollToSection('experience');
               }}
-              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+              className="mobile-nav-link text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
             >
               Experience
             </button>
@@ -301,7 +418,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                 setMobileMenuOpen(false);
                 scrollToSection('credentials');
               }}
-              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+              className="mobile-nav-link text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
             >
               Credentials
             </button>
@@ -310,7 +427,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                 setMobileMenuOpen(false);
                 scrollToSection('contact');
               }}
-              className="text-2xl font-semibold text-white hover:text-emerald-400 transition-colors py-3 text-center cursor-pointer"
+              className="mobile-nav-link mobile-nav-link-contact text-2xl font-semibold text-emerald-400 hover:text-emerald-300 transition-colors py-3 text-center cursor-pointer"
             >
               Contact
             </button>
@@ -320,11 +437,11 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                if (onOpenResume) onOpenResume();
+                window.open('/resume.html', '_blank');
               }}
               className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-sm rounded-xl transition-colors shadow-lg cursor-pointer"
             >
-              Review Resume
+              Download Resume
             </button>
           </motion.div>
         )}

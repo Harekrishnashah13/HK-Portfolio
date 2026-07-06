@@ -315,3 +315,253 @@ html.light footer {
   border-top: 1px solid #e2e8f0 !important;
 }
 
+/* ==========================================================================
+   iOS Safari Responsive Overrides & Mobile Optimizations
+   ========================================================================== */
+
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* CRITICAL FIX 1 — Viewport height (dvh) */
+#about,
+#mobile-nav-overlay,
+#resume-modal,
+#case-study-modal,
+#credential-modal,
+#contact-modal {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+#mobile-nav-overlay {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* IMPORTANT FIX 10 — Overflow prevention */
+html,
+body,
+section,
+main,
+#root {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+.typewriter-container {
+  min-height: 1.4em !important;
+  overflow: hidden !important;
+}
+
+pre,
+code {
+  overflow-x: auto !important;
+  max-width: 100% !important;
+  word-break: break-word !important;
+}
+
+/* CRITICAL FIX 4 — Safe area insets (notch) */
+#site-header {
+  padding-top: max(16px, var(--safe-top)) !important;
+  padding-left: max(16px, var(--safe-left)) !important;
+  padding-right: max(16px, var(--safe-right)) !important;
+}
+
+.fixed-bottom,
+#mobile-drawer {
+  padding-bottom: max(16px, var(--safe-bottom)) !important;
+}
+
+@media (max-width: 768px) {
+  /* CRITICAL FIX 2 — iOS form auto-zoom */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  /* CRITICAL FIX 5 — Modal scrolling on iOS */
+  #resume-modal,
+  #case-study-modal,
+  #credential-modal,
+  #contact-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    padding: 20px 16px 80px !important;
+  }
+
+  /* CRITICAL FIX 6 — Healthcare card mobile */
+  .healthcare-card-inner {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .healthcare-text {
+    order: 1 !important;
+  }
+  .healthcare-viz {
+    order: 2 !important;
+    height: 220px !important;
+    overflow: hidden !important;
+  }
+  .healthcare-bar-chart {
+    display: none !important;
+  }
+  .healthcare-compliance {
+    display: none !important;
+  }
+
+  /* IMPORTANT FIX 7 — Experience timeline mobile */
+  .timeline-sidebar {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding-bottom: 12px !important;
+    width: 100% !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none;
+  }
+  .timeline-sidebar::-webkit-scrollbar {
+    display: none !important;
+  }
+  .timeline-item {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.15) !important;
+    font-size: 13px !important;
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  .timeline-item.active {
+    background: #00CC88 !important;
+    color: #050E09 !important;
+    border-color: #00CC88 !important;
+    font-weight: 600 !important;
+  }
+  .timeline-detail {
+    width: 100% !important;
+    margin-top: 16px !important;
+  }
+  .timeline-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+
+  /* IMPORTANT FIX 8 — Hero mobile layout */
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    text-align: left !important;
+    padding: 80px 20px 48px !important;
+  }
+  .hero-photo {
+    width: 120px !important;
+    margin-bottom: 20px !important;
+  }
+  .hero-name {
+    font-size: clamp(32px, 9vw, 48px) !important;
+  }
+  .hero-cta {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .hero-cta button,
+  .hero-cta a {
+    width: 100% !important;
+    min-height: 48px !important;
+  }
+  .hero-eyebrow {
+    padding: 3px 10px !important;
+    font-size: 10px !important;
+  }
+
+  /* IMPORTANT FIX 11 — Projects mobile layout */
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .projects-row-2 {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .filter-tabs {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 6px !important;
+    padding-bottom: 10px !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+  .filter-tabs button {
+    flex-shrink: 0 !important;
+    font-size: 13px !important;
+  }
+
+  /* IMPORTANT FIX 12 — Skills & Credentials mobile */
+  .skills-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .credentials-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  .academic-column,
+  .certs-column {
+    width: 100% !important;
+  }
+
+  /* IMPORTANT FIX 13 — Contact form mobile */
+  .contact-layout {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .contact-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .contact-cta-row {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .contact-cta-row a {
+    width: 100% !important;
+  }
+  .submit-button {
+    width: 100% !important;
+  }
+}
+
+/* FIX 14 — Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Theme toggle button mobile dimensions */
+@media (max-width: 768px) {
+  .theme-toggle-btn {
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+

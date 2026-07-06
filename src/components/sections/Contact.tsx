@@ -327,7 +327,7 @@ export default function Contact() {
 
         {/* Quick-Action Buttons */}
         <div 
-          className="flex flex-col md:flex-row gap-[10px] md:gap-[12px]" 
+          className="contact-cta-row flex flex-col md:flex-row gap-[10px] md:gap-[12px]" 
           style={{ marginBottom: '36px' }}
         >
           <a
@@ -386,7 +386,7 @@ export default function Contact() {
           </a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-[340px_1fr] gap-[40px] items-start" id="contact-main-grid">
+        <div className="contact-layout grid grid-cols-1 md:grid-cols-[340px_1fr] gap-[40px] items-start" id="contact-main-grid">
           
           {/* Quick Contact & Relocation details (Left) */}
           <div className="flex flex-col gap-6" id="contact-info">
@@ -501,7 +501,7 @@ export default function Contact() {
               
               <AnimatePresence mode="wait">
                 {!isSuccess ? (
-                  <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-[14px]">
+                  <form onSubmit={handleSubmit} className="contact-form-grid grid grid-cols-1 md:grid-cols-2 gap-[14px]">
                     
                     {/* Name input */}
                     <div className="flex flex-col">
@@ -607,7 +607,7 @@ export default function Contact() {
                           marginTop: '4px',
                           transition: 'all 0.2s',
                         }}
-                        className="hover:bg-[#00E699] hover:-translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="submit-button hover:bg-[#00E699] hover:-translate-y-[1px] disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isSubmitting ? (
                           <>
@@ -656,6 +656,7 @@ export default function Contact() {
         {isInboxOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
             <motion.div
+              id="contact-modal"
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}

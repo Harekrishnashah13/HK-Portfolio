@@ -8,42 +8,42 @@ const TOOL_DETAILS: Record<string, { desc: string; level: string; exp: string }>
   "Power BI": {
     desc: "Enterprise reporting, high-performance data modeling, and custom interactive dashboard suites.",
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "DAX": {
     desc: "Complex statistical calculations, custom time-intelligence logic, and optimized filter context.",
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "Tableau": {
     desc: "Visual analytics, interactive storyboarding, and cross-source database joins.",
     level: "Advanced",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "Power Query": {
     desc: "M-code programming for robust data ingestion, multi-source cleaning, and custom transforms.",
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "SSRS": {
     desc: "Paginated financial reports, automated subscriptions, and legacy SQL Server reporting.",
     level: "Advanced",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "KPI Dashboards": {
     desc: "Converting complex corporate data streams into clean, actionable, executive metrics.",
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "SQL": {
     desc: "Writing production-grade queries, CTEs, complex analytical window functions, and indexing.",
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "Apache Airflow": {
     desc: "Designing DAGs, scheduling complex dependent jobs, and monitoring server-side ETL pipelines.",
     level: "Advanced",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "AWS Glue": {
     desc: "Serverless data integration, cataloging enterprise metadata, and running scalable PySpark jobs.",
@@ -53,22 +53,22 @@ const TOOL_DETAILS: Record<string, { desc: string; level: string; exp: string }>
   "SSIS": {
     desc: "Building traditional SQL Server Integration Services packages and high-volume data workflows.",
     level: "Advanced",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "PySpark": {
     desc: "Distributed processing on big data, DataFrame APIs, and cluster job tuning on large-scale nodes.",
     level: "Advanced",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "Delta Lake": {
     desc: "Enforcing ACID transactions, schema enforcement, and instant time-travel querying.",
     level: "Advanced",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "Python": {
     desc: "Object-oriented scripting, automated testing, math modeling, and custom data wrappers.",
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "scikit-learn": {
     desc: "Implementing classical ML algorithms, regression models, Random Forest, and custom pipelines.",
@@ -78,7 +78,7 @@ const TOOL_DETAILS: Record<string, { desc: string; level: string; exp: string }>
   "Pandas": {
     desc: "High-performance data manipulation, exploratory data analysis, and multi-format file parsing.",
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "TensorFlow": {
     desc: "Deep learning models, CNNs for computer vision, and neural network weight optimization.",
@@ -93,12 +93,12 @@ const TOOL_DETAILS: Record<string, { desc: string; level: string; exp: string }>
   "Jupyter": {
     desc: "Exploratory modeling, research scratchpad workflows, and narrative documentation.",
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "Databricks": {
     desc: "Unified analytics platform, shared notebook pipelines, and Lakehouse server management.",
     level: "Expert (Certified)",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "AWS S3": {
     desc: "Highly durable cloud object storage, secure partition design, and lifecycle policies.",
@@ -118,7 +118,7 @@ const TOOL_DETAILS: Record<string, { desc: string; level: string; exp: string }>
   "GDPR": {
     desc: "Data minimization, personal identifiable info (PII) masking, and compliance audits.",
     level: "Advanced",
-    exp: "2+ years"
+    exp: "4+ years"
   },
   "Data Governance": {
     desc: "Schema registries, data lineage tracking, and role-based access control (RBAC).",
@@ -128,7 +128,7 @@ const TOOL_DETAILS: Record<string, { desc: string; level: string; exp: string }>
   "Excel / DAX": {
     desc: "Advanced financial modeling, cohort analysis, and automated Excel VBA logic.",
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   }
 };
 
@@ -146,7 +146,7 @@ const SKILLS_DATA = [
   {
     icon: <Database className="h-5 w-5 text-emerald-400" />,
     title: "Data Engineering & ETL",
-    subtitle: "2+ years professional use",
+    subtitle: "4+ years professional use",
     primaryTags: ["SQL", "Apache Airflow"],
     secondaryTags: ["AWS Glue", "SSIS", "PySpark", "Delta Lake"],
     proficiency: 4,
@@ -180,7 +180,7 @@ function CoreTool({ label, icon }: { label: string; icon: string; key?: string }
   const details = TOOL_DETAILS[label] || {
     desc: `Core expertise in ${label} for analytics and data delivery.`,
     level: "Expert",
-    exp: "2+ years"
+    exp: "4+ years"
   };
 
   return (
@@ -224,7 +224,7 @@ function SkillTag({ tag }: { tag: string; isPrimary?: boolean; key?: string }) {
   const details = TOOL_DETAILS[tag] || {
     desc: `Enterprise-grade proficiency in ${tag} workflows.`,
     level: "Advanced",
-    exp: "2+ years"
+    exp: "4+ years"
   };
 
   return (
@@ -354,7 +354,7 @@ export default function Skills() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.12 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-[14px] xl:gap-[16px]"
+          className="skills-grid grid grid-cols-1 md:grid-cols-2 gap-[14px] xl:gap-[16px]"
         >
           {SKILLS_DATA.map((skill, idx) => (
             <motion.div

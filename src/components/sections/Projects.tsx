@@ -124,16 +124,16 @@ function AePerformanceDashboard({ compact }: { compact?: boolean }) {
       )}
 
       {/* Pipeline Strip at bottom */}
-      <div className="grid grid-cols-5 gap-1 items-center bg-slate-950 p-1.5 rounded border border-white/[0.02] text-[7px] text-center font-mono">
-        <div className="bg-red-500/10 text-red-400 border border-red-500/15 py-0.5 rounded text-[7px] font-bold">HSE Logs</div>
-        <div className="text-slate-600 text-[8px]">→</div>
-        <div className="bg-amber-500/10 text-amber-400 border border-amber-500/15 py-0.5 rounded text-[7px] font-bold">Bronze</div>
-        <div className="text-slate-600 text-[8px]">→</div>
-        <div className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/15 py-0.5 rounded text-[7px] font-bold">Silver</div>
-        <div className="text-slate-600 text-[8px]">→</div>
-        <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/15 py-0.5 rounded text-[7px] font-bold">Gold</div>
-        <div className="text-slate-600 text-[8px]">→</div>
-        <div className="bg-blue-500/10 text-blue-400 border border-blue-500/15 py-0.5 rounded text-[7px] font-bold">Power BI</div>
+      <div className="flex items-center justify-between gap-1 bg-slate-950 p-1.5 rounded border border-white/[0.02] text-[7px] text-center font-mono overflow-x-auto scrollbar-none whitespace-nowrap">
+        <div className="bg-red-500/10 text-red-400 border border-red-500/15 py-0.5 px-1.5 rounded text-[7px] font-bold shrink-0">HSE Logs</div>
+        <div className="text-slate-600 text-[8px] shrink-0">→</div>
+        <div className="bg-amber-500/10 text-amber-400 border border-amber-500/15 py-0.5 px-1.5 rounded text-[7px] font-bold shrink-0">Bronze</div>
+        <div className="text-slate-600 text-[8px] shrink-0">→</div>
+        <div className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/15 py-0.5 px-1.5 rounded text-[7px] font-bold shrink-0">Silver</div>
+        <div className="text-slate-600 text-[8px] shrink-0">→</div>
+        <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/15 py-0.5 px-1.5 rounded text-[7px] font-bold shrink-0">Gold</div>
+        <div className="text-slate-600 text-[8px] shrink-0">→</div>
+        <div className="bg-blue-500/10 text-blue-400 border border-blue-500/15 py-0.5 px-1.5 rounded text-[7px] font-bold shrink-0">Power BI</div>
       </div>
     </div>
   );
@@ -1076,14 +1076,14 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
           className="group relative bg-[#ffffff]/[0.03] rounded-[14px] border border-[#00cc88]/15 backdrop-blur-md p-7 md:p-8 hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)] transition-all duration-300 ease-out"
           style={{ minHeight: '320px' }}
         >
-          <div style={{
+          <div className="healthcare-card-inner" style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr' : '45% 55%',
             gap: '32px',
             alignItems: 'start'
           }}>
             {/* LEFT Column */}
-            <div className="flex flex-col justify-between h-full">
+            <div className="healthcare-text flex flex-col justify-between h-full">
               <div>
                 {/* Badges row (Fix 5) */}
                 <div className="flex flex-row items-center gap-[6px] flex-wrap mb-3 w-full">
@@ -1145,7 +1145,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
             </div>
 
             {/* RIGHT Column */}
-            <div className={`${isMobile ? 'h-[220px] overflow-hidden' : ''} w-full`}>
+            <div className={`healthcare-viz ${isMobile ? 'h-[220px] overflow-hidden' : ''} w-full`}>
               <AePerformanceDashboard compact={isMobile} />
             </div>
           </div>
@@ -1539,7 +1539,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
         </div>
 
         {/* Filtering Tabs (Single Left-Aligned Row) */}
-        <div className="flex flex-wrap gap-1.5 md:gap-2 mb-7 justify-start items-center">
+        <div className="filter-tabs flex flex-wrap gap-1.5 md:gap-2 mb-7 justify-start items-center">
           {(['all', 'engineering', 'bi', 'analytics'] as const).map((cat) => (
             <button
               key={cat}
@@ -1730,7 +1730,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                         className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-xl transition-all shadow-md active:scale-95 cursor-pointer w-full sm:w-auto text-center flex items-center justify-center gap-1.5"
                       >
                         <BookOpen className="h-4 w-4 shrink-0" />
-                        View Flagship Dedicated Case Study Page
+                        Open Case Study →
                       </button>
                     )}
                     <button
@@ -1745,7 +1745,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                       }}
                       className="px-5 py-2.5 bg-slate-900 hover:bg-slate-850 text-slate-300 font-sans font-medium text-xs rounded-xl border border-slate-800 transition-all active:scale-95 cursor-pointer w-full sm:w-auto text-center"
                     >
-                      Schedule Discussion
+                      Book a Call →
                     </button>
                     <a
                       href={flagshipProject.githubUrl}
@@ -1776,7 +1776,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
         )}
 
         {/* Featured Projects Grid */}
-        <div className="space-y-5 md:space-y-6">
+        <div className="projects-grid space-y-5 md:space-y-6">
           {activeFeatured.length === 3 ? (
             <>
               {/* Row 1 - Wide Treatment for Healthcare Analytics Pipeline */}
@@ -1787,7 +1787,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
               ))}
 
               {/* Row 2 - 2 Column Side-by-Side for other featured cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+              <div className="projects-row-2 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                 {activeFeatured.filter(p => p.id !== 'healthcare-pipeline').map((project) => (
                   <div key={project.id}>
                     {renderStandardProjectCard(project)}
@@ -1856,7 +1856,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 pt-2">
+                  <div className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 pt-2">
                     {activeNonFeatured.map((project) => (
                       <div key={project.id}>
                         {renderStandardProjectCard(project)}

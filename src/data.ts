@@ -10,7 +10,7 @@ export const PERSONAL_INFO = {
   resumeUrl: "#",
   location: "Dublin, Ireland",
   about: {
-    summary: "I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 2+ years of professional experience in financial services and enterprise analytics. I build the pipelines, dashboards, and governance frameworks that help organisations make confident, data-driven decisions. Currently based in Dublin — open to senior Data Analytics and Data Engineering roles.",
+    summary: "I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 4+ years of professional experience in financial services and enterprise analytics. I build the pipelines, dashboards, and governance frameworks that help organisations make confident, data-driven decisions. Currently based in Dublin — open to senior Data Analytics and Data Engineering roles.",
     focus: [
       {
         title: "Enterprise Data Engineering",

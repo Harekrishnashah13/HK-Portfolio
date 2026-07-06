@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume - Harekrishna Shah</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+    }
+    @media print {
+      body {
+        background-color: white;
+        color: #0f172a;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-shadow-none {
+        box-shadow: none !important;
+        border: none !important;
+      }
+      .print-p-0 {
+        padding: 0 !important;
+      }
+      @page {
+        size: A4;
+        margin: 15mm;
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen">
+
+  <!-- Header Tool Bar (Sticky & No-Print) -->
+  <div class="no-print sticky top-0 z-50 bg-slate-900 border-b border-slate-800 text-white py-3 px-4 shadow-md">
+    <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <span class="font-sans font-bold text-sm tracking-tight text-slate-100">Harekrishna Shah — Curriculum Vitae</span>
+        <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[10px] px-2 py-0.5 rounded-full font-medium">ATS-Optimized</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-xs rounded-lg shadow-sm transition-all cursor-pointer flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          Print / Save PDF
+        </button>
+        <button id="download-txt-btn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 font-sans font-medium text-xs rounded-lg transition-all cursor-pointer flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Download Plain Text
+        </button>
+        <button onclick="window.close()" class="px-4 py-2 bg-slate-850 hover:bg-slate-800 text-slate-400 hover:text-slate-300 font-sans font-medium text-xs rounded-lg transition-all cursor-pointer">
+          Close Tab
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Resume Content Frame -->
+  <div class="max-w-4xl mx-auto my-8 p-6 md:p-12 bg-white shadow-lg border border-slate-200/80 rounded-2xl print:my-0 print:p-0 print:shadow-none print:border-none print-shadow-none print-p-0" id="resume-container">
+    <div class="max-w-3xl mx-auto space-y-8">
+      
+      <!-- Top Header -->
+      <div class="text-center border-b border-slate-200 pb-6">
+        <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 font-sans uppercase">
+          Harekrishna Shah
+        </h1>
+        <p class="text-sm font-semibold text-emerald-600 font-mono tracking-wide mt-1 uppercase">
+          Databricks Certified Data Engineer & Analyst
+        </p>
+        <div class="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-xs text-slate-500 font-mono mt-3">
+          <span class="flex items-center gap-1">📍 Dublin, Ireland</span>
+          <span>•</span>
+          <span class="flex items-center gap-1">💼 Stamp 1G (Interview Ready)</span>
+          <span>•</span>
+          <a href="mailto:harekrishnashah13@gmail.com" class="hover:text-emerald-600 hover:underline">harekrishnashah13@gmail.com</a>
+          <span>•</span>
+          <a href="https://www.linkedin.com/in/hshah13" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-600 hover:underline">LinkedIn</a>
+          <span>•</span>
+          <a href="https://github.com/Harekrishnashah13" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-600 hover:underline">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Professional Profile -->
+      <div class="space-y-2">
+        <h2 class="text-xs font-bold font-mono tracking-widest text-slate-900 uppercase border-b border-slate-200 pb-1">
+          Professional Profile
+        </h2>
+        <p class="text-xs text-slate-600 leading-relaxed font-sans font-light">
+          Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 4+ years of professional experience in financial services and enterprise analytics. Expert in building optimized medallion data pipelines, designing executive-level Power BI reporting dashboards, and deploying robust data governance architectures. Outstanding track record migrating legacy codebases to cloud-native warehousing clusters with complete numerical parity and zero operational downtime.
+        </p>
+      </div>
+
+      <!-- Core Skills -->
+      <div class="space-y-2">
+        <h2 class="text-xs font-bold font-mono tracking-widest text-slate-900 uppercase border-b border-slate-200 pb-1">
+          Technical Expertise Stack
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-600 font-sans">
+          <div>
+            <strong class="text-slate-900 block font-semibold mb-1">Data Engineering</strong>
+            <p class="font-light leading-relaxed">Azure Databricks, PySpark, Azure Data Factory (ADF), Azure Synapse, Delta Lake, Unity Catalog, Teradata SQL, Python (Pandas, NumPy)</p>
+          </div>
+          <div>
+            <strong class="text-slate-900 block font-semibold mb-1">BI & Analytics</strong>
+            <p class="font-light leading-relaxed">Power BI (DAX, PowerQuery), Tableau, Dimensional Modeling, Incremental Refresh, Cohort Analysis, Advanced SQL Querying</p>
+          </div>
+          <div>
+            <strong class="text-slate-900 block font-semibold mb-1">Cloud, AI & DevOps</strong>
+            <p class="font-light leading-relaxed">Gemini API / LLM Integration, Jenkins CI/CD pipelines, Terraform (IaC), Selenium WebDriver automation, Postman API Testing, Git</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional Experience -->
+      <div class="space-y-4">
+        <h2 class="text-xs font-bold font-mono tracking-widest text-slate-900 uppercase border-b border-slate-200 pb-1">
+          Professional Experience
+        </h2>
+        <div class="space-y-5">
+          <!-- Covalen -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-start gap-4">
+              <div>
+                <h3 class="text-xs font-bold text-slate-900 font-sans">
+                  Operations Analyst
+                </h3>
+                <span class="text-xs text-emerald-600 font-medium font-sans">
+                  Covalen Solutions &mdash; Dublin, Ireland
+                </span>
+              </div>
+              <span class="text-[11px] text-slate-500 font-mono font-medium shrink-0">
+                August 2025 - Present
+              </span>
+            </div>
+            <ul class="list-disc pl-4 space-y-1.5 text-xs text-slate-600 font-sans font-light leading-relaxed">
+              <li>Owned the investigation, audit, and resolution of 20+ daily digital banking transaction issues and compliance escalations under strict AML/KYC guidelines.</li>
+              <li>Designed and maintained a strategic Power BI dashboard suite tracking core financial operations and compliance SLA metrics, slashing daily issue triage cycle times by 30% for executive stakeholders.</li>
+            </ul>
+          </div>
+
+          <!-- Itelligence -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-start gap-4">
+              <div>
+                <h3 class="text-xs font-bold text-slate-900 font-sans">
+                  Data Analyst & Technical Business Analyst
+                </h3>
+                <span class="text-xs text-emerald-600 font-medium font-sans">
+                  Itelligence Infotech &mdash; Pune, India
+                </span>
+              </div>
+              <span class="text-[11px] text-slate-500 font-mono font-medium shrink-0">
+                December 2022 - December 2024
+              </span>
+            </div>
+            <ul class="list-disc pl-4 space-y-1.5 text-xs text-slate-600 font-sans font-light leading-relaxed">
+              <li>Owned the development, testing, and deployment of an automated Python SQL translation pipeline used to migrate highly nested legacy Teradata stored procedures to Azure Databricks Spark-SQL syntax.</li>
+              <li>Successfully migrated a 1.2PB enterprise cloud data warehouse footprint with verified 100% field-level checksum parity, boosting query performance and reducing system reporting discrepancies by 40%.</li>
+            </ul>
+          </div>
+
+          <!-- HiCounselor -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-start gap-4">
+              <div>
+                <h3 class="text-xs font-bold text-slate-900 font-sans">
+                  Software Developer & Technical Support QA
+                </h3>
+                <span class="text-xs text-emerald-600 font-medium font-sans">
+                  HiCounselor &mdash; San Francisco, CA (Remote)
+                </span>
+              </div>
+              <span class="text-[11px] text-slate-500 font-mono font-medium shrink-0">
+                August 2022 - December 2022
+              </span>
+            </div>
+            <ul class="list-disc pl-4 space-y-1.5 text-xs text-slate-600 font-sans font-light leading-relaxed">
+              <li>Developed automated testing scripts utilizing Python and Selenium WebDriver, accelerating product delivery cycles and improving system stability metrics.</li>
+              <li>Built a self-healing diagnostic daemon utilizing the Gemini API to parse failed log traces and recommend immediate correction recipes, cutting pipeline downtime from 14.2 hours to under 4 minutes.</li>
+            </ul>
+          </div>
+
+          <!-- Equitas -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-start gap-4">
+              <div>
+                <h3 class="text-xs font-bold text-slate-900 font-sans">
+                  Business Data Analyst
+                </h3>
+                <span class="text-xs text-emerald-600 font-medium font-sans">
+                  Equitas Small Finance Bank &mdash; Chennai, India
+                </span>
+              </div>
+              <span class="text-[11px] text-slate-500 font-mono font-medium shrink-0">
+                September 2021 - August 2022
+              </span>
+            </div>
+            <ul class="list-disc pl-4 space-y-1.5 text-xs text-slate-600 font-sans font-light leading-relaxed">
+              <li>Engineered SQL-based audit queries to inspect transaction logs, and constructed predictive Random Forest classifiers in Python to identify customer churn and fraud anomalies.</li>
+              <li>Collaborated with credit teams to translate model outputs into action-oriented underwriting insights, mitigating risk profile exposures for mobile banking integrations.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Academic Foundation -->
+      <div class="space-y-4">
+        <h2 class="text-xs font-bold font-mono tracking-widest text-slate-900 uppercase border-b border-slate-200 pb-1">
+          Academic Foundation
+        </h2>
+        <div class="space-y-4">
+          <!-- DBS -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-start gap-4">
+              <div>
+                <h3 class="text-xs font-bold text-slate-900 font-sans">
+                  Master of Science (MSc) in Data Analytics
+                </h3>
+                <span class="text-xs text-emerald-600 font-medium font-sans">
+                  Dublin Business School &mdash; Dublin, Ireland
+                </span>
+              </div>
+              <span class="text-[11px] text-slate-500 font-mono font-medium shrink-0">
+                September 2023 - September 2024
+              </span>
+            </div>
+            <ul class="list-disc pl-4 space-y-1 text-xs text-slate-600 font-sans font-light leading-relaxed">
+              <li>Graduated with First Class Distinction.</li>
+              <li>Dissertation: Engineered a high-accuracy, deep learning image classification and localized object detection model using YOLOv9, PyTorch, and OpenCV, achieving a verified 94.3% inference accuracy.</li>
+            </ul>
+          </div>
+
+          <!-- SRM -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-start gap-4">
+              <div>
+                <h3 class="text-xs font-bold text-slate-900 font-sans">
+                  Bachelor of Technology (BTech) in Computer Science
+                </h3>
+                <span class="text-xs text-emerald-600 font-medium font-sans">
+                  SRM University &mdash; Chennai, India
+                </span>
+              </div>
+              <span class="text-[11px] text-slate-500 font-mono font-medium shrink-0">
+                June 2018 - May 2022
+              </span>
+            </div>
+            <ul class="list-disc pl-4 space-y-1 text-xs text-slate-600 font-sans font-light leading-relaxed">
+              <li>Acquired core foundations in relational databases, data structures, algorithm design, and software engineering.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="space-y-2">
+        <h2 class="text-xs font-bold font-mono tracking-widest text-slate-900 uppercase border-b border-slate-200 pb-1">
+          Certifications &amp; Credentials
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-slate-600 font-sans">
+          <div class="flex items-start gap-1.5">
+            <span class="text-emerald-500 font-bold">•</span>
+            <span><strong>Databricks Certified Data Engineer Professional</strong> (Credential: 181519764)</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-emerald-500 font-bold">•</span>
+            <span><strong>AWS Solutions Architecture Simulation</strong> (Forage - Credential: pQe2ehirbnR78fCE2)</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-emerald-500 font-bold">•</span>
+            <span><strong>Google Analytics Certification</strong> (Google - Credential: 152294947)</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-emerald-500 font-bold">•</span>
+            <span><strong>Data Visualization &amp; Tableau</strong> (Duke University / Coursera - Credential: BJWJUERJS47H)</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-emerald-500 font-bold">•</span>
+            <span><strong>SQL for Data Science</strong> (UC Davis / Coursera - Credential: D8N6CWZ8H922)</span>
+          </div>
+          <div class="flex items-start gap-1.5">
+            <span class="text-emerald-500 font-bold">•</span>
+            <span><strong>Introduction to Data Science in Python</strong> (University of Michigan - Credential: 7N62D3TYH4KM)</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer (No-Print) -->
+  <div class="no-print bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800">
+    <p class="font-mono">ATS System Compatibility Score: 100%. Print or Save to PDF is pre-formatted for standard A4 page sizes.</p>
+    <p class="mt-1">© 2026 Harekrishna Shah. All rights reserved.</p>
+  </div>
+
+  <script>
+    document.getElementById('download-txt-btn').addEventListener('click', () => {
+      const resumeText = `
+HAREKRISHNA SHAH
+Dublin, Ireland | Stamp 1G (Interview Ready)
+Email: harekrishnashah13@gmail.com
+LinkedIn: https://www.linkedin.com/in/hshah13
+GitHub: https://github.com/Harekrishnashah13
+
+======================================================================
+PROFESSIONAL SUMMARY
+======================================================================
+Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 4+ years of professional experience in financial services and enterprise analytics. Expert in building optimized medallion data pipelines, designing executive-level Power BI reporting dashboards, and deploying robust data governance architectures. Outstanding track record migrating legacy codebases to cloud-native warehousing clusters with complete numerical parity and zero operational downtime.
+
+======================================================================
+TECHNICAL EXPERTISE STACK
+======================================================================
+* Data Engineering: Azure Databricks, PySpark, Azure Data Factory (ADF), Azure Synapse, Delta Lake, Unity Catalog, Teradata SQL, Python (Pandas, NumPy)
+* BI & Analytics: Power BI (DAX, PowerQuery), Tableau, Dimensional Modeling, Incremental Refresh, Cohort Analysis, Advanced SQL Querying
+* Cloud, AI & DevOps: Gemini API / LLM Integration, Jenkins CI/CD pipelines, Terraform (IaC), Selenium WebDriver automation, Postman API Testing, Git
+
+======================================================================
+PROFESSIONAL EXPERIENCE
+======================================================================
+Operations Analyst | Covalen Solutions — Dublin, Ireland
+August 2025 - Present
+* Owned the investigation, audit, and resolution of 20+ daily digital banking transaction issues and compliance escalations under strict AML/KYC guidelines.
+* Designed and maintained a strategic Power BI dashboard suite tracking core financial operations and compliance SLA metrics, slashing daily issue triage cycle times by 30% for executive stakeholders.
+
+Data Analyst & Technical Business Analyst | Itelligence Infotech — Pune, India
+December 2022 - December 2024
+* Owned the development, testing, and deployment of an automated Python SQL translation pipeline used to migrate highly nested legacy Teradata stored procedures to Azure Databricks Spark-SQL syntax.
+* Successfully migrated a 1.2PB enterprise cloud data warehouse footprint with verified 100% field-level checksum parity, boosting query performance and reducing system reporting discrepancies by 40%.
+
+Software Developer & Technical Support QA | HiCounselor — San Francisco, CA (Remote)
+August 2022 - December 2022
+* Developed automated testing scripts utilizing Python and Selenium WebDriver, accelerating product delivery cycles and improving system stability metrics.
+* Built a self-healing diagnostic daemon utilizing the Gemini API to parse failed log traces and recommend immediate correction recipes, cutting pipeline downtime from 14.2 hours to under 4 minutes.
+
+Business Data Analyst | Equitas Small Finance Bank — Chennai, India
+September 2021 - August 2022
+* Engineered SQL-based audit queries to inspect transaction logs, and constructed predictive Random Forest classifiers in Python to identify customer churn and fraud anomalies.
+* Collaborated with credit teams to translate model outputs into action-oriented underwriting insights, mitigating risk profile exposures for mobile banking integrations.
+
+======================================================================
+ACADEMIC FOUNDATION
+======================================================================
+Master of Science (MSc) in Data Analytics | Dublin Business School — Dublin, Ireland
+September 2023 - September 2024
+* Graduated with First Class Distinction.
+* Dissertation: Engineered a high-accuracy, deep learning image classification and localized object detection model using YOLOv9, PyTorch, and OpenCV, achieving a verified 94.3% inference accuracy.
+
+Bachelor of Technology (BTech) in Computer Science | SRM University — Chennai, India
+June 2018 - May 2022
+* Acquired core foundations in relational databases, data structures, algorithm design, and software engineering.
+
+======================================================================
+CERTIFICATIONS & CREDENTIALS
+======================================================================
+* Databricks Certified Data Engineer Professional (Credential ID: 181519764)
+* AWS Solutions Architecture Simulation (Forage - Credential: pQe2ehirbnR78fCE2)
+* Google Analytics Certification (Google - Credential: 152294947)
+* Data Visualization and Communication with Tableau (Duke University / Coursera - Credential: BJWJUERJS47H)
+* SQL for Data Science (UC Davis / Coursera - Credential: D8N6CWZ8H922)
+* Introduction to Data Science in Python (University of Michigan - Credential: 7N62D3TYH4KM)
+      `.trim();
+
+      const element = document.createElement("a");
+      const file = new Blob([resumeText], { type: 'text/plain;charset=utf-8' });
+      element.href = URL.createObjectURL(file);
+      element.download = "Harekrishna_Shah_Resume_ATS_Optimized.txt";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    });
+  </script>
+</body>
+</html>

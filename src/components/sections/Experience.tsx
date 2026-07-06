@@ -63,19 +63,19 @@ export default function Experience() {
               fontWeight: 400 
             }}
           >
-            2+ years delivering data engineering and analytics across financial services, fintech, and enterprise environments.
+            4+ years delivering data engineering and analytics across financial services, fintech, and enterprise environments.
           </p>
         </div>
 
         {/* Master Timeline Structure */}
         <div 
-          className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-[32px] items-start" 
+          className="timeline-grid grid grid-cols-1 md:grid-cols-[280px_1fr] gap-[32px] items-start" 
           id="experience-timeline"
         >
           
           {/* Navigation Sidebar/Timeline nodes (Left) */}
           <div
-            className="flex flex-row md:flex-col gap-2 md:gap-3 overflow-x-auto md:overflow-x-visible pb-[12px] md:pb-0 mb-[16px] md:mb-0 scrollbar-none sticky top-24 z-10 bg-[#080B11]/80 backdrop-blur-sm md:bg-transparent w-full md:w-[280px] shrink-0"
+            className="timeline-sidebar flex flex-row md:flex-col gap-2 md:gap-3 overflow-x-auto md:overflow-x-visible pb-[12px] md:pb-0 mb-[16px] md:mb-0 scrollbar-none sticky top-24 z-10 bg-[#080B11]/80 backdrop-blur-sm md:bg-transparent w-full md:w-[280px] shrink-0"
           >
             {EXPERIENCE_DATA.map((role, idx) => {
               const isActive = activeRoleIndex === idx;
@@ -83,9 +83,9 @@ export default function Experience() {
                 <button
                   key={role.id}
                   onClick={() => setActiveRoleIndex(idx)}
-                  className={`cursor-pointer focus:outline-none select-none transition-all duration-200 shrink-0 md:shrink-1 md:w-full text-left
+                  className={`timeline-item cursor-pointer focus:outline-none select-none transition-all duration-200 shrink-0 md:shrink-1 md:w-full text-left
                     ${isActive 
-                      ? 'md:bg-[rgba(0,204,136,0.08)] md:border-[0.5px] md:border-[rgba(0,204,136,0.2)] md:rounded-lg md:p-[10px_12px] md:opacity-100 bg-[#00CC88] text-[#050E09] border-[#00CC88] rounded-[20px] p-[6px_14px] text-[13px] font-medium border-[0.5px]' 
+                      ? 'active md:bg-[rgba(0,204,136,0.08)] md:border-[0.5px] md:border-[rgba(0,204,136,0.2)] md:rounded-lg md:p-[10px_12px] md:opacity-100 bg-[#00CC88] text-[#050E09] border-[#00CC88] rounded-[20px] p-[6px_14px] text-[13px] font-medium border-[0.5px]' 
                       : 'md:p-[10px_12px] md:rounded-lg md:opacity-60 md:hover:opacity-100 md:hover:bg-[rgba(255,255,255,0.04)] text-white/60 bg-transparent border-[rgba(255,255,255,0.15)] rounded-[20px] p-[6px_14px] text-[13px] font-medium border-[0.5px] hover:text-white hover:border-white/30'
                     }
                   `}
@@ -146,7 +146,7 @@ export default function Experience() {
           </div>
 
           {/* Active Milestone Card (Right) */}
-          <div className="w-full">
+          <div className="timeline-detail w-full">
             {EXPERIENCE_DATA.map((role, idx) => {
               if (idx !== activeRoleIndex) return null;
               return (

@@ -3,6 +3,7 @@ import { Linkedin, Github, Mail, ChevronDown, FileText, ArrowRight } from 'lucid
 import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
 import WaveCanvas from '../layout/WaveCanvas';
+import { downloadResumePDF } from '../../lib/downloadResume';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -108,16 +109,19 @@ export default function Hero({ onOpenResume }: HeroProps) {
   return (
     <section
       id="about"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden transition-colors duration-500 bg-[#020408]"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden transition-colors duration-500"
+      style={{
+        background: 'radial-gradient(ellipse 800px 500px at 60% 40%, rgba(0,204,136,0.04) 0%, transparent 70%), #050E09'
+      }}
     >
       <style>{`
         #hero-content-grid {
           display: grid;
-          grid-template-columns: auto 1fr;
+          grid-template-columns: 1fr 220px;
           gap: 48px;
           align-items: center;
-          min-height: 85vh;
-          padding: 80px clamp(24px, 6vw, 80px);
+          min-height: 75vh;
+          padding: 80px clamp(24px, 6vw, 80px) 48px;
           max-width: 1200px;
           margin: 0 auto;
         }
@@ -135,21 +139,25 @@ export default function Hero({ onOpenResume }: HeroProps) {
         }
         @media (max-width: 768px) {
           #hero-content-grid {
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-start;
             text-align: left;
-            padding: 80px 20px 48px;
+            padding: 110px 20px 48px;
+            gap: 24px;
           }
           #hero-photo-col {
-            width: 120px !important;
-            margin-bottom: 20px;
+            width: 130px !important;
+            margin-bottom: 8px;
+            align-items: flex-start;
           }
           #hero-photo-container {
-            width: 120px !important;
-            height: 120px !important;
+            width: 130px !important;
+            height: 130px !important;
           }
           #hero-photo-container img, #hero-photo-container div {
-            width: 120px !important;
-            height: 120px !important;
+            width: 130px !important;
+            height: 130px !important;
           }
           #hero-name {
             font-size: clamp(32px, 9vw, 48px) !important;
@@ -177,118 +185,22 @@ export default function Hero({ onOpenResume }: HeroProps) {
       <WaveCanvas theme={theme} />
 
       {/* Hero Content Wrapper */}
-      <div id="hero-content-grid" className="relative z-10 w-full">
+      <div id="hero-content-grid" className="hero-grid relative z-10 w-full">
         
-        {/* Grayscale Circular Portrait Avatar (Left column) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          id="hero-photo-col"
-          className="select-none"
-        >
-          <div 
-            id="hero-photo-container"
-            style={{
-              position: 'relative',
-              width: '200px',
-              height: '200px',
-            }}
-          >
-            {!imageError ? (
-              <img
-                src="/profile.jpg"
-                alt="Harekrishna Shah Portrait"
-                loading="eager"
-                decoding="async"
-                width={200}
-                height={200}
-                style={{
-                  width: '200px',
-                  height: '200px',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  filter: 'grayscale(100%)',
-                  display: 'block',
-                  outline: '2px solid rgba(0,204,136,0.4)',
-                  outlineOffset: '4px',
-                }}
-                onError={() => setImageError(true)}
-              />
-            ) : (
-              /* Premium Typographic Circular Fallback Badge */
-              <div 
-                style={{
-                  width: '200px',
-                  height: '200px',
-                  borderRadius: '50%',
-                  outline: '2px solid rgba(0,204,136,0.4)',
-                  outlineOffset: '4px',
-                }}
-                className="bg-slate-950/90 flex flex-col items-center justify-center relative select-none overflow-hidden"
-              >
-                <div className="absolute inset-0 opacity-5 pointer-events-none font-mono text-[6px] text-emerald-400 leading-none overflow-hidden select-none">
-                  {Array.from({ length: 15 }).map((_, idx) => (
-                    <div key={idx} className="whitespace-nowrap mb-0.5">010101 DATA PIPELINE ACTIVE</div>
-                  ))}
-                </div>
-                <span className="text-3xl font-display font-extrabold text-white tracking-wider group-hover:text-emerald-400 transition-colors">
-                  HS<span className="text-emerald-500 font-bold">.</span>
-                </span>
-                <span className="text-[9px] text-slate-500 font-mono tracking-widest uppercase mt-1 shrink-0">
-                  Dublin
-                </span>
-              </div>
-            )}
-          </div>
-        </motion.div>
-
-        {/* Brand Information & Social Group (Right column) */}
+        {/* Brand Information & Social Group (Left column on desktop) */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           id="hero-text-col"
         >
-          {/* Eyebrow status pill */}
-          <motion.div 
-            variants={itemVariants}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: 'rgba(0,204,136,0.08)',
-              border: '0.5px solid rgba(0,204,136,0.25)',
-              borderRadius: '20px',
-              padding: '4px 12px',
-              marginBottom: '14px',
-              width: 'fit-content'
-            }}
-          >
-            <span style={{
-              width: '6px', height: '6px',
-              borderRadius: '50%',
-              background: '#00CC88',
-              animation: 'pulse-dot 2s infinite'
-            }}/>
-            <span style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '11px',
-              fontWeight: '500',
-              letterSpacing: '0.1em',
-              color: '#00CC88'
-            }}>
-              DUBLIN, IRELAND · AVAILABLE NOW
-            </span>
-          </motion.div>
-
           {/* Large Name Headline */}
           <motion.h1 
             variants={itemVariants}
             id="hero-name"
-            className="font-sans"
+            className="hero-name font-sans"
             style={{
-              fontSize: 'clamp(40px, 5.5vw, 64px)',
+              fontSize: 'clamp(40px, 6vw, 64px)',
               fontWeight: 700,
               lineHeight: 1.1,
               letterSpacing: '-0.03em',
@@ -302,7 +214,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
           {/* Main Tagline with Typewriter Effect */}
           <motion.div 
             variants={itemVariants}
-            className="font-sans" 
+            className="hero-tagline font-sans" 
             style={{
               fontSize: 'clamp(24px, 3.5vw, 36px)',
               fontWeight: 600,
@@ -341,6 +253,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
           {/* Styled MSc badge */}
           <motion.div 
             variants={itemVariants}
+            className="hero-metrics"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -354,7 +267,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '12px',
               fontWeight: '500',
-              color: 'rgba(255,255,255,0.6)',
+              color: 'rgba(255,255,255,0.55)',
               letterSpacing: '0.04em'
             }}>
               MSc Data Science
@@ -364,8 +277,8 @@ export default function Hero({ onOpenResume }: HeroProps) {
               alignItems: 'center',
               background: 'rgba(0,204,136,0.1)',
               border: '0.5px solid rgba(0,204,136,0.3)',
-              borderRadius: '4px',
-              padding: '2px 8px',
+              borderRadius: '20px',
+              padding: '2px 10px',
               fontSize: '11px',
               fontWeight: '600',
               color: '#00CC88',
@@ -375,8 +288,8 @@ export default function Hero({ onOpenResume }: HeroProps) {
             </span>
             <span style={{
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '11px',
-              color: 'rgba(255,255,255,0.3)'
+              fontSize: '12px',
+              color: 'rgba(255,255,255,0.35)'
             }}>
               · Dublin Business School
             </span>
@@ -395,28 +308,42 @@ export default function Hero({ onOpenResume }: HeroProps) {
               fontWeight: 400,
             }}
           >
-            I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 2+ years of professional experience in financial services and enterprise analytics.
+            I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 4+ years of professional experience in financial services and enterprise analytics.
           </motion.p>
 
-          <motion.p 
+          {/* Location Block with Interview Ready Signal */}
+          <motion.div 
             variants={itemVariants}
-            className="font-sans font-normal text-slate-500 tracking-wide text-xs sm:text-sm mb-6 max-w-xl"
+            className="font-sans font-normal text-slate-500 tracking-wide text-xs sm:text-sm mb-6 max-w-xl flex items-center gap-2 flex-wrap"
           >
-            Dublin, Ireland &middot; Stamp 1G
-          </motion.p>
+            <span>Dublin, Ireland &middot; Stamp 1G</span>
+            <span style={{
+              background: 'rgba(0,204,136,0.1)',
+              border: '0.5px solid rgba(0,204,136,0.25)',
+              color: '#00CC88',
+              fontSize: '11px',
+              padding: '2px 8px',
+              borderRadius: '20px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              fontWeight: 500,
+            }}>
+              Interview Ready &rarr;
+            </span>
+          </motion.div>
 
           {/* CTA Buttons Row */}
           <motion.div 
             variants={itemVariants}
             id="hero-cta-buttons" 
-            className="flex flex-wrap items-center gap-3 mb-6"
+            className="hero-cta flex flex-wrap items-center gap-3 mb-6"
           >
             <button
-              onClick={onOpenResume}
+              onClick={() => window.open('/resume.html', '_blank')}
               className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-sm rounded-xl transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-2 hover:shadow-emerald-500/20"
             >
               <FileText className="h-4 w-4" />
-              <span>Review Resume</span>
+              <span>Download Resume</span>
             </button>
             <a
               href="#projects"
@@ -430,6 +357,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
           {/* Social Links Row */}
           <motion.div 
             variants={itemVariants}
+            className="hero-social"
             style={{ display: 'flex', gap: '16px', alignItems: 'center' }}
           >
             <a
@@ -452,7 +380,14 @@ export default function Hero({ onOpenResume }: HeroProps) {
               className="hover:border-[#00CC88]/40 hover:text-[#00CC88] hover:bg-[#00CC88]/[0.06]"
               title="GitHub Profile"
             >
-              <Github className="h-4 w-4" />
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+              </svg>
             </a>
             <a
               href={PERSONAL_INFO.linkedin}
@@ -474,7 +409,14 @@ export default function Hero({ onOpenResume }: HeroProps) {
               className="hover:border-[#00CC88]/40 hover:text-[#00CC88] hover:bg-[#00CC88]/[0.06]"
               title="LinkedIn Profile"
             >
-              <Linkedin className="h-4 w-4" />
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
             </a>
             <a
               href={`mailto:${PERSONAL_INFO.email}`}
@@ -494,46 +436,115 @@ export default function Hero({ onOpenResume }: HeroProps) {
               className="hover:border-[#00CC88]/40 hover:text-[#00CC88] hover:bg-[#00CC88]/[0.06]"
               title="Email Contact"
             >
-              <Mail className="h-4 w-4" />
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+              </svg>
             </a>
+          </motion.div>
+
+          {/* Scroll Down Indicator - aligned below content */}
+          <motion.div 
+            variants={itemVariants}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: '6px',
+              marginTop: '32px',
+              animation: 'bounce 2s ease-in-out infinite'
+            }}
+          >
+            <span 
+              style={{
+                fontSize: '10px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.25)',
+                fontFamily: 'JetBrains Mono, monospace'
+              }}
+            >
+              Scroll Down
+            </span>
+            <ChevronDown 
+              style={{
+                width: '16px',
+                color: 'rgba(255,255,255,0.25)',
+              }}
+            />
           </motion.div>
 
         </motion.div>
 
-      </div>
-
-      {/* Scroll Down Indicator */}
-      <div 
-        style={{
-          position: 'absolute',
-          bottom: '28px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '6px',
-          zIndex: 10,
-          animation: 'bounce 2s ease-in-out infinite'
-        }}
-      >
-        <span 
-          style={{
-            fontSize: '10px',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.25)',
-            fontFamily: 'JetBrains Mono, monospace'
-          }}
+        {/* Grayscale Circular Portrait Avatar (Right column on desktop) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          id="hero-photo-col"
+          className="hero-photo select-none"
         >
-          Scroll Down
-        </span>
-        <ChevronDown 
-          style={{
-            width: '16px',
-            color: 'rgba(255,255,255,0.25)',
-          }}
-        />
+          <div 
+            id="hero-photo-container"
+            style={{
+              position: 'relative',
+              width: '200px',
+              height: '200px',
+            }}
+          >
+            {!imageError ? (
+              <img
+                src="/profile.jpg"
+                alt="Harekrishna Shah Portrait"
+                loading="eager"
+                decoding="async"
+                width={200}
+                height={200}
+                style={{
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  filter: 'grayscale(100%) drop-shadow(0 0 20px rgba(0,204,136,0.08))',
+                  display: 'block',
+                  outline: '2px solid rgba(0,204,136,0.3)',
+                  outlineOffset: '6px',
+                }}
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              /* Premium Typographic Circular Fallback Badge */
+              <div 
+                style={{
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '50%',
+                  outline: '2px solid rgba(0,204,136,0.3)',
+                  outlineOffset: '6px',
+                  filter: 'drop-shadow(0 0 20px rgba(0,204,136,0.08))',
+                }}
+                className="bg-slate-950/90 flex flex-col items-center justify-center relative select-none overflow-hidden"
+              >
+                <div className="absolute inset-0 opacity-5 pointer-events-none font-mono text-[6px] text-emerald-400 leading-none overflow-hidden select-none">
+                  {Array.from({ length: 15 }).map((_, idx) => (
+                    <div key={idx} className="whitespace-nowrap mb-0.5">010101 DATA PIPELINE ACTIVE</div>
+                  ))}
+                </div>
+                <span className="text-3xl font-display font-extrabold text-white tracking-wider group-hover:text-emerald-400 transition-colors">
+                  HS<span className="text-emerald-500 font-bold">.</span>
+                </span>
+                <span className="text-[9px] text-slate-500 font-mono tracking-widest uppercase mt-1 shrink-0">
+                  Dublin
+                </span>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
       </div>
 
     </section>

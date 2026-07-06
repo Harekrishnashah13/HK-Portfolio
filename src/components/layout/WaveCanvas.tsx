@@ -98,13 +98,19 @@ export default function WaveCanvas({ theme }: WaveCanvasProps) {
 
   if (isMobile) {
     return (
-      <div 
-        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+      <div
+        aria-hidden="true"
         style={{
-          background: theme === 'dark' 
-            ? 'radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.12) 0%, rgba(0, 0, 0, 0) 70%)'
-            : 'radial-gradient(circle at 50% 50%, rgba(100, 116, 139, 0.06) 0%, rgba(0, 0, 0, 0) 70%)',
-          opacity: 0.8
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          background: [
+            'radial-gradient(ellipse at 70% 80%,',
+            'rgba(100,0,180,0.18) 0%, transparent 55%),',
+            'radial-gradient(ellipse at 20% 60%,',
+            'rgba(0,180,120,0.08) 0%, transparent 50%),',
+            'linear-gradient(135deg, #050E09 0%, #0A1410 100%)'
+          ].join(' ')
         }}
       />
     );
@@ -114,7 +120,7 @@ export default function WaveCanvas({ theme }: WaveCanvasProps) {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none z-0"
-      style={{ display: 'block', opacity: theme === 'dark' ? 0.8 : 0.9 }}
+      style={{ display: 'block', opacity: 0.35 }}
     />
   );
 }

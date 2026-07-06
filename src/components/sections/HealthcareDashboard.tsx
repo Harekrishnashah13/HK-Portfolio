@@ -276,7 +276,7 @@ export default function HealthcareDashboard() {
       {/* Two-Column Grid Below Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         {/* LEFT - Bed Occupancy by Ward Bar Chart */}
-        <div className="bg-slate-950/40 border border-white/[0.04] rounded-xl p-3.5 flex flex-col justify-between">
+        <div className="healthcare-bar-chart bg-slate-950/40 border border-white/[0.04] rounded-xl p-3.5 flex flex-col justify-between">
           <div>
             <span className="text-slate-400 font-mono text-[9px] font-bold block uppercase tracking-wider mb-3">
               Bed Occupancy by Ward
@@ -313,7 +313,7 @@ export default function HealthcareDashboard() {
         </div>
 
         {/* RIGHT - HSE Compliance Checks */}
-        <div className="bg-slate-950/40 border border-white/[0.04] rounded-xl p-3.5 flex flex-col justify-between">
+        <div className="healthcare-compliance bg-slate-950/40 border border-white/[0.04] rounded-xl p-3.5 flex flex-col justify-between">
           <div>
             <span className="text-slate-400 font-mono text-[9px] font-bold block uppercase tracking-wider mb-3">
               HSE Compliance Checks

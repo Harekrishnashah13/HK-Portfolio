@@ -181,25 +181,25 @@ ${CERTIFICATIONS_DATA.map(cert => `* ${cert.name} - Issued by ${cert.issuer} (${
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in" id="resume-modal-container">
-      <div className="bg-[#0b0f19] border border-slate-900 rounded-3xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden">
+      <div id="resume-modal" className="bg-[#0b0f19] border border-slate-900 rounded-3xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden">
         
         {/* Header toolbar */}
-        <div className="flex items-center justify-between border-b border-slate-900/80 px-6 py-4 bg-slate-950/40">
-          <div className="flex items-center gap-2.5">
-            <FileText className="h-5 w-5 text-emerald-400" />
-            <h3 className="text-white font-sans font-bold text-sm tracking-tight">
-              Curriculum Vitae — ATS-Optimized Document
+        <div className="flex items-center justify-between border-b border-slate-900/80 px-4 py-3 sm:px-6 sm:py-4 bg-slate-950/40">
+          <div className="flex items-center gap-2 max-w-[45%] sm:max-w-none">
+            <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 shrink-0" />
+            <h3 className="text-white font-sans font-bold text-xs sm:text-sm tracking-tight truncate">
+              Curriculum Vitae — ATS Document
             </h3>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={handleCopyText}
               className="p-2 text-slate-400 hover:text-emerald-400 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl transition-all flex items-center gap-1.5 text-xs font-mono cursor-pointer"
               title="Copy Clean Text for ATS Copy-Paste"
             >
               {copied ? <Check className="h-3.5 w-3.5 text-emerald-400 animate-scale-up" /> : <Copy className="h-3.5 w-3.5" />}
-              {copied ? 'Copied!' : 'Copy Text'}
+              <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy Text'}</span>
             </button>
 
             <button
@@ -208,7 +208,7 @@ ${CERTIFICATIONS_DATA.map(cert => `* ${cert.name} - Issued by ${cert.issuer} (${
               title="Download ATS-Friendly Plain Text file"
             >
               <Download className="h-3.5 w-3.5" />
-              Download .TXT
+              <span className="hidden sm:inline">Download .TXT</span>
             </button>
 
             <button
@@ -217,12 +217,12 @@ ${CERTIFICATIONS_DATA.map(cert => `* ${cert.name} - Issued by ${cert.issuer} (${
               title="Print Resume or Save to PDF"
             >
               <Printer className="h-3.5 w-3.5" />
-              Print / Save PDF
+              <span className="hidden sm:inline">Print / Save PDF</span>
             </button>
 
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl transition-all cursor-pointer"
+              className="p-2 text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl transition-all cursor-pointer shrink-0"
               aria-label="Close modal"
             >
               <X className="h-4 w-4" />
