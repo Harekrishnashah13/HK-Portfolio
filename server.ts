@@ -185,7 +185,12 @@ async function startServer() {
     app.use(express.static(distPath, { index: false }));
 
     app.get('*', (req, res) => {
-      const origin = `https://${req.get('host')}`;
+      // req.get('host') never legitimately contains '#' (fragments are
+      // client-side only and never sent to the server), but strip one
+      // defensively so a malformed/spoofed Host header can never produce a
+      // canonical/OG URL containing a hash fragment.
+      const host = (req.get('host') || '').split('#')[0];
+      const origin = host ? `https://${host}` : PRODUCTION_ORIGIN;
       const html = indexTemplate.split(PRODUCTION_ORIGIN).join(origin);
       res.type('html').send(html);
     });
