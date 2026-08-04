@@ -171,6 +171,55 @@ html.light body {
   color: #0f172a !important; /* Slate 900 */
 }
 
+/* "Ink" channel used by inline rgba(255,255,255,X) text/border colors so they
+   flip to a dark, readable tone in light mode instead of staying white-on-white. */
+:root {
+  --ink-rgb: 255, 255, 255;
+  --text-strong: #ffffff;
+  --hero-bg: #050E09;
+  --hero-glow: rgba(0, 204, 136, 0.04);
+}
+
+html.light {
+  --ink-rgb: 15, 23, 42; /* Slate 900 */
+  --text-strong: #0f172a;
+  --hero-bg: #f8fafc;
+  --hero-glow: rgba(5, 150, 105, 0.06);
+}
+
+/* Catch-all for the many components that hardcode `text-white` for the dark
+   theme. Individual buttons/badges that must stay white-on-color (e.g. the
+   emerald CTA, LinkedIn/Google hover chips) have their own higher-specificity
+   overrides further down and win over this rule. */
+html.light .text-white {
+  color: #0f172a !important;
+}
+
+html.light .text-white\/30 { color: rgba(15, 23, 42, 0.30) !important; }
+html.light .text-white\/35 { color: rgba(15, 23, 42, 0.35) !important; }
+html.light .text-white\/40 { color: rgba(15, 23, 42, 0.40) !important; }
+html.light .text-white\/55 { color: rgba(15, 23, 42, 0.55) !important; }
+html.light .text-white\/60 { color: rgba(15, 23, 42, 0.60) !important; }
+html.light .text-white\/70 { color: rgba(15, 23, 42, 0.70) !important; }
+html.light .text-white\/80 { color: rgba(15, 23, 42, 0.80) !important; }
+html.light .text-white\/\[0\.45\] { color: rgba(15, 23, 42, 0.55) !important; }
+
+html.light .border-white\/10 { border-color: rgba(15, 23, 42, 0.10) !important; }
+html.light .border-white\/15 { border-color: rgba(15, 23, 42, 0.14) !important; }
+html.light .border-white\/20 { border-color: rgba(15, 23, 42, 0.18) !important; }
+html.light .border-white\/\[0\.02\] { border-color: rgba(15, 23, 42, 0.06) !important; }
+html.light .border-white\/\[0\.03\] { border-color: rgba(15, 23, 42, 0.08) !important; }
+html.light .border-white\/\[0\.04\] { border-color: rgba(15, 23, 42, 0.10) !important; }
+html.light .border-white\/\[0\.06\] { border-color: rgba(15, 23, 42, 0.12) !important; }
+html.light .border-white\/\[0\.08\] { border-color: rgba(15, 23, 42, 0.14) !important; }
+html.light .border-white\/\[0\.15\] { border-color: rgba(15, 23, 42, 0.20) !important; }
+
+html.light .bg-white\/10 { background-color: rgba(15, 23, 42, 0.05) !important; }
+html.light .bg-white\/\[0\.03\] { background-color: rgba(15, 23, 42, 0.03) !important; }
+html.light .bg-white\/\[0\.04\] { background-color: rgba(15, 23, 42, 0.04) !important; }
+
+html.light .placeholder-white\/\[0\.25\]::placeholder { color: rgba(15, 23, 42, 0.35) !important; }
+
 /* Force headings to Slate 900 */
 html.light h1,
 html.light h2,
@@ -207,7 +256,13 @@ html.light .bg-slate-900,
 html.light .bg-slate-900\/50,
 html.light .bg-slate-950\/15,
 html.light .bg-slate-900\/15,
-html.light .bg-[#0a0f19] {
+html.light .bg-\[\#0a0f19\],
+html.light .bg-\[\#03060a\],
+html.light .bg-\[\#0d121f\],
+html.light .bg-\[\#0b1220\]\/50,
+html.light .bg-\[\#0b0f19\],
+html.light .bg-\[\#090d16\],
+html.light .bg-\[\#070b12\] {
   background-color: #ffffff !important;
   box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08), 0 2px 8px -1px rgba(15, 23, 42, 0.04) !important;
 }
@@ -249,7 +304,8 @@ html.light #desktop-nav-redesign nav button {
   color: #475569 !important;
 }
 
-html.light #desktop-nav-redesign nav button.bg-slate-900 {
+html.light #desktop-nav-redesign nav button.bg-slate-900,
+html.light #desktop-nav-redesign nav button.bg-\[\#131d31\] {
   background-color: #ffffff !important;
   color: #059669 !important; /* Emerald 600 */
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
@@ -270,11 +326,33 @@ html.light #mobile-drawer button.text-emerald-400 {
 }
 
 /* Custom backgrounds on section dividers or grids */
-html.light .bg-[#020408],
-html.light .bg-[#04060b],
-html.light .bg-[#080B11],
-html.light .bg-slate-950 {
+html.light .bg-\[\#020408\],
+html.light .bg-\[\#04060b\],
+html.light .bg-\[\#080B11\],
+html.light .bg-slate-950,
+html.light .bg-\[\#05080c\],
+html.light .bg-\[\#06090e\] {
   background-color: #f8fafc !important;
+}
+
+/* Sticky/translucent header-style bars (Navbar scrolled state, Experience
+   timeline sidebar) that blur the page background rather than sit on a
+   flat card. */
+html.light .bg-\[\#080B11\]\/80 {
+  background-color: rgba(248, 250, 252, 0.9) !important;
+}
+
+/* Modal backdrop scrim: dim the page behind a modal rather than lighten it,
+   which is the conventional light-theme pattern and keeps the modal card
+   readable in front of it. */
+html.light .bg-\[\#020408\]\/90 {
+  background-color: rgba(15, 23, 42, 0.5) !important;
+}
+
+/* Terminal/log-style output panel: intentionally keeps its dark "console"
+   look in light mode too, matching the existing <pre>/<code> treatment. */
+html.light .bg-\[\#020408\]\/50 {
+  background-color: rgba(15, 23, 42, 0.92) !important;
 }
 
 /* Interactive custom items - hover overrides */

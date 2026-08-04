@@ -110,7 +110,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
       id="about"
       className="relative min-h-screen flex items-center justify-center overflow-hidden transition-colors duration-500"
       style={{
-        background: 'radial-gradient(ellipse 800px 500px at 60% 40%, rgba(0,204,136,0.04) 0%, transparent 70%), #050E09'
+        background: 'radial-gradient(ellipse 800px 500px at 60% 40%, var(--hero-glow) 0%, transparent 70%), var(--hero-bg)'
       }}
     >
       <style>{`
@@ -203,7 +203,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
               fontWeight: 700,
               lineHeight: 1.1,
               letterSpacing: '-0.03em',
-              color: '#FFFFFF',
+              color: 'var(--text-strong)',
               marginBottom: '6px',
             }}
           >
@@ -217,7 +217,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
             style={{
               fontSize: 'clamp(24px, 3.5vw, 36px)',
               fontWeight: 600,
-              color: 'rgba(255,255,255,0.9)',
+              color: 'rgba(var(--ink-rgb),0.9)',
               letterSpacing: '-0.01em',
               lineHeight: 1.3,
               marginBottom: '8px',
@@ -266,7 +266,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '12px',
               fontWeight: '500',
-              color: 'rgba(255,255,255,0.55)',
+              color: 'rgba(var(--ink-rgb),0.55)',
               letterSpacing: '0.04em'
             }}>
               MSc Data Science
@@ -288,7 +288,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
             <span style={{
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '12px',
-              color: 'rgba(255,255,255,0.35)'
+              color: 'rgba(var(--ink-rgb),0.35)'
             }}>
               · Dublin Business School
             </span>
@@ -301,7 +301,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
             style={{
               fontSize: '16px',
               lineHeight: '1.75',
-              color: 'rgba(255,255,255,0.65)',
+              color: 'rgba(var(--ink-rgb),0.65)',
               maxWidth: '560px',
               marginBottom: '20px',
               fontWeight: 400,
@@ -367,12 +367,12 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 width: '38px',
                 height: '38px',
                 borderRadius: '8px',
-                border: '0.5px solid rgba(255,255,255,0.12)',
-                background: 'rgba(255,255,255,0.04)',
+                border: '0.5px solid rgba(var(--ink-rgb),0.12)',
+                background: 'rgba(var(--ink-rgb),0.04)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'rgba(255,255,255,0.5)',
+                color: 'rgba(var(--ink-rgb),0.5)',
                 transition: 'all 0.2s',
                 textDecoration: 'none'
               }}
@@ -396,12 +396,12 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 width: '38px',
                 height: '38px',
                 borderRadius: '8px',
-                border: '0.5px solid rgba(255,255,255,0.12)',
-                background: 'rgba(255,255,255,0.04)',
+                border: '0.5px solid rgba(var(--ink-rgb),0.12)',
+                background: 'rgba(var(--ink-rgb),0.04)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'rgba(255,255,255,0.5)',
+                color: 'rgba(var(--ink-rgb),0.5)',
                 transition: 'all 0.2s',
                 textDecoration: 'none'
               }}
@@ -423,12 +423,12 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 width: '38px',
                 height: '38px',
                 borderRadius: '8px',
-                border: '0.5px solid rgba(255,255,255,0.12)',
-                background: 'rgba(255,255,255,0.04)',
+                border: '0.5px solid rgba(var(--ink-rgb),0.12)',
+                background: 'rgba(var(--ink-rgb),0.04)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'rgba(255,255,255,0.5)',
+                color: 'rgba(var(--ink-rgb),0.5)',
                 transition: 'all 0.2s',
                 textDecoration: 'none'
               }}
@@ -463,7 +463,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 fontSize: '10px',
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.25)',
+                color: 'rgba(var(--ink-rgb),0.25)',
                 fontFamily: 'JetBrains Mono, monospace'
               }}
             >
@@ -472,7 +472,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
             <ChevronDown 
               style={{
                 width: '16px',
-                color: 'rgba(255,255,255,0.25)',
+                color: 'rgba(var(--ink-rgb),0.25)',
               }}
             />
           </motion.div>

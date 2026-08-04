@@ -186,7 +186,7 @@ function CoreTool({ label, icon }: { label: string; icon: string; key?: string }
   return (
     <div className="relative group/core inline-block">
       <div 
-        className="flex items-center gap-1.5 font-sans text-white bg-[rgba(255,255,255,0.06)] border-[0.5px] border-[rgba(255,255,255,0.12)] rounded-[7px] cursor-help hover:bg-[rgba(0,204,136,0.1)] hover:border-[rgba(0,204,136,0.3)] transition-all duration-200 text-xs md:text-[13px] py-[5px] px-[10px] md:py-[6px] md:px-[14px]"
+        className="flex items-center gap-1.5 font-sans text-white bg-[rgba(var(--ink-rgb),0.06)] border-[0.5px] border-[rgba(var(--ink-rgb),0.12)] rounded-[7px] cursor-help hover:bg-[rgba(0,204,136,0.1)] hover:border-[rgba(0,204,136,0.3)] transition-all duration-200 text-xs md:text-[13px] py-[5px] px-[10px] md:py-[6px] md:px-[14px]"
         style={{ fontWeight: 500 }}
       >
         <span className="shrink-0">{icon}</span>
@@ -232,9 +232,9 @@ function SkillTag({ tag }: { tag: string; isPrimary?: boolean; key?: string }) {
       <span
         className="cursor-help flex items-center gap-1 transition-all duration-200"
         style={{
-          background: 'rgba(255,255,255,0.05)',
-          border: '0.5px solid rgba(255,255,255,0.15)',
-          color: 'rgba(255,255,255,0.8)',
+          background: 'rgba(var(--ink-rgb),0.05)',
+          border: '0.5px solid rgba(var(--ink-rgb),0.15)',
+          color: 'rgba(var(--ink-rgb),0.8)',
           fontSize: '12px',
           fontWeight: 500,
           fontFamily: 'Inter, sans-serif',
@@ -243,11 +243,11 @@ function SkillTag({ tag }: { tag: string; isPrimary?: boolean; key?: string }) {
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.borderColor = 'rgba(0,204,136,0.4)';
-          e.currentTarget.style.color = '#FFFFFF';
+          e.currentTarget.style.color = 'var(--text-strong)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
-          e.currentTarget.style.color = 'rgba(255,255,255,0.8)';
+          e.currentTarget.style.borderColor = 'rgba(var(--ink-rgb),0.15)';
+          e.currentTarget.style.color = 'rgba(var(--ink-rgb),0.8)';
         }}
       >
         {tag}
@@ -362,8 +362,8 @@ export default function Skills() {
               variants={cardVariants}
               className="flex flex-col text-left transition-all duration-200 group relative"
               style={{
-                background: 'rgba(255,255,255,0.03)',
-                border: '0.5px solid rgba(255,255,255,0.08)',
+                background: 'rgba(var(--ink-rgb),0.03)',
+                border: '0.5px solid rgba(var(--ink-rgb),0.08)',
                 borderRadius: '12px',
                 padding: '20px 22px'
               }}
@@ -372,7 +372,7 @@ export default function Skills() {
                 e.currentTarget.style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                e.currentTarget.style.borderColor = 'rgba(var(--ink-rgb),0.08)';
                 e.currentTarget.style.transform = 'none';
               }}
             >
@@ -394,7 +394,7 @@ export default function Skills() {
                   <h3 className="font-sans text-white leading-snug" style={{ fontSize: '15px', fontWeight: 600, marginBottom: '2px' }}>
                     {skill.title}
                   </h3>
-                  <p className="font-sans" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)' }}>
+                  <p className="font-sans" style={{ fontSize: '12px', color: 'rgba(var(--ink-rgb),0.4)' }}>
                     {skill.subtitle}
                   </p>
                 </div>
@@ -416,7 +416,7 @@ export default function Skills() {
                 style={{
                   marginTop: 'auto',
                   paddingTop: '12px',
-                  borderTop: '0.5px solid rgba(255,255,255,0.06)',
+                  borderTop: '0.5px solid rgba(var(--ink-rgb),0.06)',
                   gap: '8px'
                 }}
               >
@@ -428,7 +428,7 @@ export default function Skills() {
                       style={{
                         width: '7px',
                         height: '7px',
-                        background: dot <= skill.proficiency ? '#00CC88' : 'rgba(255,255,255,0.12)'
+                        background: dot <= skill.proficiency ? '#00CC88' : 'rgba(var(--ink-rgb),0.12)'
                       }}
                     />
                   ))}
@@ -438,7 +438,7 @@ export default function Skills() {
                   style={{
                     fontSize: '11px',
                     fontWeight: 500,
-                    color: 'rgba(255,255,255,0.4)',
+                    color: 'rgba(var(--ink-rgb),0.4)',
                     marginLeft: '4px'
                   }}
                 >
@@ -453,7 +453,7 @@ export default function Skills() {
         <p 
           style={{
             fontSize: '13px',
-            color: 'rgba(255,255,255,0.3)',
+            color: 'rgba(var(--ink-rgb),0.3)',
             textAlign: 'center',
             marginTop: '20px',
             fontStyle: 'italic'

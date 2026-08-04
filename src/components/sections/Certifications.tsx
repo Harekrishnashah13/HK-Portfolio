@@ -142,7 +142,7 @@ export default function Certifications() {
             style={{ 
               fontSize: '16px', 
               lineHeight: '1.7', 
-              color: 'rgba(255,255,255,0.55)', 
+              color: 'rgba(var(--ink-rgb),0.55)', 
               maxWidth: '540px', 
               marginBottom: '32px', 
               fontWeight: 400 
@@ -164,11 +164,11 @@ export default function Certifications() {
               style={{
                 fontSize: '16px',
                 fontWeight: 600,
-                color: 'rgba(255,255,255,0.7)',
+                color: 'rgba(var(--ink-rgb),0.7)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                borderBottom: '0.5px solid rgba(255,255,255,0.08)',
+                borderBottom: '0.5px solid rgba(var(--ink-rgb),0.08)',
                 paddingBottom: '12px',
                 marginBottom: '20px',
                 letterSpacing: 0
@@ -185,8 +185,8 @@ export default function Certifications() {
                   onClick={() => setSelectedCert(cert)}
                   className="flex flex-col text-left cursor-pointer group select-none transition-all duration-300 p-4 md:py-[18px] md:px-[20px]"
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '0.5px solid rgba(255,255,255,0.08)',
+                    background: 'rgba(var(--ink-rgb),0.03)',
+                    border: '0.5px solid rgba(var(--ink-rgb),0.08)',
                     borderRadius: '12px',
                     marginBottom: '10px',
                     transition: 'border-color 0.2s',
@@ -195,7 +195,7 @@ export default function Certifications() {
                     e.currentTarget.style.borderColor = 'rgba(0,204,136,0.3)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                    e.currentTarget.style.borderColor = 'rgba(var(--ink-rgb),0.08)';
                   }}
                 >
                   {/* Row 1: [icon] [cert name] [date — right aligned] */}
@@ -223,7 +223,7 @@ export default function Certifications() {
                       </h4>
                     </div>
                     {/* Date */}
-                    <span className="font-mono text-[11px] whitespace-nowrap shrink-0" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                    <span className="font-mono text-[11px] whitespace-nowrap shrink-0" style={{ color: 'rgba(var(--ink-rgb),0.4)' }}>
                       {cert.date}
                     </span>
                   </div>
@@ -235,7 +235,7 @@ export default function Certifications() {
 
                   {/* Row 3: ID: [credential ID] */}
                   {cert.credentialId && (
-                    <div className="font-mono" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', marginTop: '6px' }}>
+                    <div className="font-mono" style={{ fontSize: '11px', color: 'rgba(var(--ink-rgb),0.35)', marginTop: '6px' }}>
                       ID: {cert.credentialId}
                     </div>
                   )}
@@ -248,7 +248,7 @@ export default function Certifications() {
                       alignItems: 'center',
                       marginTop: '12px',
                       paddingTop: '10px',
-                      borderTop: '0.5px solid rgba(255,255,255,0.06)'
+                      borderTop: '0.5px solid rgba(var(--ink-rgb),0.06)'
                     }}
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -277,7 +277,7 @@ export default function Certifications() {
                             style={{
                               fontSize: '12px',
                               fontWeight: 400,
-                              color: 'rgba(255,255,255,0.2)'
+                              color: 'rgba(var(--ink-rgb),0.2)'
                             }}
                             className="font-sans cursor-default"
                           >
@@ -292,12 +292,12 @@ export default function Certifications() {
                           style={{
                             fontSize: '12px',
                             fontWeight: 400,
-                            color: 'rgba(255,255,255,0.4)',
+                            color: 'rgba(var(--ink-rgb),0.4)',
                             textDecoration: 'none'
                           }}
                           className="font-sans transition-colors"
-                          onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
-                          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+                          onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(var(--ink-rgb),0.8)'}
+                          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(var(--ink-rgb),0.4)'}
                         >
                           ↓ Download Certificate
                         </a>
@@ -315,11 +315,11 @@ export default function Certifications() {
               style={{
                 fontSize: '16px',
                 fontWeight: 600,
-                color: 'rgba(255,255,255,0.7)',
+                color: 'rgba(var(--ink-rgb),0.7)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                borderBottom: '0.5px solid rgba(255,255,255,0.08)',
+                borderBottom: '0.5px solid rgba(var(--ink-rgb),0.08)',
                 paddingBottom: '12px',
                 marginBottom: '20px',
                 letterSpacing: 0
@@ -334,8 +334,8 @@ export default function Certifications() {
                   key={idx} 
                   id={`edu-card-${idx}`}
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '0.5px solid rgba(255,255,255,0.08)',
+                    background: 'rgba(var(--ink-rgb),0.03)',
+                    border: '0.5px solid rgba(var(--ink-rgb),0.08)',
                     borderRadius: '12px',
                     padding: '18px 20px',
                     marginBottom: '10px'
@@ -347,7 +347,7 @@ export default function Certifications() {
                     style={{
                       fontFamily: 'JetBrains Mono, monospace',
                       fontSize: '11px',
-                      color: 'rgba(255,255,255,0.4)',
+                      color: 'rgba(var(--ink-rgb),0.4)',
                       marginBottom: '6px'
                     }}
                   >
@@ -359,7 +359,7 @@ export default function Certifications() {
                     style={{
                       fontSize: '16px',
                       fontWeight: 600,
-                      color: '#FFFFFF',
+                      color: 'var(--text-strong)',
                       marginBottom: '4px',
                       display: 'flex',
                       alignItems: 'center',
@@ -407,7 +407,7 @@ export default function Certifications() {
                     <div 
                       style={{
                         fontSize: '13px',
-                        color: 'rgba(255,255,255,0.5)',
+                        color: 'rgba(var(--ink-rgb),0.5)',
                         marginBottom: '12px'
                       }}
                       className="font-sans"
@@ -426,7 +426,7 @@ export default function Certifications() {
                           style={{
                             fontSize: '14px',
                             lineHeight: '1.7',
-                            color: 'rgba(255,255,255,0.7)',
+                            color: 'rgba(var(--ink-rgb),0.7)',
                             paddingLeft: '14px',
                             position: 'relative',
                             marginBottom: '8px'

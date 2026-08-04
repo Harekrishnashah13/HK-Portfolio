@@ -376,8 +376,8 @@ export default function Contact() {
               transition: 'all 0.2s ease',
               minWidth: '200px',
               background: 'transparent',
-              color: '#FFFFFF',
-              border: '0.5px solid rgba(255,255,255,0.2)',
+              color: 'var(--text-strong)',
+              border: '0.5px solid rgba(var(--ink-rgb),0.2)',
             }}
             className="w-full md:w-auto hover:border-white/50 hover:bg-white/[0.05] hover:-translate-y-[1px]"
           >
@@ -405,10 +405,10 @@ export default function Contact() {
               >
                 <Clock className="shrink-0 mt-0.5" style={{ color: '#00CC88', width: '18px', height: '18px' }} />
                 <div>
-                  <h4 className="font-sans" style={{ fontSize: '14px', fontWeight: 600, color: '#FFFFFF', marginBottom: '4px' }}>
+                  <h4 className="font-sans" style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-strong)', marginBottom: '4px' }}>
                     Recruiter Response SLA
                   </h4>
-                  <p className="font-sans" style={{ fontSize: '14px', lineHeight: '1.6', color: 'rgba(255,255,255,0.65)' }}>
+                  <p className="font-sans" style={{ fontSize: '14px', lineHeight: '1.6', color: 'rgba(var(--ink-rgb),0.65)' }}>
                     General inquiries and interview requests receive a response within <strong style={{ color: '#00CC88', fontWeight: 600 }}>4 business hours</strong>.
                   </p>
                 </div>
@@ -418,7 +418,7 @@ export default function Contact() {
               <div style={{ marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                   <MapPin className="shrink-0" style={{ color: '#00CC88', width: '16px', height: '16px' }} />
-                  <span className="font-sans" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', fontWeight: 400 }}>
+                  <span className="font-sans" style={{ fontSize: '14px', color: 'rgba(var(--ink-rgb),0.7)', fontWeight: 400 }}>
                     {PERSONAL_INFO.location}
                   </span>
                 </div>
@@ -430,7 +430,7 @@ export default function Contact() {
                   <Mail className="shrink-0" style={{ color: '#00CC88', width: '16px', height: '16px' }} />
                   <span 
                     className="font-sans transition-colors duration-200 group-hover:text-[#00CC88]"
-                    style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', fontWeight: 400 }}
+                    style={{ fontSize: '14px', color: 'rgba(var(--ink-rgb),0.7)', fontWeight: 400 }}
                   >
                     {PERSONAL_INFO.email}
                   </span>

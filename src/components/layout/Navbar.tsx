@@ -218,17 +218,17 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                     height: '40px',
                     borderRadius: '8px',
                     border: theme === 'dark' 
-                      ? '0.5px solid rgba(255,255,255,0.12)' 
+                      ? '0.5px solid rgba(var(--ink-rgb),0.12)' 
                       : '0.5px solid rgba(15,23,42,0.12)',
                     background: theme === 'dark' 
-                      ? 'rgba(255,255,255,0.04)' 
+                      ? 'rgba(var(--ink-rgb),0.04)' 
                       : 'rgba(15,23,42,0.04)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
                     color: theme === 'dark' 
-                      ? 'rgba(255,255,255,0.55)' 
+                      ? 'rgba(var(--ink-rgb),0.55)' 
                       : 'rgba(15,23,42,0.55)',
                     transition: 'all 0.2s ease',
                     flexShrink: 0,
@@ -242,13 +242,13 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                   onMouseLeave={(e) => {
                     setShowTip(false);
                     e.currentTarget.style.borderColor = theme === 'dark' 
-                      ? 'rgba(255,255,255,0.12)' 
+                      ? 'rgba(var(--ink-rgb),0.12)' 
                       : 'rgba(15,23,42,0.12)';
                     e.currentTarget.style.color = theme === 'dark' 
-                      ? 'rgba(255,255,255,0.55)' 
+                      ? 'rgba(var(--ink-rgb),0.55)' 
                       : 'rgba(15,23,42,0.55)';
                     e.currentTarget.style.background = theme === 'dark' 
-                      ? 'rgba(255,255,255,0.04)' 
+                      ? 'rgba(var(--ink-rgb),0.04)' 
                       : 'rgba(15,23,42,0.04)';
                   }}
                 >
@@ -312,17 +312,17 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                   height: '40px',
                   borderRadius: '8px',
                   border: theme === 'dark' 
-                    ? '0.5px solid rgba(255,255,255,0.12)' 
+                    ? '0.5px solid rgba(var(--ink-rgb),0.12)' 
                     : '0.5px solid rgba(15,23,42,0.12)',
                   background: theme === 'dark' 
-                    ? 'rgba(255,255,255,0.04)' 
+                    ? 'rgba(var(--ink-rgb),0.04)' 
                     : 'rgba(15,23,42,0.04)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
                   color: theme === 'dark' 
-                    ? 'rgba(255,255,255,0.55)' 
+                    ? 'rgba(var(--ink-rgb),0.55)' 
                     : 'rgba(15,23,42,0.55)',
                   transition: 'all 0.2s ease',
                   flexShrink: 0,
