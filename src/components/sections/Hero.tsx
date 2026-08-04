@@ -3,7 +3,6 @@ import { Linkedin, Github, Mail, ChevronDown, FileText, ArrowRight } from 'lucid
 import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
 import WaveCanvas from '../layout/WaveCanvas';
-import { downloadResumePDF } from '../../lib/downloadResume';
 
 const containerVariants = {
   hidden: { opacity: 0 },

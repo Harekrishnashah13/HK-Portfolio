@@ -7,7 +7,6 @@ export const PERSONAL_INFO = {
   email: "harekrishnashah13@gmail.com",
   linkedin: "https://www.linkedin.com/in/hshah13",
   github: "https://github.com/Harekrishnashah13",
-  resumeUrl: "#",
   location: "Dublin, Ireland",
   about: {
     summary: "I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 4+ years of professional experience in financial services and enterprise analytics. I build the pipelines, dashboards, and governance frameworks that help organisations make confident, data-driven decisions. Currently based in Dublin — open to senior Data Analytics and Data Engineering roles.",
@@ -47,7 +46,6 @@ export const PROJECTS_DATA: Project[] = [
       { label: "Defect Rates", value: "-30%" }
     ],
     githubUrl: "https://github.com/Harekrishnashah13",
-    liveUrl: "#",
     businessContext: "A Fortune 500 client operated a massive on-premise Teradata database cluster that was bottlenecking query performance and incurring seven-figure annual infrastructure costs. Leadership initiated a strategic cloud migration to Azure Synapse and Databricks.",
     problemStatement: "The legacy environment was powered by thousands of highly nested, custom Teradata SQL procedures. Manually rewriting these queries into Spark-SQL syntax was estimated to require 8 analysts over 14 months, carrying extreme risks of syntax drift and reporting discrepancies.",
     whyItMattered: "Downstream revenue tracking and operational reporting relied entirely on these daily pipelines; any data discrepancies or system downtime would disrupt global business operations.",
@@ -74,7 +72,6 @@ export const PROJECTS_DATA: Project[] = [
       { label: "QA Check Passes", value: "100% Parity" }
     ],
     githubUrl: "https://github.com/Harekrishnashah13/healthcare-analytics-pipeline",
-    liveUrl: "#",
     businessContext: "Hospital clinical operations and executive leadership struggle to monitor patient flow, A&E congestion, and bed capacity in real-time. Delays in identifying departments exceeding maximum patient-waiting limits create operational bottlenecks and pose compliance risks with HSE (Health Service Executive) standards.",
     problemStatement: "Raw A&E logs are highly unstructured, containing inconsistent timezone formats, missing admissions markers, and fragmented clinical department codes. Consolidating this data manually for daily compliance reporting is labor-intensive and error-prone.",
     whyItMattered: "NHS and HSE national mandates enforce strict breach rate standards (e.g., patient waiting times must remain under 4 hours). Real-time insight into potential breach trends allows operational teams to redirect staff and capacity before SLAs are violated, protecting patient safety.",
@@ -101,7 +98,6 @@ export const PROJECTS_DATA: Project[] = [
       { label: "Manual QA Saved", value: "~35%" }
     ],
     githubUrl: "https://github.com/Harekrishnashah13",
-    liveUrl: "#",
     businessContext: "While at HiCounselor, critical data processing and testing pipelines frequently failed asynchronously due to transient issues like temporary API rate limiting, network drops, or minor schema mismatch.",
     problemStatement: "Alerting systems notified developers of failures, but resolving issues manually took hours because teams had to parse extensive text logs to identify specific failure points.",
     whyItMattered: "Severe delays in data refreshing blocked subsequent operations and reporting dashboards, causing significant team idle times and SLA breaches.",
@@ -128,7 +124,6 @@ export const PROJECTS_DATA: Project[] = [
       { label: "Daily Triage Time", value: "-30%" }
     ],
     githubUrl: "https://github.com/Harekrishnashah13",
-    liveUrl: "#",
     businessContext: "In a highly regulated digital banking environment, risk officers and senior stakeholders required real-time visibility into transaction volumes, escalation queue states, and compliance metrics.",
     problemStatement: "Operators spent hours every morning manually extracting Excel spreadsheets from transaction mainframes, Arcot security engines, and Visa Access Online systems to evaluate daily metrics.",
     whyItMattered: "Slow issue triaging delayed fraud detection and increased compliance vulnerability in AML (Anti-Money Laundering) and KYC (Know Your Customer) reviews.",
@@ -154,8 +149,7 @@ export const PROJECTS_DATA: Project[] = [
       { label: "Dataset Scale", value: "8,800+ Images" },
       { label: "Class Count", value: "Multi-Class" }
     ],
-    githubUrl: "https://github.com/Harekrishnashah13",
-    liveUrl: "#",
+    githubUrl: "https://github.com/Harekrishnashah13/Number-Plate-Detection-Using-Computer-Vision-and-Deep-Learning-",
     businessContext: "This project was developed as my final Master of Science in Data Analytics dissertation at Dublin Business School to solve processing bottlenecks in real-time edge-computing camera streams.",
     problemStatement: "Standard convolutional architectures suffered from severe accuracy degradation when analyzing objects in low-contrast, noisy, or high-density scenes.",
     whyItMattered: "High-precision vision systems are critical for downstream applications like industrial sorting or automated inspection, where a single false classification stops entire pipelines.",
@@ -166,33 +160,6 @@ export const PROJECTS_DATA: Project[] = [
     businessOutcomes: "Achieved a verified 94.3% Mean Average Precision (mAP) on custom-compiled object datasets. The dissertation was awarded a first-class distinction at Dublin Business School.",
     tradeoffs: "1. YOLOv9 vs. ResNet: Selected the single-stage YOLOv9 model to satisfy real-time throughput limits (target 30 FPS on average processors), trading off minor fine-grained boundary layer accuracy for a 3.5x boost in overall inference speed.",
     lessonsLearned: "Data quality beats model parameters. Investing time in image augmentation (such as geometric rotation and adaptive histogram equalization) yielded a greater accuracy lift than simply running extra training epochs on raw inputs."
-  },
-  {
-    id: "project-5",
-    title: "NHS Emergency Dept. (A&E) Real-Time Analytics & Gold-Layer Delta Pipeline",
-    description: "Designed a secure Databricks Lakehouse pipeline to ingest NHS A&E performance reports, standardizing patient waiting metrics through Delta Lake Bronze/Silver/Gold layers, and deployed an automated Executive Power BI Dashboard tracking HSE breach rates.",
-    category: "engineering",
-    projectType: "personal",
-    tags: ["Databricks", "Delta Lake", "PySpark", "Delta Lake Gold Layer", "Power BI", "Databricks Workflows", "HSE Compliance"],
-    tools: ["Databricks", "PySpark", "Power BI", "Workflows", "Delta Lake"],
-    impact: "Automated real-time KPI generation, enabling clinical leadership to track patient waiting times and department capacity, identifying A&E compliance breaches instantly.",
-    metrics: [
-      { label: "Breach Rate Accuracy", value: "99.8%" },
-      { label: "Ingestion Latency", value: "<15 mins" },
-      { label: "QA Check Passes", value: "100% Parity" }
-    ],
-    githubUrl: "https://github.com/Harekrishnashah13/nhs-ae-delta-pipeline",
-    liveUrl: "#",
-    businessContext: "Hospital clinical operations and executive leadership struggle to monitor patient flow, A&E congestion, and bed capacity in real-time. Delays in identifying departments exceeding maximum patient-waiting limits create operational bottlenecks and pose compliance risks with HSE (Health Service Executive) standards.",
-    problemStatement: "Raw A&E logs are highly unstructured, containing inconsistent timezone formats, missing admissions markers, and fragmented clinical department codes. Consolidating this data manually for daily compliance reporting is labor-intensive and error-prone.",
-    whyItMattered: "NHS and HSE national mandates enforce strict breach rate standards (e.g., patient waiting times must remain under 4 hours). Real-time insight into potential breach trends allows operational teams to redirect staff and capacity before SLAs are violated, protecting patient safety.",
-    myRole: "Data Architect & Analytics Engineer. I designed the Databricks ingestion schema, implemented the Silver layer cleansing scripts, and created the Power BI interactive dashboard.",
-    constraints: "Must handle high-volume streaming data with strict data-quality thresholds. The pipeline must filter out patient PII records prior to Gold layer compilation in accordance with GDPR regulations.",
-    technicalApproach: "I constructed an automated medallion pipeline in Databricks. Raw CSV/JSON logs are pulled into Bronze storage. A PySpark Silver stage cleans dates, infers empty discharge statuses, and drops invalid clinic IDs. The Gold layer calculates analytical aggregations (rolling 4-hour breach ratios, peak arrival patterns, and average treatment durations by ward). Workflow orchestration is managed dynamically via Databricks Job clusters.",
-    architectureSummary: "Lakehouse Medallion: Raw Logs -> Bronze Delta (Ingestion) -> Silver Delta (Sanitization) -> Gold Delta (KPI Models) -> Databricks SQL Warehouse -> Power BI Gateway",
-    businessOutcomes: "Delivered a fully automated, daily refreshed Power BI dashboard suite. Enabled operations leaders to monitor real-time A&E breach rates and triage high-risk waiting times. Automated daily workflows replaced 10 hours of manual spreadsheet reporting weekly.",
-    tradeoffs: "1. PySpark vs. Scala Spark: Selected PySpark for writing the Silver cleansing layer due to native integration with data science libraries and faster development loops, trading minor JVM serialization performance for substantial code readability. 2. Delta Lake Lakehouse vs. Relational DB: Stored outcomes in Databricks Delta Lake instead of a traditional SQL Database, reducing ingestion cost by 50% while utilizing schema evolution to absorb upstream clinical data log updates seamlessly.",
-    lessonsLearned: "Defining a global dimensional map for clinical department codes is critical. Minor variations in how ward names are registered at intake will duplicate metrics unless strictly standardized at the Silver stage."
   },
   {
     id: "project-6",
@@ -208,8 +175,7 @@ export const PROJECTS_DATA: Project[] = [
       { label: "Spark Batch Size", value: "2.5s window" },
       { label: "Latency Delta", value: "<100ms" }
     ],
-    githubUrl: "https://github.com/Harekrishnashah13/irish-transit-realtime-pipeline",
-    liveUrl: "#",
+    githubUrl: "https://github.com/Harekrishnashah13",
     businessContext: "Urban planners and transit operators in Ireland face challenges managing Dublin Bus congestion and estimating exact arrival delays during rush hours due to static schedule limitations and irregular road conditions.",
     problemStatement: "Combining live GPS vehicle location feeds with standard static schedules is highly computationally intensive. Raw feeds are noisy, contain duplicate coordinates, and fail under poor network conditions, requiring real-time filtering and deduplication.",
     whyItMattered: "Accurate real-time congestion mapping enables transit authorities to adjust bus frequencies, optimize route layouts, and provide passengers with precise ETA information, improving overall trust and ridership in public transit.",
@@ -235,8 +201,7 @@ export const PROJECTS_DATA: Project[] = [
       { label: "Retention Rate", value: "+18.5%" },
       { label: "Processing Latency", value: "<1.8s" }
     ],
-    githubUrl: "https://github.com/Harekrishnashah13/financial-portfolio-optimizer",
-    liveUrl: "#",
+    githubUrl: "https://github.com/Harekrishnashah13",
     businessContext: "For a high-volume telecom subscriber platform, predicting and preventing customer churn is a critical operational driver for long-term subscriber retention and revenue preservation.",
     problemStatement: "Subscribers were leaving at elevated rates without prior warning. Support and marketing teams spent excessive time manually reviewing accounts to estimate customer exit risk.",
     whyItMattered: "High customer acquisition costs meant that retention of active subscribers has a 5x greater impact on commercial margins than acquiring new users.",

@@ -3,7 +3,6 @@ import { Menu, X, ArrowLeft, Linkedin, Github, Mail, Sun, Moon } from 'lucide-re
 import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
 import { useActiveSection } from '../../hooks/useActiveSection';
-import { downloadResumePDF } from '../../lib/downloadResume';
 
 interface NavbarProps {
   activeCaseStudyId: string | null;
