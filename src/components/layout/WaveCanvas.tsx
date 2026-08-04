@@ -25,6 +25,8 @@ export default function WaveCanvas({ theme }: WaveCanvasProps) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     let animationFrameId: number;
     let width = (canvas.width = canvas.offsetWidth);
     let height = (canvas.height = canvas.offsetHeight);
@@ -39,7 +41,7 @@ export default function WaveCanvas({ theme }: WaveCanvasProps) {
 
     // Wave movement parameters
     let phase = 0;
-    
+
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
 
@@ -84,6 +86,8 @@ export default function WaveCanvas({ theme }: WaveCanvasProps) {
         ctx.stroke();
       }
 
+      if (prefersReducedMotion) return;
+
       phase += 0.003; // Smooth flow speed
       animationFrameId = requestAnimationFrame(draw);
     };
@@ -97,20 +101,30 @@ export default function WaveCanvas({ theme }: WaveCanvasProps) {
   }, [theme]);
 
   if (isMobile) {
+    const background = theme === 'light'
+      ? [
+          'radial-gradient(ellipse at 70% 80%,',
+          'rgba(5,150,105,0.10) 0%, transparent 55%),',
+          'radial-gradient(ellipse at 20% 60%,',
+          'rgba(5,150,105,0.06) 0%, transparent 50%),',
+          'var(--hero-bg)'
+        ].join(' ')
+      : [
+          'radial-gradient(ellipse at 70% 80%,',
+          'rgba(100,0,180,0.18) 0%, transparent 55%),',
+          'radial-gradient(ellipse at 20% 60%,',
+          'rgba(0,180,120,0.08) 0%, transparent 50%),',
+          'linear-gradient(135deg, #050E09 0%, #0A1410 100%)'
+        ].join(' ');
+
     return (
       <div
         aria-hidden="true"
         style={{
-          position: 'fixed',
+          position: 'absolute',
           inset: 0,
           zIndex: 0,
-          background: [
-            'radial-gradient(ellipse at 70% 80%,',
-            'rgba(100,0,180,0.18) 0%, transparent 55%),',
-            'radial-gradient(ellipse at 20% 60%,',
-            'rgba(0,180,120,0.08) 0%, transparent 50%),',
-            'linear-gradient(135deg, #050E09 0%, #0A1410 100%)'
-          ].join(' ')
+          background,
         }}
       />
     );

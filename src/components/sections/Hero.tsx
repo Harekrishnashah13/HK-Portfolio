@@ -178,6 +178,12 @@ export default function Hero({ onOpenResume }: HeroProps) {
           0%, 100% { transform: scale(1); opacity: 1; }
           50% { transform: scale(1.5); opacity: 0.5; }
         }
+        @media (prefers-reduced-motion: reduce) {
+          #hero-content-grid .hero-scroll-indicator,
+          #hero-content-grid .animate-pulse {
+            animation: none !important;
+          }
+        }
       `}</style>
 
       {/* Absolute Flowing Wave Ribbon Canvas Background */}
@@ -447,8 +453,9 @@ export default function Hero({ onOpenResume }: HeroProps) {
           </motion.div>
 
           {/* Scroll Down Indicator - aligned below content */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
+            className="hero-scroll-indicator"
             style={{
               display: 'flex',
               flexDirection: 'column',
