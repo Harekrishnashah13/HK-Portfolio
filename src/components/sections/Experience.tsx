@@ -122,7 +122,7 @@ export default function Experience() {
                       className="font-sans font-semibold tracking-tight leading-[1.3] mb-[2px]"
                       style={{ 
                         fontSize: '14px', 
-                        color: isActive ? '#FFFFFF' : 'rgba(var(--ink-rgb),0.6)' 
+                        color: isActive ? 'var(--text-strong)' : 'rgba(var(--ink-rgb),0.6)'
                       }}
                     >
                       {role.role}

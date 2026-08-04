@@ -87,30 +87,20 @@ async function startServer() {
     }
   });
 
-  app.get("/api/messages", async (req, res) => {
+  app.get("/api/messages", requireAuth, async (req: AuthRequest, res) => {
     try {
-      // Optional: Check auth token and register user if valid
-      const authHeader = req.headers.authorization;
-      if (authHeader && authHeader.startsWith('Bearer ')) {
-        const { adminAuth } = await import('./src/lib/firebase-admin.ts');
-        const token = authHeader.split('Bearer ')[1];
-        try {
-          const decodedToken = await adminAuth.verifyIdToken(token);
-          // Upsert user
-          await db.insert(users)
-            .values({
-              uid: decodedToken.uid,
-              email: decodedToken.email || "unknown@gmail.com"
-            })
-            .onConflictDoUpdate({
-              target: users.uid,
-              set: {
-                email: decodedToken.email || "unknown@gmail.com"
-              }
-            });
-        } catch (err) {
-          console.warn("Invalid token passed to GET /api/messages:", err);
-        }
+      if (req.user) {
+        await db.insert(users)
+          .values({
+            uid: req.user.uid,
+            email: req.user.email || "unknown@gmail.com"
+          })
+          .onConflictDoUpdate({
+            target: users.uid,
+            set: {
+              email: req.user.email || "unknown@gmail.com"
+            }
+          });
       }
 
       const results = await db.select().from(messages).orderBy(desc(messages.createdAt));

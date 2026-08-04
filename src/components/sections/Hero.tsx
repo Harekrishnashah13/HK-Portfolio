@@ -344,7 +344,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
             className="hero-cta flex flex-wrap items-center gap-3 mb-6"
           >
             <button
-              onClick={() => window.open('/resume.html', '_blank')}
+              onClick={() => onOpenResume?.()}
               className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-bold text-sm rounded-xl transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-2 hover:shadow-emerald-500/20"
             >
               <FileText className="h-4 w-4" />

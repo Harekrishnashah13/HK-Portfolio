@@ -293,7 +293,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
 
               {/* Download Resume Action */}
               <button
-                onClick={() => window.open('/resume.html', '_blank')}
+                onClick={() => onOpenResume?.()}
                 className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-full transition-all shadow-md active:scale-95 cursor-pointer hover:shadow-emerald-500/20"
               >
                 Download Resume
@@ -436,7 +436,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                window.open('/resume.html', '_blank');
+                onOpenResume?.();
               }}
               className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-sm rounded-xl transition-colors shadow-lg cursor-pointer"
             >

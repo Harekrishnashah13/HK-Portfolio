@@ -76,7 +76,11 @@ export default function Contact() {
         headers['Authorization'] = `Bearer ${token}`;
       }
       const response = await fetch('/api/messages', { headers });
-      const fbMessages: Message[] = await response.json();
+
+      // /api/messages now requires Firebase auth (it returns real visitor PII),
+      // so signed-out visitors get a 401 here — fall through to the demo
+      // messages below rather than treating the error body as message data.
+      const fbMessages: Message[] = response.ok ? await response.json() : [];
 
       if (fbMessages.length === 0) {
         // Fallback or Initial setup: if database is empty, show nice pre-loaded demos
