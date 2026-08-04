@@ -44,18 +44,16 @@ export default function Certifications() {
   };
 
   const getCertDownloadInfo = (id: string) => {
+    // No certificate PDFs are actually hosted in /public/certificates yet,
+    // so every download is marked unavailable until real files are added —
+    // matching what cert-5 already did correctly.
     switch (id) {
       case 'cert-1':
-        return { path: '/certificates/databricks-cert.pdf', filename: 'Harekrishna-Shah-Databricks-Cert.pdf', isAvailable: true };
       case 'cert-2':
-        return { path: '/certificates/aws-cert.pdf', filename: 'Harekrishna-Shah-AWS-Solutions-Architecture.pdf', isAvailable: true };
-      case 'cert-6':
-        return { path: '/certificates/google-analytics-cert.pdf', filename: 'Harekrishna-Shah-Google-Analytics-Cert.pdf', isAvailable: true };
       case 'cert-3':
-        return { path: '/certificates/tableau-cert.pdf', filename: 'Harekrishna-Shah-Tableau-Data-Visualization.pdf', isAvailable: true };
       case 'cert-4':
-        return { path: '/certificates/sql-datasci-cert.pdf', filename: 'Harekrishna-Shah-SQL-for-Data-Science.pdf', isAvailable: true };
       case 'cert-5':
+      case 'cert-6':
         return { path: '#', filename: '', isAvailable: false };
       default:
         return null;
@@ -142,7 +140,7 @@ export default function Certifications() {
             style={{ 
               fontSize: '16px', 
               lineHeight: '1.7', 
-              color: 'rgba(255,255,255,0.55)', 
+              color: 'rgba(var(--ink-rgb),0.55)', 
               maxWidth: '540px', 
               marginBottom: '32px', 
               fontWeight: 400 
@@ -164,11 +162,11 @@ export default function Certifications() {
               style={{
                 fontSize: '16px',
                 fontWeight: 600,
-                color: 'rgba(255,255,255,0.7)',
+                color: 'rgba(var(--ink-rgb),0.7)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                borderBottom: '0.5px solid rgba(255,255,255,0.08)',
+                borderBottom: '0.5px solid rgba(var(--ink-rgb),0.08)',
                 paddingBottom: '12px',
                 marginBottom: '20px',
                 letterSpacing: 0
@@ -185,8 +183,8 @@ export default function Certifications() {
                   onClick={() => setSelectedCert(cert)}
                   className="flex flex-col text-left cursor-pointer group select-none transition-all duration-300 p-4 md:py-[18px] md:px-[20px]"
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '0.5px solid rgba(255,255,255,0.08)',
+                    background: 'rgba(var(--ink-rgb),0.03)',
+                    border: '0.5px solid rgba(var(--ink-rgb),0.08)',
                     borderRadius: '12px',
                     marginBottom: '10px',
                     transition: 'border-color 0.2s',
@@ -195,7 +193,7 @@ export default function Certifications() {
                     e.currentTarget.style.borderColor = 'rgba(0,204,136,0.3)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                    e.currentTarget.style.borderColor = 'rgba(var(--ink-rgb),0.08)';
                   }}
                 >
                   {/* Row 1: [icon] [cert name] [date — right aligned] */}
@@ -223,7 +221,7 @@ export default function Certifications() {
                       </h4>
                     </div>
                     {/* Date */}
-                    <span className="font-mono text-[11px] whitespace-nowrap shrink-0" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                    <span className="font-mono text-[11px] whitespace-nowrap shrink-0" style={{ color: 'rgba(var(--ink-rgb),0.4)' }}>
                       {cert.date}
                     </span>
                   </div>
@@ -235,7 +233,7 @@ export default function Certifications() {
 
                   {/* Row 3: ID: [credential ID] */}
                   {cert.credentialId && (
-                    <div className="font-mono" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', marginTop: '6px' }}>
+                    <div className="font-mono" style={{ fontSize: '11px', color: 'rgba(var(--ink-rgb),0.35)', marginTop: '6px' }}>
                       ID: {cert.credentialId}
                     </div>
                   )}
@@ -248,7 +246,7 @@ export default function Certifications() {
                       alignItems: 'center',
                       marginTop: '12px',
                       paddingTop: '10px',
-                      borderTop: '0.5px solid rgba(255,255,255,0.06)'
+                      borderTop: '0.5px solid rgba(var(--ink-rgb),0.06)'
                     }}
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -277,7 +275,7 @@ export default function Certifications() {
                             style={{
                               fontSize: '12px',
                               fontWeight: 400,
-                              color: 'rgba(255,255,255,0.2)'
+                              color: 'rgba(var(--ink-rgb),0.2)'
                             }}
                             className="font-sans cursor-default"
                           >
@@ -292,12 +290,12 @@ export default function Certifications() {
                           style={{
                             fontSize: '12px',
                             fontWeight: 400,
-                            color: 'rgba(255,255,255,0.4)',
+                            color: 'rgba(var(--ink-rgb),0.4)',
                             textDecoration: 'none'
                           }}
                           className="font-sans transition-colors"
-                          onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
-                          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+                          onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(var(--ink-rgb),0.8)'}
+                          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(var(--ink-rgb),0.4)'}
                         >
                           ↓ Download Certificate
                         </a>
@@ -315,11 +313,11 @@ export default function Certifications() {
               style={{
                 fontSize: '16px',
                 fontWeight: 600,
-                color: 'rgba(255,255,255,0.7)',
+                color: 'rgba(var(--ink-rgb),0.7)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                borderBottom: '0.5px solid rgba(255,255,255,0.08)',
+                borderBottom: '0.5px solid rgba(var(--ink-rgb),0.08)',
                 paddingBottom: '12px',
                 marginBottom: '20px',
                 letterSpacing: 0
@@ -334,8 +332,8 @@ export default function Certifications() {
                   key={idx} 
                   id={`edu-card-${idx}`}
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '0.5px solid rgba(255,255,255,0.08)',
+                    background: 'rgba(var(--ink-rgb),0.03)',
+                    border: '0.5px solid rgba(var(--ink-rgb),0.08)',
                     borderRadius: '12px',
                     padding: '18px 20px',
                     marginBottom: '10px'
@@ -347,7 +345,7 @@ export default function Certifications() {
                     style={{
                       fontFamily: 'JetBrains Mono, monospace',
                       fontSize: '11px',
-                      color: 'rgba(255,255,255,0.4)',
+                      color: 'rgba(var(--ink-rgb),0.4)',
                       marginBottom: '6px'
                     }}
                   >
@@ -359,7 +357,7 @@ export default function Certifications() {
                     style={{
                       fontSize: '16px',
                       fontWeight: 600,
-                      color: '#FFFFFF',
+                      color: 'var(--text-strong)',
                       marginBottom: '4px',
                       display: 'flex',
                       alignItems: 'center',
@@ -407,7 +405,7 @@ export default function Certifications() {
                     <div 
                       style={{
                         fontSize: '13px',
-                        color: 'rgba(255,255,255,0.5)',
+                        color: 'rgba(var(--ink-rgb),0.5)',
                         marginBottom: '12px'
                       }}
                       className="font-sans"
@@ -426,7 +424,7 @@ export default function Certifications() {
                           style={{
                             fontSize: '14px',
                             lineHeight: '1.7',
-                            color: 'rgba(255,255,255,0.7)',
+                            color: 'rgba(var(--ink-rgb),0.7)',
                             paddingLeft: '14px',
                             position: 'relative',
                             marginBottom: '8px'
@@ -551,37 +549,6 @@ export default function Certifications() {
                         {skill}
                       </span>
                     ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Cryptographic Verification Badge */}
-              <div className="bg-slate-950/80 border border-slate-900 rounded-2xl p-4.5 font-mono text-[10px] text-slate-400">
-                <div className="flex items-center justify-between border-b border-slate-900/60 pb-2.5 mb-2.5">
-                  <span className="flex items-center gap-1.5 text-slate-300 font-semibold text-[11px]">
-                    <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                    AUTHENTICITY SIGNATURE
-                  </span>
-                  <span className="text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                    SECURED
-                  </span>
-                </div>
-                <div className="space-y-1.5 text-slate-400">
-                  <div className="flex justify-between">
-                    <span>Validation Authority:</span>
-                    <span className="text-slate-300">{getCertDetails(selectedCert.id).authority}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Algorithm:</span>
-                    <span>SHA-256 &middot; TLS 1.3</span>
-                  </div>
-                  <div className="flex justify-between items-start">
-                    <span className="shrink-0">Fingerprint:</span>
-                    <span className="text-slate-500 text-right font-mono text-[9px] break-all max-w-[220px]">
-                      {selectedCert.id === 'cert-1' ? '8f5a2b8e3c1d4e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f' :
-                       selectedCert.id === 'cert-2' ? 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2' :
-                       'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
-                    </span>
                   </div>
                 </div>
               </div>

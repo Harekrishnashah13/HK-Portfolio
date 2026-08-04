@@ -1089,7 +1089,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                 <div className="flex flex-row items-center gap-[6px] flex-wrap mb-3 w-full">
                   {getProjectCategoryBadge(project.category)}
                   {getProjectTypeBadge(project.projectType)}
-                  <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginLeft: 'auto' }}>
+                  <span style={{ fontSize: '11px', color: 'rgba(var(--ink-rgb),0.3)', marginLeft: 'auto' }}>
                     Completed
                   </span>
                 </div>
@@ -1174,7 +1174,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
               <div className="flex flex-row items-center gap-[6px] flex-wrap mb-3 w-full">
                 {getProjectCategoryBadge(project.category)}
                 {getProjectTypeBadge(project.projectType)}
-                <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginLeft: 'auto' }}>
+                <span style={{ fontSize: '11px', color: 'rgba(var(--ink-rgb),0.3)', marginLeft: 'auto' }}>
                   Completed
                 </span>
               </div>
@@ -1200,7 +1200,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                 }}>
                   <p style={{
                     fontSize: '13px',
-                    color: 'rgba(255,255,255,0.65)',
+                    color: 'rgba(var(--ink-rgb),0.65)',
                     lineHeight: '1.65',
                     margin: 0
                   }}>
@@ -1216,7 +1216,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                         fontSize: '20px',
                         fontWeight: 700,
                         fontFamily: 'JetBrains Mono, monospace',
-                        color: '#FFFFFF',
+                        color: 'var(--text-strong)',
                         display: 'block'
                       }}>
                         {m.value}
@@ -1226,7 +1226,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                         fontWeight: 500,
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.4)',
+                        color: 'rgba(var(--ink-rgb),0.4)',
                         marginTop: '3px'
                       }}>
                         {m.label}
@@ -1256,7 +1256,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                   <p style={{
                     fontSize: '13px',
                     lineHeight: '1.65',
-                    color: 'rgba(255,255,255,0.65)',
+                    color: 'rgba(var(--ink-rgb),0.65)',
                     margin: 0
                   }}>
                     {project.impact}
@@ -1302,7 +1302,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
       <SpotlightCard
         key={project.id}
         id={`project-card-${project.id}`}
-        className="group relative flex flex-col justify-between bg-slate-950/40 rounded-3xl border-[0.5px] border-[rgba(255,255,255,0.08)] hover:border-[#00CC88]/35 backdrop-blur-md p-4 md:p-6 hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)] hover:-translate-y-[3px] transition-all duration-200 ease-out h-full"
+        className="group relative flex flex-col justify-between bg-slate-950/40 rounded-3xl border-[0.5px] border-[rgba(var(--ink-rgb),0.08)] hover:border-[#00CC88]/35 backdrop-blur-md p-4 md:p-6 hover:shadow-[0_12px_32px_rgba(0,0,0,0.4)] hover:-translate-y-[3px] transition-all duration-200 ease-out h-full"
         style={{ minHeight: '320px' }}
       >
         <div className="flex-1 flex flex-col">
@@ -1310,7 +1310,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
           <div className="flex flex-row items-center gap-[6px] flex-wrap mb-3 w-full">
             {getProjectCategoryBadge(project.category)}
             {getProjectTypeBadge(project.projectType)}
-            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginLeft: 'auto' }}>
+            <span style={{ fontSize: '11px', color: 'rgba(var(--ink-rgb),0.3)', marginLeft: 'auto' }}>
               Completed
             </span>
           </div>
@@ -1324,7 +1324,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
             style={{
               fontSize: '14px',
               lineHeight: '1.65',
-              color: 'rgba(255,255,255,0.6)',
+              color: 'rgba(var(--ink-rgb),0.6)',
               display: '-webkit-box',
               WebkitLineClamp: 3,
               WebkitBoxOrient: 'vertical',
@@ -1360,7 +1360,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                     fontSize: '20px',
                     fontWeight: 700,
                     fontFamily: 'JetBrains Mono, monospace',
-                    color: '#FFFFFF',
+                    color: 'var(--text-strong)',
                     display: 'block'
                   }}>
                     {m.value}
@@ -1370,7 +1370,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                     fontWeight: 500,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: 'rgba(255,255,255,0.4)',
+                    color: 'rgba(var(--ink-rgb),0.4)',
                     marginTop: '3px'
                   }}>
                     {m.label}
@@ -1391,7 +1391,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
             }}>
               <p style={{
                 fontSize: '13px',
-                color: 'rgba(255,255,255,0.65)',
+                color: 'rgba(var(--ink-rgb),0.65)',
                 lineHeight: '1.65',
                 margin: 0
               }}>
@@ -1418,7 +1418,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
               <p style={{
                 fontSize: '13px',
                 lineHeight: '1.65',
-                color: 'rgba(255,255,255,0.65)',
+                color: 'rgba(var(--ink-rgb),0.65)',
                 margin: 0
               }}>
                 {project.impact}
@@ -1429,7 +1429,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
 
         {/* Consistent bottom actions bar (Fix 7) */}
         <div style={{
-          borderTop: '0.5px solid rgba(255,255,255,0.06)',
+          borderTop: '0.5px solid rgba(var(--ink-rgb),0.06)',
           paddingTop: '14px',
           marginTop: '14px',
           display: 'flex',
@@ -1447,9 +1447,9 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                   fontWeight: 500,
                   padding: '3px 10px',
                   borderRadius: '5px',
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '0.5px solid rgba(255,255,255,0.1)',
-                  color: 'rgba(255,255,255,0.6)'
+                  background: 'rgba(var(--ink-rgb),0.05)',
+                  border: '0.5px solid rgba(var(--ink-rgb),0.1)',
+                  color: 'rgba(var(--ink-rgb),0.6)'
                 }}
               >
                 {tag}
@@ -1533,7 +1533,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
         {/* Section Header */}
         <div className="max-w-2xl">
           <AnimatedHeading eyebrow="[02] FEATURED PROJECTS" title="Real Impact, Proven Architecture" />
-          <p className="font-sans" style={{ fontSize: '16px', lineHeight: '1.7', color: 'rgba(255,255,255,0.55)', maxWidth: '560px', marginBottom: '32px', fontWeight: 400 }}>
+          <p className="font-sans" style={{ fontSize: '16px', lineHeight: '1.7', color: 'rgba(var(--ink-rgb),0.55)', maxWidth: '560px', marginBottom: '32px', fontWeight: 400 }}>
             Each study represents an active system addressing real-world operational blocks, highlighting technical architecture paired with clear business value.
           </p>
         </div>
@@ -1550,7 +1550,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
               className={`font-sans tracking-normal capitalize transition-all duration-200 cursor-pointer text-xs md:text-[13px] py-[5px] px-[12px] md:py-[7px] md:px-[16px] rounded-full border-[0.5px] ${
                 filter === cat
                   ? 'bg-[#00CC88] text-[#050E09] border-[#00CC88] font-semibold'
-                  : 'border-[rgba(255,255,255,0.15)] text-[rgba(255,255,255,0.6)] bg-transparent font-medium hover:border-[#00CC88]/40 hover:text-[rgba(255,255,255,0.9)]'
+                  : 'border-[rgba(var(--ink-rgb),0.15)] text-[rgba(var(--ink-rgb),0.6)] bg-transparent font-medium hover:border-[#00CC88]/40 hover:text-[rgba(var(--ink-rgb),0.9)]'
               }`}
             >
               {cat === 'all' 
@@ -1967,7 +1967,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
                     <p style={{
                       fontSize: '13px',
                       lineHeight: '1.65',
-                      color: 'rgba(255,255,255,0.65)',
+                      color: 'rgba(var(--ink-rgb),0.65)',
                       margin: 0
                     }}>
                       {selectedProject.id === 'project-1'

@@ -154,8 +154,8 @@ export default function HealthcareDashboard() {
       id="ae-performance-dashboard"
       className="font-sans text-xs text-slate-400 select-none w-full"
       style={{
-        background: 'rgba(255, 255, 255, 0.03)',
-        border: '0.5px solid rgba(255, 255, 255, 0.08)',
+        background: 'rgba(var(--ink-rgb), 0.03)',
+        border: '0.5px solid rgba(var(--ink-rgb), 0.08)',
         borderRadius: '12px',
         padding: '16px',
         marginBottom: '24px'

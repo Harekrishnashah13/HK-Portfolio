@@ -3,7 +3,6 @@ import { Menu, X, ArrowLeft, Linkedin, Github, Mail, Sun, Moon } from 'lucide-re
 import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from '../../data';
 import { useActiveSection } from '../../hooks/useActiveSection';
-import { downloadResumePDF } from '../../lib/downloadResume';
 
 interface NavbarProps {
   activeCaseStudyId: string | null;
@@ -219,17 +218,17 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                     height: '40px',
                     borderRadius: '8px',
                     border: theme === 'dark' 
-                      ? '0.5px solid rgba(255,255,255,0.12)' 
+                      ? '0.5px solid rgba(var(--ink-rgb),0.12)' 
                       : '0.5px solid rgba(15,23,42,0.12)',
                     background: theme === 'dark' 
-                      ? 'rgba(255,255,255,0.04)' 
+                      ? 'rgba(var(--ink-rgb),0.04)' 
                       : 'rgba(15,23,42,0.04)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
                     color: theme === 'dark' 
-                      ? 'rgba(255,255,255,0.55)' 
+                      ? 'rgba(var(--ink-rgb),0.55)' 
                       : 'rgba(15,23,42,0.55)',
                     transition: 'all 0.2s ease',
                     flexShrink: 0,
@@ -243,13 +242,13 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                   onMouseLeave={(e) => {
                     setShowTip(false);
                     e.currentTarget.style.borderColor = theme === 'dark' 
-                      ? 'rgba(255,255,255,0.12)' 
+                      ? 'rgba(var(--ink-rgb),0.12)' 
                       : 'rgba(15,23,42,0.12)';
                     e.currentTarget.style.color = theme === 'dark' 
-                      ? 'rgba(255,255,255,0.55)' 
+                      ? 'rgba(var(--ink-rgb),0.55)' 
                       : 'rgba(15,23,42,0.55)';
                     e.currentTarget.style.background = theme === 'dark' 
-                      ? 'rgba(255,255,255,0.04)' 
+                      ? 'rgba(var(--ink-rgb),0.04)' 
                       : 'rgba(15,23,42,0.04)';
                   }}
                 >
@@ -294,7 +293,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
 
               {/* Download Resume Action */}
               <button
-                onClick={() => window.open('/resume.html', '_blank')}
+                onClick={() => onOpenResume?.()}
                 className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-xs rounded-full transition-all shadow-md active:scale-95 cursor-pointer hover:shadow-emerald-500/20"
               >
                 Download Resume
@@ -313,17 +312,17 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
                   height: '40px',
                   borderRadius: '8px',
                   border: theme === 'dark' 
-                    ? '0.5px solid rgba(255,255,255,0.12)' 
+                    ? '0.5px solid rgba(var(--ink-rgb),0.12)' 
                     : '0.5px solid rgba(15,23,42,0.12)',
                   background: theme === 'dark' 
-                    ? 'rgba(255,255,255,0.04)' 
+                    ? 'rgba(var(--ink-rgb),0.04)' 
                     : 'rgba(15,23,42,0.04)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
                   color: theme === 'dark' 
-                    ? 'rgba(255,255,255,0.55)' 
+                    ? 'rgba(var(--ink-rgb),0.55)' 
                     : 'rgba(15,23,42,0.55)',
                   transition: 'all 0.2s ease',
                   flexShrink: 0,
@@ -437,7 +436,7 @@ export default function Navbar({ activeCaseStudyId, onBackHome, onOpenResume }: 
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                window.open('/resume.html', '_blank');
+                onOpenResume?.();
               }}
               className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-sans font-semibold text-sm rounded-xl transition-colors shadow-lg cursor-pointer"
             >

@@ -57,7 +57,7 @@ export default function Experience() {
             style={{ 
               fontSize: '16px', 
               lineHeight: '1.7', 
-              color: 'rgba(255,255,255,0.55)', 
+              color: 'rgba(var(--ink-rgb),0.55)', 
               maxWidth: '520px', 
               marginBottom: '32px', 
               fontWeight: 400 
@@ -86,7 +86,7 @@ export default function Experience() {
                   className={`timeline-item cursor-pointer focus:outline-none select-none transition-all duration-200 shrink-0 md:shrink-1 md:w-full text-left
                     ${isActive 
                       ? 'active md:bg-[rgba(0,204,136,0.08)] md:border-[0.5px] md:border-[rgba(0,204,136,0.2)] md:rounded-lg md:p-[10px_12px] md:opacity-100 bg-[#00CC88] text-[#050E09] border-[#00CC88] rounded-[20px] p-[6px_14px] text-[13px] font-medium border-[0.5px]' 
-                      : 'md:p-[10px_12px] md:rounded-lg md:opacity-60 md:hover:opacity-100 md:hover:bg-[rgba(255,255,255,0.04)] text-white/60 bg-transparent border-[rgba(255,255,255,0.15)] rounded-[20px] p-[6px_14px] text-[13px] font-medium border-[0.5px] hover:text-white hover:border-white/30'
+                      : 'md:p-[10px_12px] md:rounded-lg md:opacity-60 md:hover:opacity-100 md:hover:bg-[rgba(var(--ink-rgb),0.04)] text-white/60 bg-transparent border-[rgba(var(--ink-rgb),0.15)] rounded-[20px] p-[6px_14px] text-[13px] font-medium border-[0.5px] hover:text-white hover:border-white/30'
                     }
                   `}
                 >
@@ -111,7 +111,7 @@ export default function Experience() {
                       />
                       <span 
                         className="font-mono text-[11px] font-normal"
-                        style={{ color: isActive ? '#00CC88' : 'rgba(255,255,255,0.45)' }}
+                        style={{ color: isActive ? '#00CC88' : 'rgba(var(--ink-rgb),0.45)' }}
                       >
                         {role.period}
                       </span>
@@ -122,7 +122,7 @@ export default function Experience() {
                       className="font-sans font-semibold tracking-tight leading-[1.3] mb-[2px]"
                       style={{ 
                         fontSize: '14px', 
-                        color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.6)' 
+                        color: isActive ? 'var(--text-strong)' : 'rgba(var(--ink-rgb),0.6)'
                       }}
                     >
                       {role.role}
@@ -189,7 +189,7 @@ export default function Experience() {
                         fontSize: '10px',
                         fontWeight: 500,
                         letterSpacing: '0.12em',
-                        color: 'rgba(255,255,255,0.4)',
+                        color: 'rgba(var(--ink-rgb),0.4)',
                         textTransform: 'uppercase',
                         marginBottom: '14px',
                         marginTop: '20px'
@@ -213,7 +213,7 @@ export default function Experience() {
                             style={{
                               fontSize: '14px',
                               lineHeight: '1.7',
-                              color: 'rgba(255,255,255,0.75)',
+                              color: 'rgba(var(--ink-rgb),0.75)',
                               fontWeight: 400
                             }}
                           >

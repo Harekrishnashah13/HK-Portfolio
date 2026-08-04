@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import { db } from "./src/db/index.ts";
 import { messages, users, analyticsEvents } from "./src/db/schema.ts";
@@ -86,30 +87,20 @@ async function startServer() {
     }
   });
 
-  app.get("/api/messages", async (req, res) => {
+  app.get("/api/messages", requireAuth, async (req: AuthRequest, res) => {
     try {
-      // Optional: Check auth token and register user if valid
-      const authHeader = req.headers.authorization;
-      if (authHeader && authHeader.startsWith('Bearer ')) {
-        const { adminAuth } = await import('./src/lib/firebase-admin.ts');
-        const token = authHeader.split('Bearer ')[1];
-        try {
-          const decodedToken = await adminAuth.verifyIdToken(token);
-          // Upsert user
-          await db.insert(users)
-            .values({
-              uid: decodedToken.uid,
-              email: decodedToken.email || "unknown@gmail.com"
-            })
-            .onConflictDoUpdate({
-              target: users.uid,
-              set: {
-                email: decodedToken.email || "unknown@gmail.com"
-              }
-            });
-        } catch (err) {
-          console.warn("Invalid token passed to GET /api/messages:", err);
-        }
+      if (req.user) {
+        await db.insert(users)
+          .values({
+            uid: req.user.uid,
+            email: req.user.email || "unknown@gmail.com"
+          })
+          .onConflictDoUpdate({
+            target: users.uid,
+            set: {
+              email: req.user.email || "unknown@gmail.com"
+            }
+          });
       }
 
       const results = await db.select().from(messages).orderBy(desc(messages.createdAt));
@@ -176,9 +167,22 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
+    const PRODUCTION_ORIGIN = "https://harekrishnashah.vercel.app";
+    const indexTemplate = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
+
+    // Serve static assets, but let the catch-all below handle index.html so
+    // canonical/OG/JSON-LD URLs can be rewritten to the requesting host.
+    app.use(express.static(distPath, { index: false }));
+
     app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+      // req.get('host') never legitimately contains '#' (fragments are
+      // client-side only and never sent to the server), but strip one
+      // defensively so a malformed/spoofed Host header can never produce a
+      // canonical/OG URL containing a hash fragment.
+      const host = (req.get('host') || '').split('#')[0];
+      const origin = host ? `https://${host}` : PRODUCTION_ORIGIN;
+      const html = indexTemplate.split(PRODUCTION_ORIGIN).join(origin);
+      res.type('html').send(html);
     });
   }
 

@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react';
 
+// Stable reference so the default options object doesn't get recreated (and
+// thereby retrigger the effect below) on every render of a caller that
+// doesn't pass its own options.
+const DEFAULT_OPTIONS: IntersectionObserverInit = {
+  rootMargin: '-30% 0px -50% 0px', // Trigger when section occupies the upper-middle region
+  threshold: [0, 0.1, 0.2]
+};
+
 /**
  * Custom hook to track the active section in the viewport as the user scrolls.
  * Uses IntersectionObserver for high performance and fallback to scroll calculation if needed.
- * 
+ *
  * @param sectionIds Array of element IDs corresponding to the sections to track
  * @param options IntersectionObserver options
  * @returns The active section ID
  */
 export function useActiveSection(
   sectionIds: string[],
-  options: IntersectionObserverInit = {
-    rootMargin: '-30% 0px -50% 0px', // Trigger when section occupies the upper-middle region
-    threshold: [0, 0.1, 0.2]
-  }
+  options: IntersectionObserverInit = DEFAULT_OPTIONS
 ): string {
   const [activeSection, setActiveSection] = useState<string>('');
 
