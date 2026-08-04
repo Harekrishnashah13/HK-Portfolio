@@ -1,6 +1,5 @@
 import express from "express";
 import path from "path";
-import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import { db } from "./src/db/index.ts";
 import { messages, users, analyticsEvents } from "./src/db/schema.ts";
@@ -177,17 +176,9 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    const PRODUCTION_ORIGIN = "https://harekrishnashah.vercel.app";
-    const indexTemplate = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
-
-    // Serve static assets, but let the catch-all below handle index.html so
-    // canonical/OG/JSON-LD URLs can be rewritten to the requesting host.
-    app.use(express.static(distPath, { index: false }));
-
+    app.use(express.static(distPath));
     app.get('*', (req, res) => {
-      const origin = `https://${req.get('host')}`;
-      const html = indexTemplate.split(PRODUCTION_ORIGIN).join(origin);
-      res.type('html').send(html);
+      res.sendFile(path.join(distPath, 'index.html'));
     });
   }
 
