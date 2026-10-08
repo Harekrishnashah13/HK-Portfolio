@@ -107,7 +107,7 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
           </h1>
           
           <p className="text-slate-400 text-base md:text-lg font-sans font-normal max-w-3xl mb-8">
-            An in-depth review of how we migrated a legacy, high-volume on-premise Teradata SQL infrastructure to Azure Synapse and Databricks with absolute numerical parity, 40% performance gains, and zero downtime.
+            An in-depth review of how we migrated a legacy, high-volume on-premise Teradata SQL infrastructure to Azure Synapse and Databricks with field-level parity checks and zero downtime.
           </p>
 
           {/* Quick Metrics Strip */}
@@ -118,19 +118,19 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
               <span className="text-[10px] text-slate-500 font-sans mt-1">Core financial &amp; audit ledgers</span>
             </div>
             <div className="flex flex-col border-t border-slate-900 md:border-t-0 md:border-l md:pl-6 pt-4 md:pt-0">
-              <span className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-1">Uptake Accuracy</span>
-              <span className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">+40%</span>
-              <span className="text-[10px] text-slate-500 font-sans mt-1">Lifting data reporting quality</span>
+              <span className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-1">Parity Checks</span>
+              <span className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">Field-level</span>
+              <span className="text-[10px] text-slate-500 font-sans mt-1">Every table checked against source</span>
             </div>
             <div className="flex flex-col border-t border-slate-900 md:border-t-0 md:border-l md:pl-6 pt-4 md:pt-0">
-              <span className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-1">Defect Rates</span>
-              <span className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">-30%</span>
-              <span className="text-[10px] text-slate-500 font-sans mt-1">Fewer runtime pipeline errors</span>
+              <span className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-1">Cutover Downtime</span>
+              <span className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">Zero</span>
+              <span className="text-[10px] text-slate-500 font-sans mt-1">Reporting continued throughout</span>
             </div>
             <div className="flex flex-col border-t border-slate-900 md:border-t-0 md:border-l md:pl-6 pt-4 md:pt-0">
-              <span className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-1">Automated Speed</span>
-              <span className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">9 Months</span>
-              <span className="text-[10px] text-slate-500 font-sans mt-1">Saved from manual rewrite cycle</span>
+              <span className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-1">SQL Translation</span>
+              <span className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">Automated</span>
+              <span className="text-[10px] text-slate-500 font-sans mt-1">Python engine, manual review for edge cases</span>
             </div>
           </div>
         </div>
@@ -193,7 +193,7 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
                   Verified Business Outcomes
                 </h3>
                 <p className="text-slate-300 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
-                  Successfully migrated a 1.2 Petabyte core database warehouse footprint from an on-premise Teradata cluster to Azure Synapse and Databricks. Designed a Python-based custom compiler to automate translating legacy queries with zero downtime, reducing standard business reporting error rates by 30% and saving approximately 9 months of engineering efforts.
+                  Successfully migrated a 1.2 Petabyte core database warehouse footprint from an on-premise Teradata cluster to Azure Synapse and Databricks. Designed a Python-based custom compiler to automate translating legacy queries with zero downtime, replacing a large share of manual rewriting and checking.
                 </p>
               </div>
 
@@ -203,7 +203,7 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
                   1. Business Context &amp; Core Challenge
                 </h2>
                 <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
-                  At <strong className="text-slate-200">Itelligence Infotech</strong>, our Fortune 500 SaaS and banking clients relied heavily on a legacy, on-premise Teradata cluster for financial analytics, KYC auditing, and daily ledger reports. Over time, query concurrency reached capacity, causing report generation delays of up to 4 hours. Licensing and infrastructure maintenance costs ballooned into a seven-figure annual overhead.
+                  At <strong className="text-slate-200">Itelligence Infotech</strong>, a Fortune 500 client relied on a legacy, on-premise Teradata cluster for transaction, supply chain and commercial reporting. The platform was reaching its limits and was costly to run, so the client decided to move to Azure Synapse and Databricks.
                 </p>
                 <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
                   A strategic decision was made to move the entire enterprise datamart cluster into cloud infrastructures utilizing 
@@ -226,7 +226,7 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
                   The primary roadblock was not moving the raw bytes, but translating the code. The legacy Teradata database operated thousands of highly nested SQL procedures, incorporating proprietary syntaxes like <code className="bg-slate-900 text-slate-300 text-xs px-1.5 py-0.5 rounded">QUALIFY</code>, specialized string dates formatting, and platform-specific index hints.
                 </p>
                 <p className="text-slate-400 font-sans" style={{ fontSize: '15px', lineHeight: '1.7', fontWeight: 400 }}>
-                  An initial planning estimate indicated that manually refactoring these complex SQL chains into PySpark/Spark-SQL scripts would require a dedicated team of 8 senior database analysts working for 14 months. This timeline would stall subsequent business roadmaps and introduced high risks of syntax drift, resulting in reporting inaccuracies.
+                  Refactoring these complex SQL chains into PySpark/Spark-SQL by hand would have been slow and would have risked syntax drift and reporting inaccuracies.
                 </p>
               </section>
 
@@ -417,7 +417,7 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
 
                 <div className="bg-slate-950/80 px-4 py-3 border-t border-slate-900/60 text-[9px] text-slate-500 font-mono flex justify-between items-center">
                   <span>Engine Output: Spark-3.4 DataFrame</span>
-                  <span>100% Automated conversion rate</span>
+                  <span>Example conversion</span>
                 </div>
               </div>
 
@@ -549,7 +549,7 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
                     Why We Constructed a Python Regular Expression / AST Compiler In-House
                   </h4>
                   <p className="text-slate-400 text-xs font-sans font-light leading-relaxed mb-4">
-                    Enterprise SaaS transpilers required expensive upfront licensing fees and required exposing raw queries to external third-party servers. We constructed a dedicated Python engine with AST support, mapping 85% of query syntaxes natively and manual refactoring for the highly specific 15% remaining.
+                    Enterprise SaaS transpilers required expensive upfront licensing fees and required exposing raw queries to external third-party servers. We constructed a dedicated Python engine with AST support, translating most standard query syntax automatically, with the most specific procedures refactored by hand.
                   </p>
                 </div>
                 <div className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-905 flex items-center gap-2">
@@ -571,7 +571,7 @@ export default function FlagshipCaseStudy({ onBack }: FlagshipCaseStudyProps) {
                 </div>
                 <div className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-905 flex items-center gap-2">
                   <Award className="h-4 w-4 text-emerald-400 shrink-0" />
-                  <span className="text-[10px] font-mono text-emerald-300">Reduced warehouse compute load by 35% with zero impact on operational lag.</span>
+                  <span className="text-[10px] font-mono text-emerald-300">Delta Lake added schema enforcement, so upstream column changes no longer broke pipelines.</span>
                 </div>
               </div>
 

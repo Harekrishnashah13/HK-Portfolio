@@ -22,7 +22,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   const handleCopyText = () => {
     const resumeText = `
 HAREKRISHNA SHAH
-Dublin, Ireland | ${PERSONAL_INFO.email} | ${PERSONAL_INFO.linkedin} | ${PERSONAL_INFO.github}
+Limerick, Ireland | Stamp 1G | ${PERSONAL_INFO.email} | ${PERSONAL_INFO.linkedin} | ${PERSONAL_INFO.github}
 
 PROFESSIONAL SUMMARY
 ${PERSONAL_INFO.about.summary}
@@ -134,7 +134,7 @@ ${CERTIFICATIONS_DATA.map(cert => `• ${cert.name} - ${cert.issuer} (${cert.dat
     trackEvent('resume_download_txt');
     const resumeText = `
 HAREKRISHNA SHAH
-Dublin, Ireland
+Limerick, Ireland | Stamp 1G
 Email: ${PERSONAL_INFO.email}
 LinkedIn: ${PERSONAL_INFO.linkedin}
 GitHub: ${PERSONAL_INFO.github}
@@ -279,7 +279,7 @@ ${CERTIFICATIONS_DATA.map(cert => `* ${cert.name} - Issued by ${cert.issuer} (${
                 </div>
                 <div>
                   <strong className="text-slate-900 block font-semibold mb-1">AI, Cloud &amp; QA</strong>
-                  <p className="font-light leading-relaxed">Gemini API, Selenium, Jenkins CI/CD, Terraform, Postman, Oracle SQL, AML/KYC Audits</p>
+                  <p className="font-light leading-relaxed">LLM APIs, Selenium, Jenkins CI/CD, Postman, Salesforce, AML/KYC</p>
                 </div>
               </div>
             </div>

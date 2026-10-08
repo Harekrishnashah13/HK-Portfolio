@@ -2,14 +2,15 @@ import { Project, ExperienceItem, SkillCategory, EducationItem, Certification } 
 
 export const PERSONAL_INFO = {
   name: "Harekrishna Shah",
-  title: "Databricks Certified Data Engineer & Analyst",
+  title: "Data Analyst | SQL, Power BI, Python & Databricks",
   subtitle: "Engineering Clean Pipelines & Delivering High-Impact Business Intelligence",
   email: "harekrishnashah13@gmail.com",
   linkedin: "https://www.linkedin.com/in/hshah13",
   github: "https://github.com/Harekrishnashah13",
-  location: "Dublin, Ireland",
+  location: "Limerick, Ireland",
   about: {
-    summary: "I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 4+ years of professional experience in financial services and enterprise analytics. I build the pipelines, dashboards, and governance frameworks that help organisations make confident, data-driven decisions. Currently based in Dublin — open to senior Data Analytics and Data Engineering roles.",
+    summary: "I'm a data analyst with 4+ years in banking and enterprise data, an MSc in Data Analytics from Dublin Business School, and the Databricks Certified Data Engineer Professional certification. I build reporting people can trust: validated data, clear Power BI dashboards and automation that removes manual work. Based in Limerick on Stamp 1G and open to permanent data analytics and data engineering roles across Ireland.",
+
     focus: [
       {
         title: "Enterprise Data Engineering",
@@ -19,12 +20,12 @@ export const PERSONAL_INFO = {
       {
         title: "Business Intelligence & Reporting",
         description: "Designing audit-ready Power BI dashboard suites tracking financial and operational KPIs for senior leadership and compliance stakeholders.",
-        metrics: "Maintained critical SLA dashboards used daily across banking operations."
+        metrics: "Automated a twice-weekly stakeholder report from about 4 hours to 15 minutes."
       },
       {
         title: "Process Automation & AI Integration",
-        description: "Deploying automated script suites and AI tools (such as Python automations and LLM agents) to slash issue resolution cycles and prevent compliance leaks.",
-        metrics: "Cut pipeline diagnostics from 14 hours to under 4 minutes with Gemini API."
+        description: "Using Python automation and LLMs to remove manual steps, from report preparation to analysing sentiment in social-media text.",
+        metrics: "Compared lexicon, machine-learning and LLM sentiment labels on 1,666 real X posts."
       }
     ]
   }
@@ -34,27 +35,27 @@ export const PROJECTS_DATA: Project[] = [
   {
     id: "project-1",
     title: "Enterprise Cloud Migration",
-    description: "Contributed to an enterprise-scale Teradata → Databricks migration project at Intelligence Infotech. My specific deliverable was designing and building the automated SQL translation pipeline — a Python-driven code translation engine that converted legacy Teradata SQL syntax to PySpark/Databricks format, with automated parity checks verifying record counts and field-level accuracy across source and target systems.",
+    description: "Contributed to an enterprise-scale Teradata → Databricks migration project at Itelligence Infotech. My specific deliverable was designing and building the automated SQL translation pipeline — a Python-driven code translation engine that converted legacy Teradata SQL syntax to PySpark/Databricks format, with automated parity checks verifying record counts and field-level accuracy across source and target systems.",
     category: "engineering",
     projectType: "professional",
     tags: ["Azure Synapse", "Databricks", "PySpark", "Azure Data Factory (ADF)", "Python", "Terraform", "Delta Lake"],
     tools: ["Synapse", "Databricks", "PySpark", "ADF", "Python", "SQL"],
-    impact: "Migrated 1.2PB of core enterprise data with 100% parity, improving system reporting accuracy and performance metrics by 40%.",
+    impact: "Migrated 1.2PB of enterprise data with field-level parity checks and a zero-downtime cutover.",
     metrics: [
       { label: "Data Footprint", value: "1.2PB" },
-      { label: "Reporting Accuracy", value: "+40%" },
-      { label: "Defect Rates", value: "-30%" }
+      { label: "Parity Checks", value: "Field-level" },
+      { label: "Cutover Downtime", value: "Zero" }
     ],
     githubUrl: "https://github.com/Harekrishnashah13",
-    businessContext: "A Fortune 500 client operated a massive on-premise Teradata database cluster that was bottlenecking query performance and incurring seven-figure annual infrastructure costs. Leadership initiated a strategic cloud migration to Azure Synapse and Databricks.",
-    problemStatement: "The legacy environment was powered by thousands of highly nested, custom Teradata SQL procedures. Manually rewriting these queries into Spark-SQL syntax was estimated to require 8 analysts over 14 months, carrying extreme risks of syntax drift and reporting discrepancies.",
+    businessContext: "A Fortune 500 client operated a massive on-premise Teradata database cluster that was limiting query performance and costly to run. Leadership initiated a strategic cloud migration to Azure Synapse and Databricks.",
+    problemStatement: "The legacy environment was powered by thousands of highly nested, custom Teradata SQL procedures. Rewriting these queries into Spark-SQL by hand would have been slow and risked syntax drift and reporting discrepancies.",
     whyItMattered: "Downstream revenue tracking and operational reporting relied entirely on these daily pipelines; any data discrepancies or system downtime would disrupt global business operations.",
-    myRole: "Data Analyst & Technical Business Analyst at Itelligence Infotech. I was the core developer of the Python translation engine and coordinated integration risk assessments.",
+    myRole: "Data Analyst at Itelligence Infotech. I was the core developer of the Python translation engine and coordinated integration risk assessments.",
     constraints: "The migration had to guarantee absolute numerical parity and achieve a zero-downtime cutover. Data security regulations required complete masking of PII (Personally Identifiable Information) before cloud loading.",
     technicalApproach: "I engineered a Python-based SQL translation framework utilizing regular expressions and Abstract Syntax Tree (AST) mapping to automatically convert Teradata-specific operators and data types into Spark-SQL dialect. I orchestrated automated Azure Data Factory (ADF) copy activities to ingest historical data into ADLS Gen2, while running Databricks clusters to calculate row-by-row checksum balances.",
     architectureSummary: "Conceptual Diagram: Teradata On-Prem -> Azure ADF -> Azure Data Lake Storage (ADLS Gen2) -> Azure Databricks (PySpark Code Translator & Validation) -> Azure Synapse Analytics Datamarts",
-    businessOutcomes: "Successfully migrated 1.2PB of data with full parity and no operational downtime. Automated translation saved an estimated 9 months of manual labor, while systematic validation lifted overall reporting accuracy by 40% and cut post-deployment defects by 30%.",
-    tradeoffs: "1. Python Parser vs. Commercial SQL Transpilers: Opted to construct a dedicated, custom Python-based translation engine rather than purchasing an expensive third-party SQL transpiler. The custom script successfully automated 85% of standard Teradata syntax, and the remaining 15% of complex nested tables were manually refactored. This kept license fees at zero. 2. ADLS Gen2 Delta Lake vs. Standard Parquet: Chose Delta Lake format for Synapse storage to support ACID transactions and schema enforcement, slightly increasing storage metadata overhead but preventing pipeline failures due to upstream column drift.",
+    businessOutcomes: "Migrated 1.2PB of data with field-level parity and no operational downtime. Automated translation and validation replaced a large share of manual rewriting and checking.",
+    tradeoffs: "1. Python Parser vs. Commercial SQL Transpilers: Opted to construct a dedicated, custom Python-based translation engine rather than purchasing an expensive third-party SQL transpiler. The custom script handled most standard Teradata syntax, and the more complex nested procedures were refactored by hand. This avoided licence fees. 2. ADLS Gen2 Delta Lake vs. Standard Parquet: Chose Delta Lake format for Synapse storage to support ACID transactions and schema enforcement, slightly increasing storage metadata overhead but preventing pipeline failures due to upstream column drift.",
     lessonsLearned: "Dynamic schema changes in source tables are the primary failure point of high-volume migrations. Creating a pre-execution catalog-check routine in Databricks before spinning up compute clusters protects against waste and run-time failures."
   },
   {
@@ -62,92 +63,67 @@ export const PROJECTS_DATA: Project[] = [
     title: "Healthcare Analytics Pipeline",
     description: "Designed a secure Databricks Lakehouse pipeline to ingest NHS A&E performance reports, standardizing patient waiting metrics through Delta Lake Bronze/Silver/Gold layers, and deployed an automated Executive Power BI Dashboard tracking HSE breach rates.",
     category: "engineering",
-    projectType: "professional",
+    projectType: "personal",
     tags: ["Databricks", "Delta Lake", "PySpark", "Delta Lake Gold Layer", "Power BI", "Databricks Workflows", "HSE Compliance"],
     tools: ["Databricks", "PySpark", "Power BI", "Workflows", "Delta Lake"],
-    impact: "Automated real-time KPI generation, enabling clinical leadership to track patient waiting times and department capacity, identifying A&E compliance breaches instantly.",
+    impact: "Automated daily KPI generation from public A&E performance data, showing how operations leaders could track waiting times, capacity and breach rates.",
     metrics: [
-      { label: "Breach Rate Accuracy", value: "99.8%" },
-      { label: "Ingestion Latency", value: "<15 mins" },
-      { label: "QA Check Passes", value: "100% Parity" }
+      { label: "Architecture", value: "Medallion" },
+      { label: "Refresh", value: "Daily" },
+      { label: "Data Quality", value: "Automated checks" }
     ],
     githubUrl: "https://github.com/Harekrishnashah13/healthcare-analytics-pipeline",
     businessContext: "Hospital clinical operations and executive leadership struggle to monitor patient flow, A&E congestion, and bed capacity in real-time. Delays in identifying departments exceeding maximum patient-waiting limits create operational bottlenecks and pose compliance risks with HSE (Health Service Executive) standards.",
     problemStatement: "Raw A&E logs are highly unstructured, containing inconsistent timezone formats, missing admissions markers, and fragmented clinical department codes. Consolidating this data manually for daily compliance reporting is labor-intensive and error-prone.",
     whyItMattered: "NHS and HSE national mandates enforce strict breach rate standards (e.g., patient waiting times must remain under 4 hours). Real-time insight into potential breach trends allows operational teams to redirect staff and capacity before SLAs are violated, protecting patient safety.",
-    myRole: "Data Architect & Analytics Engineer. I designed the Databricks ingestion schema, implemented the Silver layer cleansing scripts, and created the Power BI interactive dashboard.",
+    myRole: "Solo developer (personal project). I designed the Databricks ingestion schema, implemented the Silver layer cleansing scripts, and created the Power BI interactive dashboard.",
     constraints: "Must handle high-volume streaming data with strict data-quality thresholds. The pipeline must filter out patient PII records prior to Gold layer compilation in accordance with GDPR regulations.",
     technicalApproach: "I constructed an automated medallion pipeline in Databricks. Raw CSV/JSON logs are pulled into Bronze storage. A PySpark Silver stage cleans dates, infers empty discharge statuses, and drops invalid clinic IDs. The Gold layer calculates analytical aggregations (rolling 4-hour breach ratios, peak arrival patterns, and average treatment durations by ward). Workflow orchestration is managed dynamically via Databricks Job clusters.",
     architectureSummary: "Lakehouse Medallion: Raw Logs -> Bronze Delta (Ingestion) -> Silver Delta (Sanitization) -> Gold Delta (KPI Models) -> Databricks SQL Warehouse -> Power BI Gateway",
-    businessOutcomes: "Delivered a fully automated, daily refreshed Power BI dashboard suite. Enabled operations leaders to monitor real-time A&E breach rates and triage high-risk waiting times. Automated daily workflows replaced 10 hours of manual spreadsheet reporting weekly.",
-    tradeoffs: "1. PySpark vs. Scala Spark: Selected PySpark for writing the Silver cleansing layer due to native integration with data science libraries and faster development loops, trading minor JVM serialization performance for substantial code readability. 2. Delta Lake Lakehouse vs. Relational DB: Stored outcomes in Databricks Delta Lake instead of a traditional SQL Database, reducing ingestion cost by 50% while utilizing schema evolution to absorb upstream clinical data log updates seamlessly.",
+    businessOutcomes: "Delivered an automated, daily refreshed Power BI dashboard that shows A&E breach rates and high-risk waiting times.",
+    tradeoffs: "1. PySpark vs. Scala Spark: Selected PySpark for writing the Silver cleansing layer due to native integration with data science libraries and faster development loops, trading minor JVM serialization performance for substantial code readability. 2. Delta Lake Lakehouse vs. Relational DB: Stored outcomes in Databricks Delta Lake instead of a traditional SQL Database, using schema evolution to absorb upstream clinical data log updates seamlessly.",
     lessonsLearned: "Defining a global dimensional map for clinical department codes is critical. Minor variations in how ward names are registered at intake will duplicate metrics unless strictly standardized at the Silver stage."
   },
   {
-    id: "project-2",
-    title: "Self-Healing AI-Powered Data Pipeline Diagnostic Daemon",
-    description: "Built an automated Python worker utilizing the Gemini API to autonomously capture pipeline failure stack traces, diagnose root-cause bugs, and trigger safe healing procedures.",
-    category: "engineering",
-    projectType: "professional",
-    tags: ["Python", "Gemini API", "Selenium WebDriver", "Jenkins CI/CD", "SQL", "Log Parsing"],
-    tools: ["Python", "Gemini API", "Jenkins", "SQL"],
-    impact: "Autonomously diagnosed and corrected transient pipeline failures, cutting resolution downtime from 14.2 hours to under 4 minutes.",
-    metrics: [
-      { label: "Autonomous Resolution", value: "94%" },
-      { label: "Downtime Cut", value: "14.2h to <4m" },
-      { label: "Manual QA Saved", value: "~35%" }
-    ],
-    githubUrl: "https://github.com/Harekrishnashah13",
-    businessContext: "While at HiCounselor, critical data processing and testing pipelines frequently failed asynchronously due to transient issues like temporary API rate limiting, network drops, or minor schema mismatch.",
-    problemStatement: "Alerting systems notified developers of failures, but resolving issues manually took hours because teams had to parse extensive text logs to identify specific failure points.",
-    whyItMattered: "Severe delays in data refreshing blocked subsequent operations and reporting dashboards, causing significant team idle times and SLA breaches.",
-    myRole: "Software Developer & Technical Support QA. I designed and deployed the self-healing scripts and automated testing suites.",
-    constraints: "The automated daemon could not be granted destructive server write permissions or modify core database structures, and had to gracefully escalate to on-call engineers if confidence was low.",
-    technicalApproach: "I built a Python worker daemon that intercepts failed Jenkins builds and reads the tail of log files. The worker sanitizes private credentials and feeds the log stack trace along with structured prompt frames into the Gemini API. The AI outputs a structured diagnosis and selects a safe correction recipe (such as restarting specific containers or triggering retry-backs).",
-    architectureSummary: "Conceptual Diagram: Jenkins Build Fail -> Log Extraction & Sanitization -> Python Diagnostic Worker -> Gemini API -> Pre-approved Safe Recovery Scripts -> Slack Log Notification",
-    businessOutcomes: "Cut pipeline crash downtime from an average of 14.2 hours to under 4 minutes, achieving a 94% autonomous recovery rate for transient pipeline exceptions with zero manual intervention required.",
-    tradeoffs: "1. Strict Pre-defined Playbooks vs. Dynamic Command Generation: Chose to limit the LLM's actions to triggering predefined, low-privilege script hooks rather than letting the model execute dynamic CLI commands. This limited recovery range slightly but ensured 100% security and zero risk of recursive loop failures.",
-    lessonsLearned: "Masking all potential credentials and local file paths before sending logs to external AI interfaces is essential for maintaining standard privacy and compliance."
-  },
-  {
     id: "project-3",
-    title: "Regulated Fraud Triage & Operational BI Dashboard Suite",
-    description: "Created and maintained strategic Power BI reporting environments for a major digital banking institution to track daily digital banking system issues, SLA performance, and compliance KPIs.",
+    title: "Banking Report Automation",
+    description: "Automated a twice-weekly product report for senior stakeholders on the Allied Irish Banks account (via Covalen), replacing manual Salesforce-to-Excel preparation with a Python and Microsoft BI workflow.",
     category: "bi",
     projectType: "professional",
-    tags: ["Power BI", "DAX", "PowerQuery", "Oracle SQL", "AML/KYC Compliance", "Excel Automation"],
-    tools: ["Power BI", "SQL", "DAX", "Mainframe Logs"],
-    impact: "Automated daily operational reporting for senior leadership, drastically accelerating customer escalation triage and reducing banking risk exposure.",
+    tags: ["Python", "Microsoft BI", "Power BI", "Salesforce", "Excel", "SQL", "AML/KYC"],
+    tools: ["Python", "Power BI", "Salesforce", "SQL"],
+    impact: "Cut report preparation from about 4 hours to 15 minutes, twice a week (roughly 390 hours a year), with validation checks kept for the audit trail.",
     metrics: [
-      { label: "Daily Issues Solved", value: "20+" },
-      { label: "Compliance Incidents", value: "0 Breaches" },
-      { label: "Daily Triage Time", value: "-30%" }
+      { label: "Prep Time", value: "4h → 15m" },
+      { label: "Hours Saved / Year", value: "~390" },
+      { label: "AML/KYC Breaches", value: "0" }
     ],
     githubUrl: "https://github.com/Harekrishnashah13",
-    businessContext: "In a highly regulated digital banking environment, risk officers and senior stakeholders required real-time visibility into transaction volumes, escalation queue states, and compliance metrics.",
-    problemStatement: "Operators spent hours every morning manually extracting Excel spreadsheets from transaction mainframes, Arcot security engines, and Visa Access Online systems to evaluate daily metrics.",
-    whyItMattered: "Slow issue triaging delayed fraud detection and increased compliance vulnerability in AML (Anti-Money Laundering) and KYC (Know Your Customer) reviews.",
-    myRole: "Operations Analyst at Covalen Solutions (Banking Client). I owned the design, development, and DAX calculations for the final reporting dashboards.",
-    constraints: "Absolute data masking—absolutely no customer PII could reside in local dashboard storage, and datasets had to be fully audit-ready.",
-    technicalApproach: "I wrote optimized SQL scripts to merge transaction logs, designed dimensional models within Power BI Desktop, and developed high-performance dashboards using DAX to calculate real-time SLA metrics. I configured secure enterprise data gateways to automate reporting refreshes.",
-    architectureSummary: "Real Mockup: Mainframe Transaction Logs & Arcot Systems -> Secure Local Data Gateway -> Power BI Service -> Executive KPI Dashboards",
-    businessOutcomes: "Completely eliminated manual daily reporting. Enabled immediate triage of authentication and fraud failures, drastically cutting response lag. Maintained a clean compliance and audit record with zero regulatory breaches.",
-    tradeoffs: "1. Scheduled Incremental Imports vs. DirectQuery: DirectQuery on legacy mainframes would slow down production databases. I chose to implement 4x daily scheduled incremental imports, which satisfied business SLA reporting needs while keeping production system performance entirely unburdened.",
-    lessonsLearned: "Executive dashboards must resist 'metric clutter'. Grouping complex telemetry into simple, clean Red-Yellow-Green alert status banners makes dashboards far more effective for busy banking stakeholders."
+    businessContext: "In a regulated digital banking environment, senior stakeholders rely on a twice-weekly product report to make decisions, and the report forms part of the audit trail.",
+    problemStatement: "The report was built by hand twice a week from Salesforce exports in Excel. Each run took about four hours, and manual steps made it easy for figures to disagree between teams.",
+    whyItMattered: "Late or inconsistent figures slow down decisions and weaken the audit trail in a regulated environment.",
+    myRole: "Customer Operations Specialist at Covalen (client: Allied Irish Banks). I built and run the automated workflow.",
+    constraints: "No customer PII could be kept in local report storage, and every output had to stay audit-ready.",
+    technicalApproach: "Python scripts take the Salesforce exports, clean and validate them, and feed a Microsoft BI report. Validation checks confirm the figures before the report goes out.",
+    architectureSummary: "Salesforce exports -> Python cleaning & validation -> Microsoft BI report -> Senior stakeholders",
+    businessOutcomes: "Preparation dropped from about 4 hours to 15 minutes per run, roughly 390 hours a year, with the validation needed for the audit trail kept in place.",
+    tradeoffs: "Automate first, redesign later: the existing manual steps were automated before any change to the report itself, so stakeholders kept a familiar output while preparation time fell.",
+    lessonsLearned: "Validation has to travel with the automation. Time saved only counts if the numbers still reconcile."
   },
   {
     id: "project-4",
     title: "MSc Dissertation — Number Plate Detection",
-    description: "Developed and published a high-accuracy deep learning image classification and object localization pipeline using YOLOv9, TensorFlow, and OpenCV.",
+    description: "Developed a deep learning image classification and object localization pipeline using YOLOv9, TensorFlow, and OpenCV.",
     category: "analytics",
     projectType: "academic",
     tags: ["Python", "YOLOv9", "TensorFlow", "OpenCV", "PyTorch", "Transfer Learning", "Jupyter Notebooks"],
     tools: ["Python", "TensorFlow", "OpenCV", "Jupyter"],
-    impact: "Achieved 94.3% Mean Average Precision (mAP) on a custom-compiled dataset of 8,800+ multi-class image frames.",
+    impact: "Compared YOLOv9, EfficientNet and NasNet on 8,800+ annotated images; the top model reached 94.3% accuracy and 95.1% mAP.",
     metrics: [
-      { label: "Inference Precision", value: "94.3%" },
+      { label: "Accuracy", value: "94.3%" },
+      { label: "mAP", value: "95.1%" },
       { label: "Dataset Scale", value: "8,800+ Images" },
-      { label: "Class Count", value: "Multi-Class" }
+      { label: "Models Compared", value: "3" }
     ],
     githubUrl: "https://github.com/Harekrishnashah13/Number-Plate-Detection-Using-Computer-Vision-and-Deep-Learning-",
     businessContext: "This project was developed as my final Master of Science in Data Analytics dissertation at Dublin Business School to solve processing bottlenecks in real-time edge-computing camera streams.",
@@ -157,103 +133,51 @@ export const PROJECTS_DATA: Project[] = [
     constraints: "Built entirely on limited laboratory hardware, requiring optimal memory allocation and precision formatting to avoid GPU out-of-memory crashes.",
     technicalApproach: "I compiled a high-quality dataset of over 8,800 image files. I implemented a training pipeline utilizing YOLOv9 with PyTorch transfer learning, applying OpenCV for contrast normalization and data augmentation. I tuned batch-sizing and utilized half-precision floating-point (FP16) variables to maximize GPU performance.",
     architectureSummary: "Real Notebook: Image Dataset -> OpenCV Spatial Normalization -> YOLOv9 PyTorch Transfer Learning -> FP16 Compilation -> TensorFlow Serving Model",
-    businessOutcomes: "Achieved a verified 94.3% Mean Average Precision (mAP) on custom-compiled object datasets. The dissertation was awarded a first-class distinction at Dublin Business School.",
+    businessOutcomes: "The top model reached 94.3% accuracy and 95.1% mAP.",
     tradeoffs: "1. YOLOv9 vs. ResNet: Selected the single-stage YOLOv9 model to satisfy real-time throughput limits (target 30 FPS on average processors), trading off minor fine-grained boundary layer accuracy for a 3.5x boost in overall inference speed.",
     lessonsLearned: "Data quality beats model parameters. Investing time in image augmentation (such as geometric rotation and adaptive histogram equalization) yielded a greater accuracy lift than simply running extra training epochs on raw inputs."
-  },
-  {
-    id: "project-6",
-    title: "Real-Time Irish Transit Congestion Analytics Pipeline",
-    description: "Engineered a real-time GTFS-RT streaming pipeline utilizing Apache Kafka and Spark Streaming to analyze Dublin Bus route congestions and trigger live transit dashboard refreshes.",
-    category: "engineering",
-    projectType: "personal",
-    tags: ["Apache Kafka", "Apache Spark", "Spark Streaming", "Python", "PostgreSQL", "GTFS-Realtime", "Tableau BI"],
-    tools: ["Kafka", "Spark", "PostgreSQL", "Tableau", "Python"],
-    impact: "Ingests and processes 500+ messages/sec, calculating real-time travel delay indexes and live route schedule deviations across Dublin metropolitan transit networks.",
-    metrics: [
-      { label: "Ingestion Rate", value: "500+ msg/s" },
-      { label: "Spark Batch Size", value: "2.5s window" },
-      { label: "Latency Delta", value: "<100ms" }
-    ],
-    githubUrl: "https://github.com/Harekrishnashah13",
-    businessContext: "Urban planners and transit operators in Ireland face challenges managing Dublin Bus congestion and estimating exact arrival delays during rush hours due to static schedule limitations and irregular road conditions.",
-    problemStatement: "Combining live GPS vehicle location feeds with standard static schedules is highly computationally intensive. Raw feeds are noisy, contain duplicate coordinates, and fail under poor network conditions, requiring real-time filtering and deduplication.",
-    whyItMattered: "Accurate real-time congestion mapping enables transit authorities to adjust bus frequencies, optimize route layouts, and provide passengers with precise ETA information, improving overall trust and ridership in public transit.",
-    myRole: "Solo Developer. I set up the local Kafka cluster, built the Spark streaming subscriber, and mapped the geographic delay metrics.",
-    constraints: "Must operate under strict memory ceilings on local Docker containers, forcing optimized window aggregations to prevent out-of-memory heap errors during peak traffic hours.",
-    technicalApproach: "I deployed a Python script that polls Dublin Bus GTFS-RT Protobuf feeds and publishes them to an Apache Kafka topic. A Spark Streaming job subscribes to this topic, parses the spatial coordinates, performs rolling 2-minute time window aggregations to calculate average vehicle speed, and outputs processed congestion scores directly into a timescaled PostgreSQL database.",
-    architectureSummary: "Kafka-Spark Streaming Stack: GTFS Protobuf Feeds -> Kafka Topic (Ingestion) -> Spark Streaming (Deduplication & Window Aggregation) -> PostgreSQL (Timescale DB) -> Tableau Live Reporting",
-    businessOutcomes: "Delivered an end-to-end real-time transit analytics framework. Successfully maps Dublin metropolitan traffic density live, identifying route delays with over 98% correlation to actual historical congestion hotspots.",
-    tradeoffs: "1. Spark Structured Streaming vs. Flink: Chose Spark Structured Streaming because of its native API compatibility with existing batch-based ML models, trading sub-millisecond Flink event-time latency for cleaner codebase unified with Python pipelines. 2. Kafka local broker vs. Cloud-hosted: Implemented a Dockerized local multi-node Kafka cluster to keep runtime hosting costs at zero while satisfying the benchmark throughput requirements perfectly.",
-    lessonsLearned: "Always structure geospatial queries using bounding boxes or spatial indexes (like Uber's H3 index) rather than raw float calculations; indexing boosts spatial query execution speed by over 10x."
-  },
-  {
-    id: "project-7",
-    title: "Customer Churn Prediction Model",
-    description: "Designed and built an end-to-end customer churn prediction pipeline utilizing machine learning (Random Forest & XGBoost) to profile high-risk user accounts and automate retention workflows.",
-    category: "analytics",
-    projectType: "personal",
-    tags: ["Python", "FastAPI", "PostgreSQL", "Docker", "XGBoost", "Power BI", "Scikit-Learn"],
-    tools: ["Python", "FastAPI", "Power BI", "Docker", "PostgreSQL"],
-    impact: "Successfully automated user retention profiling, predicting potential churn accounts with high precision and cutting monthly churn rates by 18.5%.",
-    metrics: [
-      { label: "Prediction Accuracy", value: "94.3%" },
-      { label: "Retention Rate", value: "+18.5%" },
-      { label: "Processing Latency", value: "<1.8s" }
-    ],
-    githubUrl: "https://github.com/Harekrishnashah13",
-    businessContext: "For a high-volume telecom subscriber platform, predicting and preventing customer churn is a critical operational driver for long-term subscriber retention and revenue preservation.",
-    problemStatement: "Subscribers were leaving at elevated rates without prior warning. Support and marketing teams spent excessive time manually reviewing accounts to estimate customer exit risk.",
-    whyItMattered: "High customer acquisition costs meant that retention of active subscribers has a 5x greater impact on commercial margins than acquiring new users.",
-    myRole: "Solo Creator & ML Engineer. I designed the predictive algorithms, trained the classifiers, and built the risk-scoring analytics dashboard.",
-    constraints: "The pipeline had to run dynamic predictions in real-time without introducing lag to customer account dashboards, using strict privacy filters to comply with data handling guidelines.",
-    technicalApproach: "I built a Python backend using FastAPI to ingest customer activity telemetry. I trained an XGBoost classifier on historical behavioral metrics (session depth, ticketing latency, payment frequency), achieving high recall. I deployed the model to output customer health scores directly to support dashboards.",
-    architectureSummary: "Analytical Pipeline: Telemetry Streams -> FastAPI Gateway -> XGBoost Classifier (Real-Time Inferences) -> PostgreSQL Metadata Store -> Executive retention Power BI Dashboards",
-    businessOutcomes: "Successfully automated user retention profiling, predicting potential churn accounts with high precision. Enabled immediate proactive support workflows, cutting monthly churn rates by 18.5% and saving manual analysis hours.",
-    tradeoffs: "1. XGBoost vs. Deep Learning LSTM Models: Selected XGBoost for tabular telemetry to ensure high execution performance (under 1.8 seconds) and clear feature-importance interpretability, trading minor sequence tracking of LSTMs for simple, robust operations. 2. FastAPI microservice vs. direct database trigger: Implemented a lightweight API service to decouple prediction logic from database cycles, ensuring low operational latency during peak traffic.",
-    lessonsLearned: "Statistical weight of activity features decays quickly. Calculating rolling average metrics over shorter window lengths (e.g., 7 days vs. 30 days) yields far sharper prediction signals for predicting churn."
   }
 ];
 
 export const EXPERIENCE_DATA: ExperienceItem[] = [
   {
     id: "exp-1",
-    role: "Operations Analyst",
-    company: "Covalen Solutions",
-    location: "Dublin, Ireland",
+    role: "Customer Operations Specialist",
+    company: "Covalen (client: Allied Irish Banks)",
+    location: "Limerick, Ireland",
     period: "August 2025 - Present",
     description: [
-      "Owned the investigation and resolution of 20+ daily digital banking issues and compliance reviews under strict AML/KYC guidelines.",
-      "Designed strategic Power BI dashboard suites tracking core financial and operational KPIs for senior banking leadership, slashing daily triage time by 30%."
+      "Automated the twice-weekly product report for senior stakeholders, cutting preparation from about 4 hours to 15 minutes (roughly 390 hours a year).",
+      "Validate and reconcile high-volume transaction data across AIB's core platforms and investigate 20+ issues a day with SQL; zero AML/KYC breaches."
     ],
-    skills: ["Power BI", "DAX", "Oracle SQL", "AML/KYC", "Fraud Triage", "Banking Operations"],
-    highlightMetric: { label: "Daily Issues Resolved", value: "20+ Cases" }
+    skills: ["SQL", "Python", "Power BI", "Salesforce", "Data Validation", "AML/KYC"],
+    highlightMetric: { label: "Report Prep Time", value: "4h → 15m" }
   },
   {
     id: "exp-2",
-    role: "Data Analyst & Technical Business Analyst",
+    role: "Data Analyst",
     company: "Itelligence Infotech",
-    location: "Pune, India",
+    location: "India (remote from Sep 2023)",
     period: "December 2022 - December 2024",
     description: [
-      "Owned the design and execution of an automated SQL translation pipeline to migrate legacy Teradata codebases to Azure Databricks.",
-      "Successfully migrated a 1.2PB enterprise cloud data footprint with 100% record parity, improving overall system reporting accuracy by 40%."
+      "Built automated SQL translation and field-level parity checks for a 1.2PB Teradata-to-Azure Synapse migration, delivered with a zero-downtime cutover.",
+      "Ran requirements workshops, owned UAT across three concurrent client projects, and mentored three junior analysts."
     ],
-    skills: ["Azure Synapse", "Databricks", "PySpark", "Azure ADF", "Python", "Teradata SQL", "Terraform"],
-    highlightMetric: { label: "Enterprise Migration", value: "1.2PB Done" }
+    skills: ["Azure Synapse", "Databricks", "PySpark", "Azure ADF", "Python", "Teradata SQL", "Power BI", "Tableau"],
+    highlightMetric: { label: "Enterprise Migration", value: "1.2PB" }
   },
   {
     id: "exp-3",
     role: "Software Developer & Technical Support QA",
     company: "HiCounselor",
-    location: "San Francisco, CA (Remote)",
+    location: "Remote (US-based start-up)",
     period: "August 2022 - December 2022",
     description: [
-      "Owned the development of automated testing suites in Python and a self-healing diagnostic daemon for failed data pipeline logs.",
-      "Cut manual QA cycles by 35% and reduced transient pipeline crash recovery times from 14.2 hours to under 4 minutes with Gemini API."
+      "Built automated test suites in Python and Selenium within Jenkins CI/CD, and tested APIs with Postman.",
+      "Worked in Agile sprints with engineers on backlog refinement and defect triage in Jira."
     ],
-    skills: ["Python", "Gemini API", "Selenium WebDriver", "Jenkins CI/CD", "Postman", "SQL"],
-    highlightMetric: { label: "Downtime Reduced", value: "14h to <4m" }
+    skills: ["Python", "Selenium WebDriver", "Jenkins CI/CD", "Postman", "Jira", "SQL"],
+    highlightMetric: { label: "Test Automation", value: "Selenium + Jenkins" }
   },
   {
     id: "exp-4",
@@ -262,11 +186,11 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     location: "Chennai, India",
     period: "September 2021 - August 2022",
     description: [
-      "Owned the development of predictive machine learning models and SQL-based transactional audits for customer-facing banking applications.",
-      "Built high-performance Random Forest models that surfaced critical customer behavior patterns, securing seamless credit and account fraud triage."
+      "Wrote PostgreSQL queries to audit and reconcile transaction data after system integrations, and tested APIs with Postman.",
+      "Tracked KPIs, account metrics and campaign performance in SQL and Excel, producing management reports for sales, marketing and operations."
     ],
-    skills: ["Oracle SQL", "Predictive Modeling", "Postgres SQL", "Appzillon", "Postman", "API Audits"],
-    highlightMetric: { label: "Model Inferences", value: "Random Forest" }
+    skills: ["PostgreSQL", "SQL", "Excel", "Postman", "API Testing", "Appzillon"],
+    highlightMetric: { label: "Focus", value: "Data audits & MI" }
   },
   {
     id: "exp-5",
@@ -308,10 +232,10 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     title: "Cloud, AI & DevOps",
     skills: [
-      { name: "Gemini API / LLM Integrations", level: 85 },
+      { name: "LLM APIs (Groq / Llama, Gemini)", level: 75 },
       { name: "Terraform (IaC)", level: 80 },
       { name: "Jenkins CI/CD", level: 85 },
-      { name: "Docker & Kubernetes", level: 75 },
+      { name: "Docker", level: 70 },
       { name: "Selenium WebDriver", level: 90 },
       { name: "Git & Agile", level: 95 }
     ]
@@ -323,17 +247,17 @@ export const EDUCATION_DATA: EducationItem[] = [
     institution: "Dublin Business School",
     degree: "Master of Science (MSc)",
     period: "September 2023 - September 2024",
-    specialization: "Data Analytics (Data Science focus)",
+    specialization: "Data Analytics",
     highlights: [
-      "Graduated with First Class Distinction",
-      "Completed Master's dissertation: Engineered an advanced, multi-class object detection deep learning pipeline using YOLOv9, TensorFlow, and OpenCV, achieving a verified 94.3% inference accuracy on an 8,800+ image dataset."
+      "Modules: statistical modelling, hypothesis testing, experiment design, machine learning evaluation.",
+      "Dissertation: compared YOLOv9, EfficientNet and NasNet for number plate detection on 8,800+ annotated images; the top model reached 94.3% accuracy and 95.1% mAP."
     ]
   },
   {
     institution: "SRM University",
     degree: "Bachelor of Technology (BTech)",
     period: "June 2018 - May 2022",
-    specialization: "Computer Science",
+    specialization: "Computer Science & Engineering (Data Science specialisation)",
     highlights: [
       "Acquired core foundations in software engineering, distributed computing, database systems, and algorithms.",
       "Maintained first-class performance across database architectures and Python application labs."
