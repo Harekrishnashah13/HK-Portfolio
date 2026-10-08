@@ -1493,7 +1493,7 @@ export default function Projects({ onSelectFlagship }: ProjectsProps) {
       case 'project-2':
         return renderAIDiagnosticMockup();
       case 'project-3':
-        return renderBankingDashboardMockup();
+        return null; // no mock-up: real employer data cannot be shown
       case 'project-4':
         return renderYOLOMockup();
       case 'project-5':

@@ -37,9 +37,9 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
   // Subtitle roles slide-up cycling list
   const roles = [
-    'Databricks Certified Data Engineer & Analyst',
-    'MSc Data Science — First Class Distinction',
-    'Power BI · SQL · Python · AWS · Databricks',
+    'Data Analyst · Databricks Certified Data Engineer Professional',
+    'MSc in Data Analytics · Dublin Business School',
+    'Power BI · SQL · Python · Azure · Databricks',
     'Building data systems organisations can trust'
   ];
   const [currentRole, setCurrentRole] = useState(0);
@@ -275,7 +275,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
               color: 'rgba(var(--ink-rgb),0.55)',
               letterSpacing: '0.04em'
             }}>
-              MSc Data Science
+              MSc in Data Analytics
             </span>
             <span style={{
               display: 'inline-flex',
@@ -289,7 +289,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
               color: '#00CC88',
               letterSpacing: '0.04em'
             }}>
-              First Class Distinction
+              Databricks Certified
             </span>
             <span style={{
               fontFamily: 'JetBrains Mono, monospace',
@@ -313,7 +313,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
               fontWeight: 400,
             }}
           >
-            I'm a Databricks Certified Data Engineer & Analyst with an MSc in Data Science (First Class Distinction) and 4+ years of professional experience in financial services and enterprise analytics.
+            I'm a data analyst with 4+ years in banking and enterprise data, an MSc in Data Analytics, and the Databricks Certified Data Engineer Professional certification.
           </motion.p>
 
           {/* Location Block with Interview Ready Signal */}
@@ -321,7 +321,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
             variants={itemVariants}
             className="font-sans font-normal text-slate-500 tracking-wide text-xs sm:text-sm mb-6 max-w-xl flex items-center gap-2 flex-wrap"
           >
-            <span>Dublin, Ireland &middot; Stamp 1G</span>
+            <span>Limerick, Ireland &middot; Stamp 1G</span>
             <span style={{
               background: 'rgba(0,204,136,0.1)',
               border: '0.5px solid rgba(0,204,136,0.25)',
@@ -544,7 +544,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                   HS<span className="text-emerald-500 font-bold">.</span>
                 </span>
                 <span className="text-[9px] text-slate-500 font-mono tracking-widest uppercase mt-1 shrink-0">
-                  Dublin
+                  Ireland
                 </span>
               </div>
             )}

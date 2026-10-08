@@ -3,7 +3,7 @@ import { PERSONAL_INFO, EXPERIENCE_DATA, EDUCATION_DATA, CERTIFICATIONS_DATA } f
 export function downloadResumePDF() {
   const resumeText = `
 HAREKRISHNA SHAH
-Dublin, Ireland | Stamp 1G (Interview Ready)
+Limerick, Ireland | Stamp 1G
 Email: ${PERSONAL_INFO.email}
 LinkedIn: ${PERSONAL_INFO.linkedin}
 GitHub: ${PERSONAL_INFO.github}

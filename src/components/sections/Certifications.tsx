@@ -68,32 +68,32 @@ export default function Certifications() {
           description: "Verifies the professional capability to design, construct, optimize, and maintain production-grade data pipelines within the Databricks Lakehouse Platform using PySpark, Delta Lake, and Databricks Workflows.",
           skills: ["PySpark", "Delta Lake", "Unity Catalog", "Medallion Ingestion", "Workflows", "SQL Warehouse"],
           accent: "from-orange-500/10 to-red-500/10 border-orange-500/20 text-orange-400",
-          authority: "Databricks Credential Registry",
-          grade: "Data Engineer Professional (Highest-Tier)"
+          authority: "Databricks",
+          grade: "Professional-level certification"
         };
       case 'cert-2':
         return {
           description: "Awarded by Forage. Represents successful completion of highly technical solutions architecture simulations, focusing on standard hosting design, elasticity, Auto-Scaling, multi-tier architectures, and secure networking.",
           skills: ["Scalability Design", "VPC & Routing", "IAM Policies", "AWS Compute & Storage", "Disaster Recovery"],
           accent: "from-amber-500/10 to-yellow-500/10 border-amber-500/20 text-amber-400",
-          authority: "AWS Solutions Architecture Simulation Hub",
-          grade: "Architect Verified Case Study"
+          authority: "Forage (virtual job simulation)",
+          grade: "Job simulation completed"
         };
       case 'cert-3':
         return {
           description: "Authorized by Duke University and offered through Coursera. Verifies capability in structuring raw datasets, creating advanced visual analytics in Tableau Desktop, and formulating actionable data stories.",
           skills: ["Tableau BI", "Visual Hierarchy", "Data-Driven Storytelling", "Dashboards", "LOD Expressions"],
           accent: "from-cyan-500/10 to-blue-500/10 border-cyan-500/20 text-cyan-400",
-          authority: "Coursera & Duke University Office of Registrar",
-          grade: "100% Course Parity Passed"
+          authority: "Coursera & Duke University",
+          grade: "Course completed"
         };
       case 'cert-4':
         return {
           description: "Authorized by University of California, Davis and offered through Coursera. Covers querying complex relational databases, profiling data, multi-table joins, subsetting, and aggregations for analytics.",
           skills: ["SQL", "Relational Database Design", "Data Profiling", "Subqueries", "Analytical Aggregations"],
           accent: "from-indigo-500/10 to-blue-500/10 border-indigo-500/20 text-indigo-400",
-          authority: "Coursera & UC Davis Academic Senate",
-          grade: "Passed with Distinction"
+          authority: "Coursera & UC Davis",
+          grade: "Course completed"
         };
       case 'cert-5':
         return {
@@ -101,23 +101,23 @@ export default function Certifications() {
           skills: ["Python", "Pandas", "NumPy", "Data Cleansing", "Series & DataFrames"],
           accent: "from-yellow-500/5 to-blue-500/10 border-yellow-500/20 text-yellow-400",
           authority: "Coursera & University of Michigan",
-          grade: "First-Class Academic Grade"
+          grade: "Course completed"
         };
       case 'cert-6':
         return {
           description: "Issued by Google. Verifies foundational capability in configuring Google Analytics 4 (GA4), tracking digital engagement events, modeling conversion behaviors, and creating operational business performance reports.",
           skills: ["Google Analytics 4", "KPI Attribution", "Conversion Mapping", "Reporting Dashboards", "Audience Analysis"],
           accent: "from-green-500/10 to-emerald-500/10 border-green-500/20 text-emerald-400",
-          authority: "Google Skillshop Certification Registry",
-          grade: "Active Google Certified Partner"
+          authority: "Google Skillshop",
+          grade: "Certification passed"
         };
       default:
         return {
           description: "Verified professional credential checking out against strict engineering criteria.",
           skills: ["Technology Foundations", "Structured Workflows"],
           accent: "from-slate-500/10 to-slate-400/10 border-slate-500/25 text-slate-300",
-          authority: "Authorized Issuer Registry",
-          grade: "Grade Verified"
+          authority: "Issuer",
+          grade: "Completed"
         };
     }
   };
@@ -146,7 +146,7 @@ export default function Certifications() {
               fontWeight: 400 
             }}
           >
-            Verified industry certifications and First Class academic credentials — every credential ID is real and checkable.
+            Industry certifications and academic credentials, with credential IDs you can check.
           </p>
         </div>
 
@@ -367,25 +367,7 @@ export default function Certifications() {
                     className="font-sans"
                   >
                     {edu.degree}
-                    {edu.degree.includes("MSc") && (
-                      <span 
-                        style={{
-                          background: 'rgba(0,204,136,0.12)',
-                          border: '0.5px solid rgba(0,204,136,0.35)',
-                          color: '#00CC88',
-                          fontSize: '11px',
-                          fontWeight: 600,
-                          padding: '3px 10px',
-                          borderRadius: '20px',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '5px',
-                          marginLeft: '8px'
-                        }}
-                      >
-                        First Class Distinction
-                      </span>
-                    )}
+                    
                   </h4>
 
                   {/* Institution */}
